@@ -16,7 +16,7 @@ public class DoxUtils {
 	public static void onSearch(String username) {
 		ChatUtils.print("§bStart Searching §e" + username + "§b.. ");
 		MinecraftOldNick(username);
-		//SocialMedia(username);
+		SocialMedia(username);
 	}
 
 	private static void MinecraftOldNick(String username) {
@@ -37,7 +37,6 @@ public class DoxUtils {
 				for (int i = 0; i < split.length; i++) {
 					String l = split[i];
 					if (!intPattern.matcher(l).matches()) {
-						SocialMedia(l);
 						b.append("\n§bOld Nick§7: §e" + l);
 					}
 				}
