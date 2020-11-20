@@ -132,7 +132,6 @@ public class DoxUtils {
 					// found
 					ChatUtils.print("Utente trovato su Youtube: " + username);
 				}
-				System.out.println("ciao");
 			}
 		} catch (Exception e) {
 			e.getMessage();
