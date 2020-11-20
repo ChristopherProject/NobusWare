@@ -16,7 +16,7 @@ public class DoxUtils {
 	public static void onSearch(String username) {
 		ChatUtils.print("§bStart Searching §e" + username + "§b.. ");
 		MinecraftOldNick(username);
-		SocialMedia(username);
+		//SocialMedia(username);
 	}
 
 	private static void MinecraftOldNick(String username) {
@@ -37,6 +37,7 @@ public class DoxUtils {
 				for (int i = 0; i < split.length; i++) {
 					String l = split[i];
 					if (!intPattern.matcher(l).matches()) {
+						SocialMedia(l);
 						b.append("\n§bOld Nick§7: §e" + l);
 					}
 				}
@@ -46,7 +47,7 @@ public class DoxUtils {
 			ChatUtils.print("Sembra Che Qualcosa Sia Andato Storto [INVALID_UUID] ");
 		}
 	}
-
+	
 	public static String getUUID(String nome) {
 		try {
 			URL link2 = new URL("https://api.mojang.com/users/profiles/minecraft/" + nome);
@@ -84,6 +85,56 @@ public class DoxUtils {
 	}
 
 	private static void SocialMedia(String username) {
-		
+		try {
+			URL link2 = new URL("https://instagram.com/" + username);
+			HttpURLConnection connected2 = (HttpURLConnection) link2.openConnection();
+			connected2.setRequestMethod("GET");
+			if (connected2.getResponseCode() == 200) {
+				BufferedReader read_string = new BufferedReader(new InputStreamReader(connected2.getInputStream()));
+				String pageText = read_string.lines().collect(Collectors.joining("\n"));
+				
+				if (pageText.contains("Sorry, this page isn't available.")) {
+					// not found
+					ChatUtils.print("§4Utente non trovato su Instagram: " + username);
+				}else {
+					// found
+					ChatUtils.print("Utente trovato su Instagram: " + username);
+				}
+			}
+			
+			URL link3 = new URL("https://telegram.me/" + username);
+			HttpURLConnection connected3 = (HttpURLConnection) link3.openConnection();
+			connected3.setRequestMethod("GET");
+			if (connected3.getResponseCode() == 200) {
+				BufferedReader read_string = new BufferedReader(new InputStreamReader(connected3.getInputStream()));
+				String pageText = read_string.lines().collect(Collectors.joining("\n"));
+				
+				if (pageText.contains("Sorry, this page isn't available.")) {
+					// not found
+					ChatUtils.print("§4Utente non trovato su Telegram: " + username);
+				}else {
+					// found
+					ChatUtils.print("Utente trovato su Telegram: " + username);
+				}
+			}
+			
+			URL link4 = new URL("https://youtube.com/results?search_query=" + username);
+			HttpURLConnection connected4 = (HttpURLConnection) link4.openConnection();
+			connected3.setRequestMethod("GET");
+			if (connected4.getResponseCode() == 200) {
+				BufferedReader read_string = new BufferedReader(new InputStreamReader(connected4.getInputStream()));
+				String pageText = read_string.lines().collect(Collectors.joining("\n"));
+				
+				if (pageText.contains("No results found")) {
+					// not found
+					ChatUtils.print("§4Utente non trovato su Youtube: " + username);
+				}else {
+					// found
+					ChatUtils.print("Utente trovato su Youtube: " + username);
+				}
+			}
+		} catch (Exception e) {
+			e.getMessage();
+		}
 	}
 }
