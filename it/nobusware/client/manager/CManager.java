@@ -7,6 +7,7 @@ import it.nobusware.client.commands.Bind;
 import it.nobusware.client.commands.Vclip;
 import it.nobusware.client.commands.byemom;
 import it.nobusware.client.commands.help;
+import it.nobusware.client.commands.settings;
 import it.nobusware.client.commands.verusfucker;
 import it.nobusware.client.commands.youtube;
 import net.minecraft.client.Minecraft;
@@ -30,7 +31,8 @@ public class CManager {
     		new youtube(),
     		new verusfucker(),
     		new  BKick(),
-    		new byemom()
+    		new byemom(),
+    		new settings()
     };
   }
   

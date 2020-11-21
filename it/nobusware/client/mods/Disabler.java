@@ -9,6 +9,7 @@ import QuarantineAPI.config.annotation.Handler;
 import it.nobusware.client.events.EventPackets;
 import it.nobusware.client.events.EventUpdate;
 import it.nobusware.client.manager.Module;
+import it.nobusware.client.mods.aura.killaura;
 import it.nobusware.client.utils.Timer;
 import it.nobusware.client.utils.value.Value;
 import it.nobusware.client.utils.value.impl.EnumValue;
@@ -48,10 +49,7 @@ public class Disabler extends Module {
 				timer.reset();
 			}
 
-			if (timer1.delay(1200L)
-					&& (mc.getNobita().getModManager().Prendi(Speed.class).isAbilitato()
-							|| mc.getNobita().getModManager().Prendi(VanillaFly.class).isAbilitato())
-					&& !mc.getNobita().getModManager().Prendi(Collision.class).isAbilitato()) {
+			if (timer1.delay(1200L) && mc.getNobita().getModManager().Prendi(killaura.class).isAbilitato() || (mc.getNobita().getModManager().Prendi(Speed.class).isAbilitato() || mc.getNobita().getModManager().Prendi(VanillaFly.class).isAbilitato() && mc.thePlayer.isMoving()) && !mc.getNobita().getModManager().Prendi(Collision.class).isAbilitato()) {
 				PlayerCapabilities pc = new PlayerCapabilities();
 				pc.disableDamage = false;
 				pc.isFlying = false;
@@ -96,6 +94,7 @@ public class Disabler extends Module {
 			}
 
 			if (event.getPacket() instanceof C03PacketPlayer) {
+				mc.thePlayer.sendQueue.noEventPacket(new C18PacketSpectate(mc.thePlayer.getGameProfile().getId()));
 				C03PacketPlayer pos = (C03PacketPlayer) event.getPacket();
 				if (mc.thePlayer.ticksExisted % 3 != 0) {
 					event.cancel();

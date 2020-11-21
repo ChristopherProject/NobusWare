@@ -127,6 +127,15 @@ public class ModuleManager {
 		return null;
 	}
 	
+	
+	  public Module getModByName(String name) {
+		    for (Module module : Hack_Del_Client) {
+		      if (module.getNome_mod().trim().equalsIgnoreCase(name.trim()))
+		        return module; 
+		    } 
+		    return null;
+		  }
+	  
 	public List<Module> getModules(Category category) {
 		List<Module> l = new ArrayList<>();
 		for (Module m : this.Hack_Del_Client) {

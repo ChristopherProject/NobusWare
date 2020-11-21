@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import it.nobusware.client.events.EventUpdate;
+import it.nobusware.client.mods.Disabler;
 import it.nobusware.client.mods.aura.killaura;
 import it.nobusware.client.utils.CombatUtil;
 import it.nobusware.client.utils.RotationUtils;
@@ -41,17 +42,21 @@ public class Multi {
 		buttpee = false;
 		final List<EntityLivingBase> targets = CombatUtil.getTargets(100, false, true, range, true);
 		final boolean autoBlock = killaura.isBlocking;
-		final long clickSpeed = (long) 13.0D;
-		buttpee = chance(blockPercentage) && mc.thePlayer.getHeldItem() != null
-				&& mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && autoBlock
-				&& CombatUtil.canBlock(false, true, range + 4.0, true);
+		final long clickSpeed = (long) 8.0D;
+		
+		if(!mc.getNobita().getModManager().Prendi(Disabler.class).isAbilitato()) {
+			buttpee = chance(blockPercentage) && mc.thePlayer.getHeldItem() != null
+					&& mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && autoBlock
+					&& CombatUtil.canBlock(false, true, range + 4.0, true);
+		}else {
+			buttpee = false;
+		}
 		if (buttpee) {
-			if (e.isPost()) {
+			if (e.isPost() && !mc.getNobita().getModManager().Prendi(Disabler.class).isAbilitato()) {
 				mc.thePlayer.setItemInUse(mc.thePlayer.getHeldItem(), 140);
 				mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld, mc.thePlayer.getHeldItem());
 			} else {
-				mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(
-						C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.UP));
+				mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.UP));
 			}
 		}
 		if (!targets.isEmpty()) {
@@ -60,8 +65,7 @@ public class Multi {
 			}
 			killaura.currentEntity = targets.get(0);
 			float[] rots = RotationUtils.getRotations(targets.get(targetIndex));
-			boolean gay = (mc.thePlayer.ticksExisted % 1 == 0);
-			if (gay) {
+			if (true) {
 				e.setYaw(rots[0]);
 				e.setPitch(rots[1]);
 				mc.thePlayer.rotationYawHead = rots[0];
@@ -72,16 +76,14 @@ public class Multi {
 			targetIndex = 0;
 			killaura.currentEntity = null;
 		}
-		if (e.isPost()) {
+		if (e.isPost() && !mc.getNobita().getModManager().Prendi(Disabler.class).isAbilitato()) {
 			return;
 		}
 		if (!timer.delay(1000L / clickSpeed)) {
 			return;
 		}
 		for (final Entity entity : targets) {
-			killaura
-					.sendPacketSilent(new C18PacketSpectate(UUID.fromString("9b450781-162f-4c1d-8d1f-af2aab7e526e")));
-			mc.thePlayer.setBoundingBox(mc.thePlayer.boundingBox.offset(0, 0.08, 0));
+			//killaura.sendPacketSilent(new C18PacketSpectate(UUID.fromString("9b450781-162f-4c1d-8d1f-af2aab7e526e")));
 			mc.thePlayer.swingItem();
 			mc.thePlayer.sendQueue.addToSendQueue(new C02PacketUseEntity(entity, C02PacketUseEntity.Action.ATTACK));
 			mc.effectRenderer.func_178926_a(entity, EnumParticleTypes.CRIT);

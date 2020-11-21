@@ -404,7 +404,9 @@ public class FontRenderer implements IResourceManagerReloadListener
             String pos = "POS";
             i++;
             
-            if(Minecraft.getMinecraft().getNobita().getModManager().Prendi(NameProtect.class).isAbilitato()) {
+            
+			
+	 if(Minecraft.getMinecraft().getNobita().getModManager().Prendi(NameProtect.class).isAbilitato()) {
             	if (p_175065_1_.contains(Minecraft.getMinecraft().session.getUsername())) {
                 	p_175065_1_ = p_175065_1_.replace(Minecraft.getMinecraft().session.getUsername(), "AdrianCode");
                   continue;
@@ -415,66 +417,8 @@ public class FontRenderer implements IResourceManagerReloadListener
                     	continue;
                     } 
             	}
-            }else {
-            	if (p_175065_1_.contains(Minecraft.getMinecraft().session.getUsername())) {
-                	p_175065_1_ = p_175065_1_.replace(Minecraft.getMinecraft().session.getUsername(),Minecraft.getMinecraft().session.getUsername());
-                  continue;
-                } 
             }
-            
-            
-            if (p_175065_1_.contains(pos)) {
-              isPos = true;
-              continue;
-            }
-            if (p_175065_1_.contains("parkercraft.it")) {
-               	p_175065_1_ = p_175065_1_.replace("parkercraft.it", "nobusware.rip"); 
-                continue;
-            }
-            if (p_175065_1_.contains("parkercraft")) {
-               	p_175065_1_ = p_175065_1_.replace("parkercraft", "nobusware"); 
-                continue;
-            }
-            if (p_175065_1_.contains("ParkerCraft")) {
-               	p_175065_1_ = p_175065_1_.replace("ParkerCraft", "NobusWare"); 
-                continue;
-            }
-            if (p_175065_1_.contains("PARKERCRAFT")) {
-               	p_175065_1_ = p_175065_1_.replace("PARKERCRAFT", "NobusWare.rip"); 
-                continue;
-            }
-            if (p_175065_1_.contains("§6§nmc.parkercraft.it")) {
-               	p_175065_1_ = p_175065_1_.replace("§6§nmc.parkercraft.it", "nobusware.rip"); 
-                continue;
-            }
-            //leo
-            if (p_175065_1_.contains("leofantecraft.eu")) {
-               	p_175065_1_ = p_175065_1_.replace("leofantecraft.eu", "nobusware.rip"); 
-                continue;
-            }
-            if (p_175065_1_.contains("LeoFanteCraft")) {
-               	p_175065_1_ = p_175065_1_.replace("LeoFanteCraft", "NobusWare"); 
-                continue;
-            }
-            if (p_175065_1_.contains("@leofantecraft")) {
-               	p_175065_1_ = p_175065_1_.replace("@leofantecraft", "@NobusWare"); 
-                continue;
-            }
-            if (p_175065_1_.contains("leofantecraft.buycraft.net")) {
-               	p_175065_1_ = p_175065_1_.replace("leofantecraft.buycraft.net", "shop.NobusWare.rip"); 
-                continue;
-            }
-            if (p_175065_1_.contains("Leonessa")) {
-               	p_175065_1_ = p_175065_1_.replace("Leonessa", "§7(§eMi Succhia Il Cazzo§7) §d§lTroietta"); 
-               	//ChatUtils.print("Attenzione è Entrata La Founder Di Leofantecraft");
-                continue;
-            }
-            if (p_175065_1_.contains("leonessa")) {
-               	p_175065_1_ = p_175065_1_.replace("leonessa", "§7(§eSucchia Il Mio Cazzo§7) §d§lTroietta"); 
-               	//ChatUtils.print("Attenzione è Entrata La Founder Di Leofantecraft");
-                continue;
-            }
-			
+	 else if(Minecraft.getMinecraft().isSingleplayer()  && Minecraft.getMinecraft().getCurrentServerData() != null && Minecraft.getMinecraft().getCurrentServerData().serverIP.equalsIgnoreCase("mc.trollandia.it")) {
 			if (p_175065_1_.contains("Trollandia")) {
 				p_175065_1_ = p_175065_1_.replace("Trollandia", "NobusWare");
 				continue;
@@ -513,7 +457,38 @@ public class FontRenderer implements IResourceManagerReloadListener
 				p_175065_1_ = p_175065_1_.replace("Trollandia.it", "NobusWare.rip");
 				continue;
 			}
+		} else {
+            	if (p_175065_1_.contains(Minecraft.getMinecraft().session.getUsername())) {
+                	p_175065_1_ = p_175065_1_.replace(Minecraft.getMinecraft().session.getUsername(),Minecraft.getMinecraft().session.getUsername());
+                  continue;
+                } 
+            }
             
+            
+            if (p_175065_1_.contains(pos)) {
+              isPos = true;
+              continue;
+            }
+            if (p_175065_1_.contains("parkercraft.it")) {
+               	p_175065_1_ = p_175065_1_.replace("parkercraft.it", "nobusware.rip"); 
+                continue;
+            }
+            if (p_175065_1_.contains("parkercraft")) {
+               	p_175065_1_ = p_175065_1_.replace("parkercraft", "nobusware"); 
+                continue;
+            }
+            if (p_175065_1_.contains("ParkerCraft")) {
+               	p_175065_1_ = p_175065_1_.replace("ParkerCraft", "NobusWare"); 
+                continue;
+            }
+            if (p_175065_1_.contains("PARKERCRAFT")) {
+               	p_175065_1_ = p_175065_1_.replace("PARKERCRAFT", "NobusWare.rip"); 
+                continue;
+            }
+            if (p_175065_1_.contains("§6§nmc.parkercraft.it")) {
+               	p_175065_1_ = p_175065_1_.replace("§6§nmc.parkercraft.it", "nobusware.rip"); 
+                continue;
+            }
             if (p_175065_1_.contains(name))
             	p_175065_1_ = p_175065_1_.replace(name, name); 
           } 

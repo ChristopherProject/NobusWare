@@ -5,6 +5,7 @@ import java.io.FileWriter;
 
 import org.lwjgl.opengl.Display;
 
+import it.nobusware.client.config.ConfigManager;
 import it.nobusware.client.discord.DiscordAgent;
 import it.nobusware.client.manager.CManager;
 import it.nobusware.client.manager.ModuleManager;
@@ -30,6 +31,7 @@ public class NobusWare {
 	private ModuleManager modManager;
 	private FontManager fontManager;
 	private CManager commandManager;
+	private ConfigManager configManager;
 	private NewAllInOneAltManager accountManager;
 	private ServerOnline server;
 	private static DiscordAgent discord = new DiscordAgent();
@@ -53,6 +55,8 @@ public class NobusWare {
 	    FileUtils.createFile("keybinds");
 	    FileUtils.createFile("toggledmods");
 	    FileUtils.createFileAI("username");
+	    this.configManager = new ConfigManager(new File(nobitaDir, "configs"));
+	    this.configManager.load();
 		File file_1 = new File(Minecraft.getMinecraft().mcDataDir + File.separator + "NobusWare" + File.separator + "NobusWareAI" + File.separator + "username.txt");
 		if (file_1.exists()) {
 			System.out.println("Alias File [Size] -> " + file_1.length());
@@ -88,6 +92,10 @@ public class NobusWare {
 	
 	public DiscordAgent getDiscord() {
 		return discord;
+	}
+	
+	public ConfigManager getConfigManager() {
+		return configManager;
 	}
 
 	public GuiNobita getNobiGui() {

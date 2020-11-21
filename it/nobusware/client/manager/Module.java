@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import QuarantineAPI.EventAPI;
+import it.nobusware.client.utils.value.Value;
 import net.minecraft.client.Minecraft;
 
 public class Module {
@@ -116,6 +120,32 @@ public class Module {
 		}
 		return null;
 	}
+	
+	  public void save(JsonObject directory, boolean key) {
+		    if (key)
+		      directory.addProperty("key", Integer.valueOf(getTasto())); 
+		    directory.addProperty("enabled", Boolean.valueOf(isAbilitato()));
+		    this.values.forEach(val -> directory.addProperty(val.getLabel(), val.getValue().toString()));
+		  }
+		  
+		  public void load(JsonObject directory) {
+		    directory.entrySet().forEach(data -> {
+		          switch ((String)data.getKey()) {
+		            case "name":
+		              return;
+		            case "key":
+		              setTasto(((JsonElement)data.getValue()).getAsInt());
+		              return;
+		            case "enabled":
+		              if ((!isAbilitato() || !((JsonElement)data.getValue()).getAsBoolean()) && (isAbilitato() || ((JsonElement)data.getValue()).getAsBoolean()))
+		                setAbilitato(((JsonElement)data.getValue()).getAsBoolean()); 
+		              return;
+		          } 
+		          Value val = find((String)data.getKey());
+		          if (val != null)
+		            val.setValue(((JsonElement)data.getValue()).getAsString()); 
+		        });
+		  }
 
 	public List<it.nobusware.client.utils.value.Value> getValues() {
 		return values;
