@@ -23,7 +23,7 @@ public class AntiVPN extends Module{
 			p1.setIp("127.0.0.1");
 			p1.setPort(25565);
 			p1.setProtocolVersion(47);
-			Single.sendPacketSilent(p1);
+			mc.thePlayer.sendQueue.noEventPacket(p1);
 			e.cancel();
 		}
 	}
@@ -38,7 +38,7 @@ public class AntiVPN extends Module{
 			p2.setIp("127.0.0.1");
 			p2.setPort(25565);
 			p2.setProtocolVersion(47);
-			Single.sendPacketSilent(p2);
+			mc.thePlayer.sendQueue.noEventPacket(p2);
 			e.cancel();
 		}
 	}

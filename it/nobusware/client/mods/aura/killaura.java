@@ -7,6 +7,7 @@ import it.nobusware.client.events.EventUpdate;
 import it.nobusware.client.manager.Module;
 import it.nobusware.client.mods.aura.modes.Multi;
 import it.nobusware.client.mods.aura.modes.Single;
+import it.nobusware.client.mods.aura.modes.Switch;
 import it.nobusware.client.utils.value.Value;
 import it.nobusware.client.utils.value.impl.EnumValue;
 import it.nobusware.client.utils.value.impl.NumberValue;
@@ -18,7 +19,7 @@ import net.minecraft.util.EnumFacing;
 
 public class killaura extends Module {
 	
-	private EnumValue<Mode> mode = new EnumValue("Mode", Mode.SINGLE);
+	private EnumValue<Mode> mode = new EnumValue("Mode", Mode.SWITCH);
 	private NumberValue<Double> range = new NumberValue("Range", Double.valueOf(4.9D), Double.valueOf(1.0F), Double.valueOf(7.0F), Double.valueOf(0.1F));
 	private NumberValue<Double> cps = new NumberValue("CPS", Double.valueOf(13.0D), Double.valueOf(1.0F), Double.valueOf(17.0F), Double.valueOf(0.1F));
 
@@ -40,6 +41,9 @@ public class killaura extends Module {
 			} else if (this.mode.getValue() == Mode.MULTI) {
 				Single.autoblfake = false;
 				Multi.doUpdate(this, event, mc);
+			}else if (this.mode.getValue() == Mode.SWITCH) {
+				Single.autoblfake = false;
+				Switch.doUpdate(this, event, mc);
 			}
 		}
 	};
@@ -54,8 +58,16 @@ public class killaura extends Module {
 		}
 	}
 	
+	public NumberValue<Double> getRange() {
+		return range;
+	}
+
+	public NumberValue<Double> getCps() {
+		return cps;
+	}
+
 	private enum Mode {
-		SINGLE, MULTI;
+		SINGLE, MULTI, SWITCH;
 	}
 	
     public static void sendPacketSilent(Packet packet) {

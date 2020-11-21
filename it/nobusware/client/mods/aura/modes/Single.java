@@ -15,11 +15,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.Packet;
 import net.minecraft.world.World;
 
-public class Single extends Module {
+public class Single {
 
-	public Single(String nome_mod, int tasto, String nome_array_printed, Category categoria) {
-		super(nome_mod, tasto, nome_array_printed, categoria);
-	}
 
 	private static Timer timer = new Timer();
 	public static Entity entity;
@@ -59,14 +56,6 @@ public class Single extends Module {
 				}
 			}
 	}
-	
-    public static void sendPacketSilent(Packet packet) {
-        mc.getNetHandler().getNetworkManager().sendPacket(packet);
-    }
-    
-    public static void sendPacket(Packet packet) {
-        mc.thePlayer.sendQueue.addToSendQueue(packet);
-    }
 }
 //boolean autoBlock = false;//killaura.isBlocking;
 //4.0 + range (2.2 or other one like verus) 3.2

@@ -2765,4 +2765,12 @@ public abstract class Entity implements ICommandSender
 
         EnchantmentHelper.func_151385_b(p_174815_1_, p_174815_2_);
     }
+
+    public final Vec3 getRotationVec(final float p_174806_1_, final float p_174806_2_) {
+        final float var3 = MathHelper.cos(-p_174806_2_ * 0.017453292f - 3.1415927f);
+        final float var4 = MathHelper.sin(-p_174806_2_ * 0.017453292f - 3.1415927f);
+        final float var5 = -MathHelper.cos(-p_174806_1_ * 0.017453292f);
+        final float var6 = MathHelper.sin(-p_174806_1_ * 0.017453292f);
+        return new Vec3(var4 * var5, var6, var3 * var5);
+    }
 }
