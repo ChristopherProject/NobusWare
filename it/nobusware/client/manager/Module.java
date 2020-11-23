@@ -83,13 +83,11 @@ public class Module {
 	public void toggle() {
 		this.abilitato = !this.abilitato;
 		if (this.abilitato) {
-			if (this.mc.thePlayer != null)
-				Abilitato();
+			Abilitato();
 			EventAPI.put(this);
 		} else {
 			EventAPI.remove(this);
-			if (this.mc.thePlayer != null)
-				Disabilitato();
+			Disabilitato();
 		}
 	}
 

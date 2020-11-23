@@ -21,21 +21,21 @@ import net.minecraft.util.Vec3;
 public class Switch {
 
 	private static Timer timer = new Timer();
-	public static Entity entity;
 
 	public static void doUpdate(final killaura killaura, final EventUpdate e, final Minecraft mc) {
-		EntityLivingBase entity = (EntityLivingBase) CombatUtil.getTarget(false, true, killaura.getRange().getValue(), false);
+	Entity entity = CombatUtil.getTarget(false, true, killaura.getRange().getValue(), false);
 		if (killaura.isAbilitato() && Minecraft.getMinecraft().theWorld != null && entity != null) {
 			if (!(entity instanceof EntityPlayerSP)) {
 				float[] rots = RotationUtils.getRotations((EntityLivingBase) entity);
-				if (mc.thePlayer.ticksExisted % 33 == 0) {
+				if (e.isPre() && mc.thePlayer.ticksExisted % 166 == 0) {
 					e.setYaw(rots[0]);
 					e.setPitch(rots[1]);
 					mc.thePlayer.rotationYawHead = rots[0];
 					mc.thePlayer.rotationPitchHead = rots[1];
 					mc.thePlayer.renderYawOffset = rots[0];
 				}
-				if (timer.delay((float) (1000L / (killaura.getCps().getValue()))) && e.isPre()) {
+				if (timer.delay((float) (1000L / (killaura.getCps().getValue())))) {
+					//mc.thePlayer.setItemInUse(mc.thePlayer.getItemInUse(), 1);
 					mc.thePlayer.swingItem();
 					if ((getMouseOver(RotationUtils1.serveryaw, RotationUtils1.serverpitch, entity) != null)) {
 						 mc.playerController.attackEntity(mc.thePlayer,getMouseOver( RotationUtils1.serveryaw ,  RotationUtils1.serverpitch, entity ));
@@ -48,10 +48,6 @@ public class Switch {
 		}
 	}
 	
-	/*
-	 * 					
-	 */
-
 	public static Entity getMouseOver(final float yaw, final float pitch, final Entity target) {
 		Entity pointedEntity = null;
 		final float p_78473_1_ = 1.0f;

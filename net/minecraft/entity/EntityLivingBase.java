@@ -140,7 +140,7 @@ public abstract class EntityLivingBase extends Entity
     protected float lastDamage;
 
     /** used to check whether entity is jumping. */
-    protected boolean isJumping;
+    public boolean isJumping;
     public float moveStrafing;
     public float moveForward;
     protected float randomYawVelocity;

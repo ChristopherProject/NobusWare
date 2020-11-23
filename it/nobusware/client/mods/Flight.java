@@ -5,16 +5,20 @@ import java.util.function.Consumer;
 
 import QuarantineAPI.config.annotation.Handler;
 import it.nobusware.client.events.CollisionEvent;
+import it.nobusware.client.events.EventNettyPackets;
 import it.nobusware.client.events.EventUpdate;
 import it.nobusware.client.events.MoveEvent;
 import it.nobusware.client.manager.Module;
+import it.nobusware.client.utils.ChatUtils;
 import it.nobusware.client.utils.MoveUtils;
 import it.nobusware.client.utils.Timer;
 import it.nobusware.client.utils.value.Value;
+import it.nobusware.client.utils.value.impl.BooleanValue;
 import it.nobusware.client.utils.value.impl.EnumValue;
 import it.nobusware.client.utils.value.impl.NumberValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
@@ -32,11 +36,12 @@ public class Flight extends Module {
 	private float timervalue;
 	public static boolean check = false;
 	private EnumValue<Mode> mode = new EnumValue("Mode", Mode.VANILLA);
+	private BooleanValue flag = new BooleanValue("FlagCheck", false);
 	private NumberValue<Float> speed = new NumberValue("Speed", Float.valueOf(1.4F), Float.valueOf(1.0F), Float.valueOf(7.0F), Float.valueOf(0.1F));
 
 	public Flight(String nome_mod, int tasto, String nome_array_printed, Category categoria) {
 		super(nome_mod, tasto, nome_array_printed, categoria);
-		addValues(new Value[] { this.mode, this.speed });
+		addValues(new Value[] { this.mode, this.speed, this.flag });
 	}
 
 	public void Abilitato() {
@@ -171,7 +176,22 @@ public class Flight extends Module {
 				}
 			}
 		}
+		else if(this.isAbilitato() && (this.mode.getValue() == Mode.REDESKY)) {
+			//redesky test
+			mc.thePlayer.capabilities.isFlying = true;
+			mc.timer.timerSpeed = 1.7F;
+		}
 	}
+	
+	@Handler
+	public Consumer<EventNettyPackets> eddie = (event) -> {
+		if(event.getPacket() instanceof S08PacketPlayerPosLook) {
+			if(this.flag.getValue() == true) {
+				ChatUtils.print("Possible Flag/LagBack Fly Disabilitata.");
+				toggle();	
+			}
+		}
+	};
 
 	@Handler
 	public Consumer<CollisionEvent> eventConsumer = (event) -> {
@@ -179,7 +199,8 @@ public class Flight extends Module {
 				&& !mc.thePlayer.isSneaking()) {
 			check = false;
 			event.setBoundingBox(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(event.getX(), event.getY(), event.getZ() + 0.2 * moveSpeed));
-			net.minecraft.util.Timer.timerSpeed = 1.1F;
+			
+	
 			if (this.timer.delay(1700F) && check == true) {
 				MoveUtils.fallPacket();
 				this.timer.reset();
@@ -274,6 +295,6 @@ public class Flight extends Module {
 	}
 
 	private enum Mode {
-		VANILLA, COLLISION, HYPIXEL;
+		VANILLA, COLLISION, HYPIXEL, REDESKY;
 	}
 }

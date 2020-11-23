@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 import org.apache.commons.lang3.RandomUtils;
 
 import QuarantineAPI.config.annotation.Handler;
+import it.nobusware.client.events.EventNettyPackets;
 import it.nobusware.client.events.EventPackets;
 import it.nobusware.client.events.EventUpdate;
 import it.nobusware.client.manager.Module;
@@ -16,6 +17,7 @@ import it.nobusware.client.utils.ChatUtils;
 import it.nobusware.client.utils.Timer;
 import it.nobusware.client.utils.value.Value;
 import it.nobusware.client.utils.value.impl.EnumValue;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C00PacketKeepAlive;
@@ -24,11 +26,14 @@ import net.minecraft.network.play.client.C03PacketPlayer.C04PacketPlayerPosition
 import net.minecraft.network.play.client.C03PacketPlayer.C05PacketPlayerLook;
 import net.minecraft.network.play.client.C03PacketPlayer.C06PacketPlayerPosLook;
 import net.minecraft.network.play.client.C0CPacketInput;
+import net.minecraft.network.play.client.C0DPacketCloseWindow;
 import net.minecraft.network.play.client.C0EPacketClickWindow;
 import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
 import net.minecraft.network.play.client.C13PacketPlayerAbilities;
+import net.minecraft.network.play.client.C15PacketClientSettings;
 import net.minecraft.network.play.client.C18PacketSpectate;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
+import net.minecraft.network.play.server.S2APacketParticles;
 
 public class Disabler extends Module {
 
@@ -45,10 +50,10 @@ public class Disabler extends Module {
 
 	@Handler
 	public Consumer<EventUpdate> update = (event) -> {
-		 if (this.mode.getValue() == Mode.VERUS) {
-			 
-			if (timer.delay(900L)) {
-				if (!packetQueue.isEmpty()) {
+		 if (this.mode.getValue() == Mode.VERUS_INFINITE || this.mode.getValue() == Mode.VERUS) {
+			 //he flag when i eating i try to fix it but im not sure to fix (for complete work use disabler(verus with killaura trollandia));
+			if ((timer.delay(900L))) {
+				if (!packetQueue.isEmpty() && !doHittingProcess()) {
 					mc.thePlayer.sendQueue.noEventPacket(packetQueue.poll());
 				}
 				timer.reset();
@@ -67,6 +72,17 @@ public class Disabler extends Module {
 			}
 		}
 	};
+	
+	@Handler
+	public Consumer<EventNettyPackets> eventConsumer0 = (event) -> {
+		if (event.getPacket() instanceof S2APacketParticles) {
+			event.cancel();
+		}
+		if (event.getPacket() instanceof S08PacketPlayerPosLook) {
+			S08PacketPlayerPosLook playerPosLook = (S08PacketPlayerPosLook) event.getPacket();
+			playerPosLook.field_148938_b += 1.0E-4;
+		}
+	};
 
 	@Handler
 	public Consumer<EventPackets> packet = (event) -> {
@@ -82,7 +98,7 @@ public class Disabler extends Module {
 			if (event.getPacket() instanceof C00PacketKeepAlive) {
 				event.cancel();
 			}
-		} else  if (this.mode.getValue() == Mode.VERUS) {
+		} else  if (this.mode.getValue() == Mode.VERUS_INFINITE) {
 			//System.out.println(event.getPacket());
 			if (event.getPacket() instanceof C00PacketKeepAlive) {
 				if (timer1.delay(1400L)) {
@@ -154,7 +170,7 @@ public class Disabler extends Module {
                   pc.setFlySpeed(Float.NaN);
                   mc.thePlayer.sendQueue.noEventPacket(new C13PacketPlayerAbilities(pc));
               }
-              System.out.println(event.getPacket());
+             // System.out.println(event.getPacket());
               if (event.getPacket() instanceof C0FPacketConfirmTransaction) {
                   event.setPacket(new C0FPacketConfirmTransaction(Integer.MIN_VALUE, Short.MAX_VALUE, true));
               }
@@ -178,6 +194,60 @@ public class Disabler extends Module {
 					pc2.clickedItem = null;
 					pc2.mode = 4;
 				}
+			}
+		}else if (this.mode.getValue() == Mode.VERUS) {
+			if (event.getPacket() instanceof C00PacketKeepAlive) {
+				if (timer1.delay(1235L)) {
+					ChatUtils.print("Shake");
+	                C00PacketKeepAlive packetKeepAlive = (C00PacketKeepAlive) event.getPacket();
+	                packetKeepAlive.key -= RandomUtils.nextInt(1308718, 1310768);
+				}
+				if (timer1.delay(1455L)) {
+					ChatUtils.print("Shake 2");
+					mc.thePlayer.sendQueue.addToSendQueue(new C15PacketClientSettings("en_US", 8, EntityPlayer.EnumChatVisibility.FULL, true, 127));
+					mc.thePlayer.sendQueue.noEventPacket(new C0DPacketCloseWindow(0));
+				//	mc.thePlayer.sendQueue.noEventPacket(new C0FPacketConfirmTransaction(65536, (short) 32767, true));	
+				}
+				else if(timer1.delay(1600L)) {
+					timer1.reset();
+				}
+				event.cancel();
+			}else if (event.getPacket() instanceof C03PacketPlayer) {
+				C03PacketPlayer pos = (C03PacketPlayer) event.getPacket();
+				if(mc.thePlayer.ticksExisted % 3 != 0 ) {
+					//jump posistion flag
+					if(!mc.thePlayer.isMovingOnGround() && !mc.thePlayer.isJumping && !mc.getNobita().getModManager().Prendi(NoFall.class).isAbilitato() && timer.delay(1400L)) {
+						mc.thePlayer.sendQueue.noEventPacket(new C18PacketSpectate(mc.thePlayer.getGameProfile().getId()));
+						//Start value must be smaller or equal to end value
+						double max =(mc.thePlayer.posY - 0.992D);
+						pos.y =  +(RandomUtils.nextDouble(10.60508745964098D, 101.41138779393725D));
+						pos.x = RandomUtils.nextFloat(0.8412349224090576F, 0.9530588388442993F);
+						pos.z = -0.43534232F;
+						pos.field_149480_h = true;
+						System.out.println("Sended C04 Pos (C03PacketPlayer.C04PlayerPosition):");
+						System.out.println("Y = " + pos.y);
+						System.out.println("X = " + pos.x);
+						System.out.println("Z = " + pos.z);
+						System.out.println("onGround = " + pos.field_149480_h);
+					}
+					if (doHittingProcess()) {
+						mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput(1.0F, 1.0F, true, true));	
+					}
+					event.cancel();
+				}
+			}
+			else if (event.getPacket() instanceof C0FPacketConfirmTransaction) {
+				if (!doHittingProcess() ||  !mc.thePlayer.isJumping )
+				packetQueue.add(event.getPacket());
+				event.cancel();
+			}
+			if (mc.thePlayer != null && mc.thePlayer.ticksExisted <= 7) {
+				timer.reset();
+				packetQueue.clear();
+			}
+			else if (event.getPacket() instanceof C05PacketPlayerLook
+					|| event.getPacket() instanceof S08PacketPlayerPosLook) {
+				event.cancel();
 			}
 		}
 	};
@@ -204,7 +274,7 @@ public class Disabler extends Module {
 	}
 
 	private enum Mode {
-		VERUS, GHOSTLY, HYPIXEL;
+		VERUS, GHOSTLY, HYPIXEL, VERUS_INFINITE;
 	}
 
 	@Override

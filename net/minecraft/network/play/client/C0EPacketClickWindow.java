@@ -30,6 +30,12 @@ public class C0EPacketClickWindow implements Packet
 
     public C0EPacketClickWindow() {}
 
+    
+    public C0EPacketClickWindow(int p_i45246_1_)
+    {
+        this.windowId = p_i45246_1_;
+    }
+    
     public C0EPacketClickWindow(int p_i45246_1_, int p_i45246_2_, int p_i45246_3_, int p_i45246_4_, ItemStack p_i45246_5_, short p_i45246_6_)
     {
         this.windowId = p_i45246_1_;

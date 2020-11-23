@@ -41,6 +41,7 @@ import it.nobusware.client.mods.SkinSpammer;
 import it.nobusware.client.mods.Speed;
 import it.nobusware.client.mods.Step;
 import it.nobusware.client.mods.StupidFlood;
+import it.nobusware.client.mods.TrollandiaKillaura;
 import it.nobusware.client.mods.Velocity;
 import it.nobusware.client.mods.VerusFloat;
 import it.nobusware.client.mods.aura.killaura;
@@ -106,6 +107,7 @@ public class ModuleManager {
 		Aggiungi(new NameProtect("NameProtect", 0, "NameProtect", Category.Giocatore));
 		Aggiungi(new VerusFloat("VerusFloat", 0, "VerusFloat", Category.Giocatore));
 		Aggiungi(new FullBright("FullBright", 0, "FullBright", Category.Rendering));
+		Aggiungi(new TrollandiaKillaura("TrollKillaura", 0, "TrollKillaura", Category.Combatti));
 		Aggiungi(new Disabler("Disabler", 0, "Disabler", Category.Exploits));
 		Aggiungi(new Hud("Hud", 0, "", Category.Rendering));
 		System.out.println("Loaded " + this.getHackDelClient().size() + " Modules.");
