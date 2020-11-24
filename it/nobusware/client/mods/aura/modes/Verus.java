@@ -85,24 +85,27 @@ public class Verus {
 	public static boolean chance(int percent) {
 		return RANDOM_NUMBER_GENERATOR.nextInt(100) <= percent;
 	}
-
+//StillMe_
 	public static void doPackets(final killaura killaura, final EventPackets e, final Minecraft mc) {
-		if (e.getPacket() instanceof S2DPacketOpenWindow) {
-			e.cancel();
+		if(killaura.isAbilitato()) {
+			if (e.getPacket() instanceof S2DPacketOpenWindow) {
+				e.cancel();
+			}
+			if (e.getPacket() instanceof C05PacketPlayerLook || e.getPacket() instanceof S08PacketPlayerPosLook) {
+				e.cancel();
+			}
+			if (e.getPacket() instanceof C07PacketPlayerDigging) {
+				e.cancel();
+			}
+			if (e.getPacket() instanceof S00PacketKeepAlive) {
+				S00PacketKeepAlive packet = new S00PacketKeepAlive();
+				packet.get(RandomUtils.nextInt(1, 128));
+				e.cancel();
+			}
+			if (e.getPacket() instanceof C0EPacketClickWindow) {
+				e.cancel();
+			}	
 		}
-		if (e.getPacket() instanceof C05PacketPlayerLook || e.getPacket() instanceof S08PacketPlayerPosLook) {
-			e.cancel();
-		}
-		if (e.getPacket() instanceof C07PacketPlayerDigging) {
-			e.cancel();
-		}
-		if (e.getPacket() instanceof S00PacketKeepAlive) {
-			S00PacketKeepAlive packet = new S00PacketKeepAlive();
-			packet.get(RandomUtils.nextInt(1, 128));
-			e.cancel();
-		}
-		if (e.getPacket() instanceof C0EPacketClickWindow) {
-			e.cancel();
-		}
+		
 	}
 }

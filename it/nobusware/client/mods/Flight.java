@@ -3,6 +3,7 @@ package it.nobusware.client.mods;
 import java.util.Random;
 import java.util.function.Consumer;
 
+import QuarantineAPI.EventAPI;
 import QuarantineAPI.config.annotation.Handler;
 import it.nobusware.client.events.CollisionEvent;
 import it.nobusware.client.events.EventNettyPackets;
@@ -28,6 +29,7 @@ public class Flight extends Module {
 
 	public static Timer timer = new Timer();
 	int level = 1;
+	private boolean diocane = false;
 	double moveSpeed, lastDist;
 	private boolean b2;
 	public int stage;
@@ -125,6 +127,14 @@ public class Flight extends Module {
 		}
 
 	}
+	
+	 @Handler
+	 public void update(EventUpdate e) {
+		 if(this.isAbilitato() && diocane) {
+			 ChatUtils.print("§cStai Flaggando Flag");
+			 this.Disabilitato();
+		 }
+	 }
 
 	@Handler
 	public void onMove(MoveEvent e) {
@@ -186,9 +196,11 @@ public class Flight extends Module {
 	@Handler
 	public Consumer<EventNettyPackets> eddie = (event) -> {
 		if(event.getPacket() instanceof S08PacketPlayerPosLook) {
-			if(this.flag.getValue() == true) {
-				ChatUtils.print("Possible Flag/LagBack Fly Disabilitata.");
-				toggle();	
+			if(this.flag.getValue().booleanValue() == true) {
+				ChatUtils.print("Possible Flag/LagBack Fly Disabilitala.");
+				diocane = true;
+			}else {
+				diocane = false;
 			}
 		}
 	};
@@ -210,6 +222,9 @@ public class Flight extends Module {
 
 	@Override
 	public void Disabilitato() {
+		if(diocane) {
+			diocane = false; 
+		}
 		if (!mc.thePlayer.capabilities.isCreativeMode) {
 			mc.thePlayer.capabilities.allowFlying = false;
 			mc.thePlayer.capabilities.isFlying = false;

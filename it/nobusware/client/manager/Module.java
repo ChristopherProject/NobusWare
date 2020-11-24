@@ -86,8 +86,8 @@ public class Module {
 			Abilitato();
 			EventAPI.put(this);
 		} else {
-			EventAPI.remove(this);
 			Disabilitato();
+			EventAPI.remove(this);
 		}
 	}
 
