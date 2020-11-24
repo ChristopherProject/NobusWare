@@ -6,6 +6,7 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 
 import it.nobusware.client.manager.Module.Category;
+import it.nobusware.client.mods.Ambiance;
 import it.nobusware.client.mods.AntiBot;
 import it.nobusware.client.mods.AntiCactus;
 import it.nobusware.client.mods.AntiVPN;
@@ -17,6 +18,8 @@ import it.nobusware.client.mods.BPacketReader;
 import it.nobusware.client.mods.BanExploit;
 import it.nobusware.client.mods.CazzoDuro;
 import it.nobusware.client.mods.Chams;
+import it.nobusware.client.mods.ChestESP;
+import it.nobusware.client.mods.ChestSteal;
 import it.nobusware.client.mods.Criticals;
 import it.nobusware.client.mods.Disabler;
 import it.nobusware.client.mods.DragChat;
@@ -34,13 +37,18 @@ import it.nobusware.client.mods.IstantUse;
 import it.nobusware.client.mods.NameProtect;
 import it.nobusware.client.mods.NameTags;
 import it.nobusware.client.mods.NoFall;
+import it.nobusware.client.mods.NoSlowDown;
 import it.nobusware.client.mods.PacketSniffer;
+import it.nobusware.client.mods.ParticleMod;
 import it.nobusware.client.mods.Phase;
+import it.nobusware.client.mods.PingSpoof;
 import it.nobusware.client.mods.Rotate;
+import it.nobusware.client.mods.Scaffold;
 import it.nobusware.client.mods.SkinSpammer;
 import it.nobusware.client.mods.Speed;
 import it.nobusware.client.mods.Step;
 import it.nobusware.client.mods.StupidFlood;
+import it.nobusware.client.mods.Teleport;
 import it.nobusware.client.mods.Velocity;
 import it.nobusware.client.mods.VerusFloat;
 import it.nobusware.client.mods.aura.killaura;
@@ -57,7 +65,7 @@ import it.nobusware.client.mods.crashers.CrasherZ;
 import it.nobusware.client.render.clickgui.ClickGUI;
 
 public class ModuleManager {
-	
+	//devo aggiungere i cosmetics ci sto ancora lavorando
 	public static final ArrayList <Module> Hack_Del_Client = new ArrayList();
 
 	public ModuleManager() {
@@ -108,6 +116,14 @@ public class ModuleManager {
 		Aggiungi(new VerusFloat("VerusFloat", 0, "VerusFloat", Category.Giocatore));
 		Aggiungi(new FullBright("FullBright", 0, "FullBright", Category.Rendering));
 		Aggiungi(new Disabler("Disabler", 0, "Disabler", Category.Exploits));
+		Aggiungi(new Scaffold("Scaffold", 0, "Scaffold", Category.Giocatore));
+		Aggiungi(new NoSlowDown("NoSlowDown", 0, "NoSlowDown", Category.Giocatore));
+		Aggiungi(new PingSpoof("PingSpoof", 0, "PingSpoof", Category.Exploits));
+		Aggiungi(new Teleport("Teleport", 0, "Teleport", Category.Giocatore));
+		Aggiungi(new ChestSteal("Stealer", 0, "Stealer", Category.Giocatore));
+		Aggiungi(new ParticleMod("Particle", 0, "Particle", Category.Rendering));
+		Aggiungi(new ChestESP("ChestESP", 0, "ChestESP", Category.Rendering));
+		Aggiungi(new Ambiance("Ambiance", 0, "Ambiance", Category.Rendering));
 		Aggiungi(new Hud("Hud", 0, "", Category.Rendering));
 		System.out.println("Loaded " + this.getHackDelClient().size() + " Modules.");
 	}

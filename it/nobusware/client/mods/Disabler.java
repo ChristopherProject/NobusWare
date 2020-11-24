@@ -131,11 +131,11 @@ public class Disabler extends Module {
 					pos.x = RandomUtils.nextFloat(0.8412349224090576F, 0.9530588388442993F);
 					pos.z = -0.43534232F;
 					pos.field_149480_h = true;
-					System.out.println("Sended C04 Pos (C03PacketPlayer.C04PlayerPosition):");
-					System.out.println("Y = " + pos.y);
-					System.out.println("X = " + pos.x);
-					System.out.println("Z = " + pos.z);
-					System.out.println("onGround = " + pos.field_149480_h);
+//					System.out.println("Sended C04 Pos (C03PacketPlayer.C04PlayerPosition):");
+//					System.out.println("Y = " + pos.y);
+//					System.out.println("X = " + pos.x);
+//					System.out.println("Z = " + pos.z);
+//					System.out.println("onGround = " + pos.field_149480_h);
 					event.cancel();
 				}
 				if (doHittingProcess())
@@ -226,11 +226,11 @@ public class Disabler extends Module {
 						pos.x = RandomUtils.nextFloat(0.8412349224090576F, 0.9530588388442993F);
 						pos.z = -0.43534232F;
 						pos.field_149480_h = true;
-						System.out.println("Sended C04 Pos (C03PacketPlayer.C04PlayerPosition):");
-						System.out.println("Y = " + pos.y);
-						System.out.println("X = " + pos.x);
-						System.out.println("Z = " + pos.z);
-						System.out.println("onGround = " + pos.field_149480_h);
+//						System.out.println("Sended C04 Pos (C03PacketPlayer.C04PlayerPosition):");
+//						System.out.println("Y = " + pos.y);
+//						System.out.println("X = " + pos.x);
+//						System.out.println("Z = " + pos.z);
+//						System.out.println("onGround = " + pos.field_149480_h);
 					}
 					if (doHittingProcess()) {
 						mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput(1.0F, 1.0F, true, true));	

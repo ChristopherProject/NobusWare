@@ -46,8 +46,13 @@ public class C00PacketKeepAlive implements Packet
     {
         return this.key;
     }
+    
 
-    /**
+    public void setKey(int key) {
+		this.key = key;
+	}
+
+	/**
      * Passes this Packet on to the NetHandler for processing.
      */
     public void processPacket(INetHandler handler)

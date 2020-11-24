@@ -122,7 +122,7 @@ public class RenderManager {
 	/** Rendermanager's variable for the player */
 	public Entity livingPlayer;
 	public Entity field_147941_i;
-	public float playerViewY;
+	public static float playerViewY;
 	public float playerViewX;
 
 	/** Reference to the GameSettings object. */
