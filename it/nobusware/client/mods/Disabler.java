@@ -1,5 +1,6 @@
 package it.nobusware.client.mods;
 
+import java.util.ArrayList;
 import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -52,7 +53,8 @@ public class Disabler extends Module {
 	public Consumer<EventUpdate> update = (event) -> {
 		 if (this.mode.getValue() == Mode.VERUS_INFINITE || this.mode.getValue() == Mode.VERUS) {
 			 //he flag when i eating i try to fix it but im not sure to fix (for complete work use disabler(verus with killaura trollandia));
-			if ((timer.delay(900L))) {
+			 //fixed with new lock method. (fix and we have full disabler)
+			if ((timer.delay(900L)) && (mc.thePlayer.isMoving() || this.lock())) {
 				if (!packetQueue.isEmpty() && !doHittingProcess()) {
 					mc.thePlayer.sendQueue.noEventPacket(packetQueue.poll());
 				}
@@ -214,7 +216,7 @@ public class Disabler extends Module {
 				event.cancel();
 			}else if (event.getPacket() instanceof C03PacketPlayer) {
 				C03PacketPlayer pos = (C03PacketPlayer) event.getPacket();
-				if(mc.thePlayer.ticksExisted % 3 != 0 ) {
+				if(mc.thePlayer.ticksExisted % 3 != 0 && (mc.thePlayer.isMoving() || lock())) {
 					//jump posistion flag
 					if(!mc.thePlayer.isMovingOnGround() && !mc.thePlayer.isJumping && !mc.getNobita().getModManager().Prendi(NoFall.class).isAbilitato() && timer.delay(1400L)) {
 						mc.thePlayer.sendQueue.noEventPacket(new C18PacketSpectate(mc.thePlayer.getGameProfile().getId()));
@@ -251,6 +253,11 @@ public class Disabler extends Module {
 			}
 		}
 	};
+	
+	public boolean lock() {
+		return !(!mc.gameSettings.keyBindForward.pressed && !mc.gameSettings.keyBindBack.pressed
+				&& !mc.gameSettings.keyBindLeft.pressed && !mc.gameSettings.keyBindRight.pressed);
+	}
 	
 	public static int GeneraNumeroRandomico(float min, float max) {
 		Random rand = new Random();
