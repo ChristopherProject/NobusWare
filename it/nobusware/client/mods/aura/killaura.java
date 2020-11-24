@@ -3,11 +3,13 @@ package it.nobusware.client.mods.aura;
 import java.util.function.Consumer;
 
 import QuarantineAPI.config.annotation.Handler;
+import it.nobusware.client.events.EventPackets;
 import it.nobusware.client.events.EventUpdate;
 import it.nobusware.client.manager.Module;
 import it.nobusware.client.mods.aura.modes.Multi;
 import it.nobusware.client.mods.aura.modes.Single;
 import it.nobusware.client.mods.aura.modes.Switch;
+import it.nobusware.client.mods.aura.modes.Verus;
 import it.nobusware.client.utils.value.Value;
 import it.nobusware.client.utils.value.impl.EnumValue;
 import it.nobusware.client.utils.value.impl.NumberValue;
@@ -19,9 +21,9 @@ import net.minecraft.util.EnumFacing;
 
 public class killaura extends Module {
 	
-	private EnumValue<Mode> mode = new EnumValue("Mode", Mode.SWITCH);
-	private NumberValue<Double> range = new NumberValue("Range", Double.valueOf(4.9D), Double.valueOf(1.0F), Double.valueOf(7.0F), Double.valueOf(0.1F));
-	private NumberValue<Double> cps = new NumberValue("CPS", Double.valueOf(13.0D), Double.valueOf(1.0F), Double.valueOf(17.0F), Double.valueOf(0.1F));
+	private EnumValue<Mode> mode = new EnumValue("Mode", Mode.VERUS);
+	private static NumberValue<Double> range = new NumberValue("Range", Double.valueOf(4.9D), Double.valueOf(1.0F), Double.valueOf(7.0F), Double.valueOf(0.1F));
+	private NumberValue<Double> cps = new NumberValue("CPS", Double.valueOf(17.0D), Double.valueOf(1.0F), Double.valueOf(17.0F), Double.valueOf(0.1F));
 
 	public killaura(String nome_mod, int tasto, String nome_array_printed, Category categoria) {
 		super(nome_mod, tasto, nome_array_printed, categoria);
@@ -44,9 +46,20 @@ public class killaura extends Module {
 			}else if (this.mode.getValue() == Mode.SWITCH) {
 				Single.autoblfake = false;
 				Switch.doUpdate(this, event, mc);
+			}else if (this.mode.getValue() == Mode.VERUS) {
+				Single.autoblfake = false;
+				Verus.doUpdate(this, event, mc);
 			}
 		}
 	};
+	
+	@Handler
+	public Consumer<EventPackets> packet = (event) -> {
+		 if (this.mode.getValue() == Mode.VERUS) {
+			 Verus.doPackets(this, event, mc);
+		 }
+	};
+	
 	
 	@Override
 	public void Disabilitato() {
@@ -58,7 +71,7 @@ public class killaura extends Module {
 		}
 	}
 	
-	public NumberValue<Double> getRange() {
+	public static NumberValue<Double> getRange() {
 		return range;
 	}
 
@@ -67,7 +80,7 @@ public class killaura extends Module {
 	}
 
 	private enum Mode {
-		SINGLE, MULTI, SWITCH;
+		SINGLE, MULTI, SWITCH, VERUS;
 	}
 	
     public static void sendPacketSilent(Packet packet) {
