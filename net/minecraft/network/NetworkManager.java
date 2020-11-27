@@ -1,5 +1,20 @@
 package net.minecraft.network;
 
+import java.net.InetAddress;
+import java.net.SocketAddress;
+import java.util.Queue;
+
+import javax.crypto.SecretKey;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
+
+import com.github.creeper123123321.viafabric.mixin.client.MixinClientConnectionChInit;
+import com.github.creeper123123321.viafabric.platform.VRClientSideUserConnection;
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
@@ -9,25 +24,26 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelException;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.epoll.Epoll;
+import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.epoll.EpollSocketChannel;
 import io.netty.channel.local.LocalChannel;
 import io.netty.channel.local.LocalEventLoopGroup;
 import io.netty.channel.local.LocalServerChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.oio.OioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.GenericFutureListener;
 import it.nobusware.client.events.EventNettyPackets;
-
-import java.net.InetAddress;
-import java.net.SocketAddress;
-import java.util.Queue;
-import javax.crypto.SecretKey;
+import it.nobusware.client.utils.ProxyUtil;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
@@ -38,12 +54,8 @@ import net.minecraft.util.MessageDeserializer;
 import net.minecraft.util.MessageDeserializer2;
 import net.minecraft.util.MessageSerializer;
 import net.minecraft.util.MessageSerializer2;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.Validate;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.Marker;
-import org.apache.logging.log4j.MarkerManager;
+import us.myles.ViaVersion.api.data.UserConnection;
+import us.myles.ViaVersion.api.protocol.ProtocolPipeline;
 
 public class NetworkManager extends SimpleChannelInboundHandler
 {
@@ -75,6 +87,13 @@ public class NetworkManager extends SimpleChannelInboundHandler
             return this.genericLoad();
         }
     };
+    
+    public static final LazyLoadBase<EpollEventLoopGroup> field_181125_e = new LazyLoadBase<EpollEventLoopGroup>() {
+        protected EpollEventLoopGroup load() {
+          return new EpollEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Epoll Client IO #%d").setDaemon(true).build());
+        }
+      };
+      
     private final EnumPacketDirection direction;
 
     /** The queue for packets that require transmission */
@@ -192,6 +211,8 @@ public class NetworkManager extends SimpleChannelInboundHandler
         }
     }
 
+    
+    
     /**
      * Will commit the packet to the channel. If the current thread 'owns' the channel it will write and flush the
      * packet, otherwise it will add a task for the channel eventloop thread to do that.
@@ -311,37 +332,70 @@ public class NetworkManager extends SimpleChannelInboundHandler
      * Prepares a clientside NetworkManager: establishes a connection to the address and port supplied and configures
      * the channel pipeline. Returns the newly created instance.
      */
-    public static NetworkManager provideLanClient(InetAddress p_150726_0_, int p_150726_1_)
-    {
-        final NetworkManager var2 = new NetworkManager(EnumPacketDirection.CLIENTBOUND);
-        ((Bootstrap)((Bootstrap)((Bootstrap)(new Bootstrap()).group((EventLoopGroup)CLIENT_NIO_EVENTLOOP.getValue())).handler(new ChannelInitializer()
-        {
-            private static final String __OBFID = "CL_00002312";
-            protected void initChannel(Channel p_initChannel_1_)
-            {
-                try
-                {
-                    p_initChannel_1_.config().setOption(ChannelOption.IP_TOS, Integer.valueOf(24));
-                }
-                catch (ChannelException var4)
-                {
-                    ;
-                }
-
-                try
-                {
-                    p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, Boolean.valueOf(false));
-                }
-                catch (ChannelException var3)
-                {
-                    ;
-                }
-
-                p_initChannel_1_.pipeline().addLast("timeout", new ReadTimeoutHandler(20)).addLast("splitter", new MessageDeserializer2()).addLast("decoder", new MessageDeserializer(EnumPacketDirection.CLIENTBOUND)).addLast("prepender", new MessageSerializer2()).addLast("encoder", new MessageSerializer(EnumPacketDirection.SERVERBOUND)).addLast("packet_handler", var2);
-            }
-        })).channel(NioSocketChannel.class)).connect(p_150726_0_, p_150726_1_).syncUninterruptibly();
-        return var2;
-    }
+//    	public static NetworkManager provideLanClient(InetAddress p_181124_0_, int p_181124_1_, boolean p_181124_2_) {	
+//          	Class<NioSocketChannel> clazz = NioSocketChannel.class;
+//            LazyLoadBase<NioEventLoopGroup> lazyLoadBase = CLIENT_NIO_EVENTLOOP;
+//            final NetworkManager networkmanager1 = new NetworkManager(EnumPacketDirection.CLIENTBOUND);
+//        if (Epoll.isAvailable() && p_181124_2_) {
+//			Class<EpollSocketChannel> clazz1 = EpollSocketChannel.class;
+//			LazyLoadBase<EpollEventLoopGroup> lazyLoadBase1 = field_181125_e;
+//		} else {
+//			clazz = NioSocketChannel.class;
+//			lazyLoadBase = CLIENT_NIO_EVENTLOOP;
+//		}
+//		Bootstrap bootstrap = new Bootstrap();
+//		if (ProxyUtil.getProxy() == null) {
+//			bootstrap.group((EventLoopGroup) lazyLoadBase.getValue());
+//			bootstrap.channel(clazz);
+//		} else {
+//			bootstrap.group((EventLoopGroup) new OioEventLoopGroup());
+//			bootstrap.channelFactory(ProxyUtil.createProxyChannel());
+//		}
+//		((Bootstrap) bootstrap.handler((ChannelHandler) new ChannelInitializer<Channel>() {
+//			protected void initChannel(Channel p_initChannel_1_) throws Exception {
+//				try {
+//					p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, Boolean.valueOf(true));
+//				} catch (ChannelException channelException) {
+//				}
+//				VRClientSideUserConnection user = new VRClientSideUserConnection(p_initChannel_1_);
+//				new ProtocolPipeline((UserConnection) user);
+//				p_initChannel_1_.pipeline().addLast("timeout", (ChannelHandler) new ReadTimeoutHandler(30))
+//						.addLast("splitter", (ChannelHandler) new MessageDeserializer2())
+//						.addLast("decoder", (ChannelHandler) new MessageDeserializer(EnumPacketDirection.CLIENTBOUND))
+//						.addLast("prepender", (ChannelHandler) new MessageSerializer2())
+//						.addLast("encoder", (ChannelHandler) new MessageSerializer(EnumPacketDirection.SERVERBOUND))
+//						.addLast("packet_handler", (ChannelHandler) networkmanager1);
+//				MixinClientConnectionChInit.onInitChannel(p_initChannel_1_);
+//			}
+//		})).connect(p_181124_0_, p_181124_1_).syncUninterruptibly();
+//		return networkmanager1;
+//    	}
+//    	
+    	 public static NetworkManager provideLanClient(InetAddress p_150726_0_, int p_150726_1_, boolean nosense)
+    	    {
+    	        final NetworkManager var2 = new NetworkManager(EnumPacketDirection.CLIENTBOUND);
+    	        ((Bootstrap)((Bootstrap)((Bootstrap)(new Bootstrap()).group((EventLoopGroup)CLIENT_NIO_EVENTLOOP.getValue())).handler(new ChannelInitializer()
+    	        {
+    	            private static final String __OBFID = "CL_00002312";
+    				protected void initChannel(Channel p_initChannel_1_) throws Exception {
+    					try {
+    						p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, Boolean.valueOf(true));
+    					} catch (ChannelException channelException) {
+    					}
+    					VRClientSideUserConnection user = new VRClientSideUserConnection(p_initChannel_1_);
+    					new ProtocolPipeline((UserConnection) user);
+    					p_initChannel_1_.pipeline().addLast("timeout", (ChannelHandler) new ReadTimeoutHandler(30))
+    							.addLast("splitter", (ChannelHandler) new MessageDeserializer2())
+    							.addLast("decoder", (ChannelHandler) new MessageDeserializer(EnumPacketDirection.CLIENTBOUND))
+    							.addLast("prepender", (ChannelHandler) new MessageSerializer2())
+    							.addLast("encoder", (ChannelHandler) new MessageSerializer(EnumPacketDirection.SERVERBOUND))
+    							.addLast("packet_handler", (ChannelHandler) var2);
+    					MixinClientConnectionChInit.onInitChannel(p_initChannel_1_);
+    				}
+    	        })).channel(NioSocketChannel.class)).connect(p_150726_0_, p_150726_1_).syncUninterruptibly();
+    	        return var2;
+    	    }
+  
 
     /**
      * Prepares a clientside NetworkManager: establishes a connection to the socket supplied and configures the channel

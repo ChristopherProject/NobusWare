@@ -2,7 +2,6 @@ package it.nobusware.client.commands;
 
 import java.io.IOException;
 
-import ch.qos.logback.core.net.server.Client;
 import it.nobusware.client.config.Config;
 import it.nobusware.client.manager.Command;
 import it.nobusware.client.utils.ChatUtils;

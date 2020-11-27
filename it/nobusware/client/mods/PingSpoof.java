@@ -17,12 +17,12 @@ public class PingSpoof extends Module{
 	}
 	
 	@Handler
-	private void onUpdate(final EventPackets e) {
-		if(this.isAbilitato() && !mc.isSingleplayer()) {
-			if (e.getPacket() instanceof C00PacketKeepAlive) {
-				C00PacketKeepAlive packet = (C00PacketKeepAlive) e.getPacket();
-				packet.setKey(this.spoof.getValue().intValue());
-
+	public void onUpdate(final EventPackets e) {
+		if(this.isAbilitato()) {
+			if (!mc.isSingleplayer() && e.getPacket() instanceof C00PacketKeepAlive) {
+				C00PacketKeepAlive keeep = (C00PacketKeepAlive)e.getPacket();
+				keeep.setKey(this.spoof.getValue().intValue());
+				e.cancel();
 			}
 		}
 	}

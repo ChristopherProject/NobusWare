@@ -177,12 +177,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
      */
     public void initGui()
     {
-    	if(Minecraft.getMinecraft().getSession().getUsername().equals("Rattlyy") || Minecraft.getMinecraft().getSession().getUsername().equals("Russian412"))
-    	{
-    		GuiMainMenu.isAutorized = true;
-    	}else {
-    		GuiMainMenu.isAutorized = false;
-    	}
     	this.mc.getNobita().getDiscord().update("Nel Menu' Principale", this.mc.getSession().getUsername() + " - Nobita Client");
         this.viewportTexture = new DynamicTexture(256, 256);
         this.field_110351_G = this.mc.getTextureManager().getDynamicTextureLocation("background", this.viewportTexture);
@@ -476,7 +470,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         }
         font.drawString(time, 2.0f, height - 40, -1);
         font.drawString("Name:" + this.mc.session.getUsername(), 2.0f, height - 30, -1);
-		font.drawString(isAutorized ? "Authorized. (Premium)" : "Not Authorized. (Cracked Version)", 2.0f, height - 20, (isAutorized ? -13710223 : -1618884));
+        font.drawString("https://sellfy.com/nobusware/", 2.0f, height - 20,  -13710223);
     }
     
 

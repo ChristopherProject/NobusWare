@@ -2,7 +2,6 @@ package it.nobusware.client.render.clickgui.frame.frames;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ch.qos.logback.core.net.server.Client;
 import it.nobusware.client.manager.Module;
 import it.nobusware.client.render.clickgui.frame.Frame;
 import it.nobusware.client.render.clickgui.frame.component.Component;

@@ -13,6 +13,7 @@ import com.google.common.collect.Lists;
 
 import it.nobusware.client.shader.DrawShader;
 import it.nobusware.client.utils.ImageButton;
+import it.nobusware.client.utils.VerSwitcherButton;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
@@ -99,6 +100,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
         this.buttonList.add(this.btnDeleteServer = (GuiButton)new ImageButton(2, width / 2 + 47 + 20 + 20 - 27, height - 62, 40, 40, I18n.format("selectServer.delete", new Object[0]), "nobita/button/multiplayer/delete.png"));
         this.buttonList.add(new ImageButton(0, width / 2 + 80 + 20 + 20 + 20 - 34, height - 62, 40, 40, I18n.format("gui.cancel", new Object[0]), "nobita/button/multiplayer/exit.png"));
         selectServer(this.serverListSelector.func_148193_k());
+        this.buttonList.add(new VerSwitcherButton(1337, -35, 5));
       }
 
     /**
@@ -178,6 +180,8 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
                 this.selectedServer.copyFrom(var3);
                 this.mc.displayGuiScreen(new GuiScreenAddServer(this, this.selectedServer));
             }
+            else if (button.id == 1337)
+                ((VerSwitcherButton)button).buttonPressed(); 
             else if (button.id == 0)
             {
                 this.mc.displayGuiScreen(this.parentScreen);

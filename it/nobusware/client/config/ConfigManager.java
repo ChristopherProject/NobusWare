@@ -19,7 +19,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import ch.qos.logback.core.net.server.Client;
 import it.nobusware.client.manager.Module;
 import net.minecraft.client.Minecraft;
 

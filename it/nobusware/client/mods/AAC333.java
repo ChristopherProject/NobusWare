@@ -1,7 +1,6 @@
 package it.nobusware.client.mods;
 
 import QuarantineAPI.config.annotation.Handler;
-import ch.qos.logback.core.net.server.Client;
 import it.nobusware.client.events.EventUpdate;
 import it.nobusware.client.manager.Module;
 import net.minecraft.util.MathHelper;

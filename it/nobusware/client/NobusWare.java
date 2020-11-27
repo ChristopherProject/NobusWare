@@ -5,6 +5,8 @@ import java.io.FileWriter;
 
 import org.lwjgl.opengl.Display;
 
+import com.github.creeper123123321.viafabric.ViaFabric;
+
 import it.nobusware.client.config.ConfigManager;
 import it.nobusware.client.discord.DiscordAgent;
 import it.nobusware.client.manager.CManager;
@@ -39,8 +41,15 @@ public class NobusWare {
 	public static String primColor = "§a";
 	public static String secColor = "§f";
 
-	public void Avvio() {
+	public void pre() {
 		System.out.println("Avvio NobusWare Client");
+		System.out.println("Try To Inizialize Fabric..");
+        final ViaFabric viaFabric = new ViaFabric();
+        viaFabric.onInitialize();
+        System.out.println("Fabric Loaded");
+	}
+	
+	public void Avvio() {
 		Display.setTitle("NobusWare Client 1.8.x");
 		this.nobiGui = new GuiNobita(Minecraft.getMinecraft());
 		this.modManager = new ModuleManager();
