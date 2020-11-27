@@ -14,14 +14,15 @@ import com.github.creeper123123321.viafabric.platform.VRClientSideUserConnection
 
 import io.netty.channel.Channel;
 import io.netty.channel.socket.SocketChannel;
+import net.minecraft.client.network.OldServerPinger;
 import us.myles.ViaVersion.api.protocol.ProtocolPipeline;
 
-@Mixin(targets = "net.minecraft.server.ServerNetworkIo$1")
+@Mixin(OldServerPinger.class)
 public class MixinClientConnectionChInit {
     @Inject(method = "initChannel", at = @At(value = "TAIL"), remap = false)
     public static void onInitChannel(final Channel channel) {
         if (channel instanceof SocketChannel) {
-        	System.out.println("MixinClientConnectionChInit Loaded");
+        	//System.out.println("MixinClientConnectionChInit Loaded");
             final VRClientSideUserConnection vRClientSideUserConnection = new VRClientSideUserConnection(channel);
             new ProtocolPipeline(vRClientSideUserConnection);
             channel.pipeline().addBefore("encoder", "via-encoder", new VREncodeHandler(vRClientSideUserConnection));

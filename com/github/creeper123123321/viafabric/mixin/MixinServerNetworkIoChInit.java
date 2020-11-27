@@ -4,16 +4,22 @@
 
 package com.github.creeper123123321.viafabric.mixin;
 
-import com.github.creeper123123321.viafabric.handler.serverside.FabricDecodeHandler;
-import io.netty.channel.ChannelHandler;
-import com.github.creeper123123321.viafabric.handler.serverside.FabricEncodeHandler;
-import us.myles.ViaVersion.api.protocol.ProtocolPipeline;
-import us.myles.ViaVersion.api.data.UserConnection;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.Channel;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 
-public class MixinServerNetworkIoChInit
-{
+import com.github.creeper123123321.viafabric.handler.serverside.FabricDecodeHandler;
+import com.github.creeper123123321.viafabric.handler.serverside.FabricEncodeHandler;
+
+import io.netty.channel.Channel;
+import io.netty.channel.socket.SocketChannel;
+import net.minecraft.network.NetworkSystem;
+import us.myles.ViaVersion.api.data.UserConnection;
+import us.myles.ViaVersion.api.protocol.ProtocolPipeline;
+
+@Mixin(NetworkSystem.class)
+public class MixinServerNetworkIoChInit {
+    @Inject(method = "initChannel", at = @At(value = "TAIL"), remap = false)
     private void onInitChannel(final Channel channel) {
         if (channel instanceof SocketChannel) {
             final UserConnection user = new UserConnection(channel);

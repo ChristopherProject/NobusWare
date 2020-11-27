@@ -28,22 +28,19 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollEventLoopGroup;
-import io.netty.channel.epoll.EpollSocketChannel;
 import io.netty.channel.local.LocalChannel;
 import io.netty.channel.local.LocalEventLoopGroup;
 import io.netty.channel.local.LocalServerChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.oio.OioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.GenericFutureListener;
 import it.nobusware.client.events.EventNettyPackets;
-import it.nobusware.client.utils.ProxyUtil;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
@@ -467,40 +464,50 @@ public class NetworkManager extends SimpleChannelInboundHandler
         this.channel.config().setAutoRead(false);
     }
 
-    public void setCompressionTreshold(int treshold)
-    {
-        if (treshold >= 0)
-        {
-            if (this.channel.pipeline().get("decompress") instanceof NettyCompressionDecoder)
-            {
+    public void setCompressionTreshold(final int treshold) {
+        if (treshold >= 0) {
+            if (this.channel.pipeline().get("decompress") instanceof NettyCompressionDecoder) {
                 ((NettyCompressionDecoder)this.channel.pipeline().get("decompress")).setCompressionTreshold(treshold);
             }
-            else
-            {
-                this.channel.pipeline().addBefore("decoder", "decompress", new NettyCompressionDecoder(treshold));
+            else {
+                this.decodeEncodePlacement(this.channel.pipeline(), "decoder", "decompress", new NettyCompressionDecoder(treshold));
             }
-
-            if (this.channel.pipeline().get("compress") instanceof NettyCompressionEncoder)
-            {
+            if (this.channel.pipeline().get("compress") instanceof NettyCompressionEncoder) {
                 ((NettyCompressionEncoder)this.channel.pipeline().get("decompress")).setCompressionTreshold(treshold);
             }
-            else
-            {
-                this.channel.pipeline().addBefore("encoder", "compress", new NettyCompressionEncoder(treshold));
+            else {
+                this.decodeEncodePlacement(this.channel.pipeline(), "encoder", "compress", new NettyCompressionEncoder(treshold));
             }
         }
-        else
-        {
-            if (this.channel.pipeline().get("decompress") instanceof NettyCompressionDecoder)
-            {
+        else {
+            if (this.channel.pipeline().get("decompress") instanceof NettyCompressionDecoder) {
                 this.channel.pipeline().remove("decompress");
             }
-
-            if (this.channel.pipeline().get("compress") instanceof NettyCompressionEncoder)
-            {
+            if (this.channel.pipeline().get("compress") instanceof NettyCompressionEncoder) {
                 this.channel.pipeline().remove("compress");
             }
         }
+    }
+    
+    private ChannelPipeline decodeEncodePlacement(final ChannelPipeline instance, String base, final String newHandler, final ChannelHandler handler) {
+        final String s = base;
+        switch (s) {
+            case "decoder": {
+                if (instance.get("via-decoder") != null) {
+                    base = "via-decoder";
+                    break;
+                }
+                break;
+            }
+            case "encoder": {
+                if (instance.get("via-encoder") != null) {
+                    base = "via-encoder";
+                    break;
+                }
+                break;
+            }
+        }
+        return instance.addBefore(base, newHandler, handler);
     }
 
     public void checkDisconnected()
