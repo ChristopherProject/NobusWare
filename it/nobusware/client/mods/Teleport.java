@@ -1,11 +1,14 @@
 package it.nobusware.client.mods;
 
 import java.awt.Color;
+import java.util.function.Consumer;
 
+import org.apache.commons.lang3.RandomUtils;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import QuarantineAPI.config.annotation.Handler;
+import it.nobusware.client.events.EventPackets;
 import it.nobusware.client.events.EventRenderer3D;
 import it.nobusware.client.events.EventRendererGUI2D;
 import it.nobusware.client.events.EventUpdate;
@@ -19,9 +22,11 @@ import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C00PacketKeepAlive;
 import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C0CPacketInput;
 import net.minecraft.network.play.client.C0DPacketCloseWindow;
 import net.minecraft.network.play.client.C13PacketPlayerAbilities;
 import net.minecraft.network.play.client.C15PacketClientSettings;
+import net.minecraft.network.play.client.C18PacketSpectate;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -37,6 +42,7 @@ public class Teleport extends Module {
 
 	@Handler
 	public void onUpdate(EventUpdate event) {
+		
 		MovingObjectPosition ray = rayTrace(500.0D);
 		if (ray == null)
 			return;
@@ -119,8 +125,12 @@ public class Teleport extends Module {
 	}
 
 	public void setPos(double x, double y, double z) {
-		mc.thePlayer.sendQueue.addToSendQueue(new C15PacketClientSettings("en_US", 8, EntityPlayer.EnumChatVisibility.FULL, true, 127));
+		//mette il player in un veicolo
+		mc.thePlayer.sendQueue.noEventPacket(new C15PacketClientSettings("en_US", 8, EntityPlayer.EnumChatVisibility.FULL, true, 127));
+		mc.thePlayer.sendQueue.noEventPacket(new C18PacketSpectate(mc.thePlayer.getGameProfile().getId()));
+		mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput(1.0F, 2.05F, true, true));
 		mc.thePlayer.sendQueue.noEventPacket(new C0DPacketCloseWindow(0));
+		//tippa il player
 		this.mc.thePlayer.sendQueue.addToSendQueue((Packet) new C03PacketPlayer.C04PacketPlayerPosition(x, y, z, true));
 		this.mc.thePlayer.setPosition(x, y, z);
 	}
