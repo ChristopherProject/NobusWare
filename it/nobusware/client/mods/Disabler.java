@@ -8,6 +8,9 @@ import it.nobusware.client.manager.Module;
 import it.nobusware.client.mods.aura.killaura;
 import it.nobusware.client.utils.Timer;
 import it.nobusware.client.utils.value.impl.EnumValue;
+import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.inventory.GuiChest;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.network.Packet;
@@ -117,17 +120,10 @@ public class Disabler extends Module {
 					pos.x = RandomUtils.nextFloat(0.8412349224090576F, 0.9530588388442993F);
 					pos.z = -0.43534232F;
 					pos.field_149480_h = true;
-//					System.out.println("Sended C04 Pos (C03PacketPlayer.C04PlayerPosition):");
-//					System.out.println("Y = " + pos.y);
-//					System.out.println("X = " + pos.x);
-//					System.out.println("Z = " + pos.z);
-//					System.out.println("onGround = " + pos.field_149480_h);
 					event.cancel();
 				}
 				if (doHittingProcess())
 					mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput(1.0F, 1.0F, true, true));
-				//else
-					//mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput());
 			}
 
 			if (mc.thePlayer != null && mc.thePlayer.ticksExisted <= 7) {
@@ -158,7 +154,6 @@ public class Disabler extends Module {
                   pc.setFlySpeed(Float.NaN);
                   mc.thePlayer.sendQueue.noEventPacket(new C13PacketPlayerAbilities(pc));
               }
-             // System.out.println(event.getPacket());
               if (event.getPacket() instanceof C0FPacketConfirmTransaction) {
                   event.setPacket(new C0FPacketConfirmTransaction(Integer.MIN_VALUE, Short.MAX_VALUE, true));
               }
@@ -186,15 +181,12 @@ public class Disabler extends Module {
 		}else if (this.mode.getValue() == Mode.VERUS) {
 			if (event.getPacket() instanceof C00PacketKeepAlive) {
 				if (timer1.delay(1235L)) {
-					//ChatUtils.print("Shake");
 	                C00PacketKeepAlive packetKeepAlive = (C00PacketKeepAlive) event.getPacket();
 	                packetKeepAlive.key -= RandomUtils.nextInt(1308718, 1310768);
 				}
 				if (timer1.delay(1455L)) {
-					//ChatUtils.print("Shake 2");
 					mc.thePlayer.sendQueue.addToSendQueue(new C15PacketClientSettings("en_US", 8, EntityPlayer.EnumChatVisibility.FULL, true, 127));
 					mc.thePlayer.sendQueue.noEventPacket(new C0DPacketCloseWindow(0));
-				//	mc.thePlayer.sendQueue.noEventPacket(new C0FPacketConfirmTransaction(65536, (short) 32767, true));	
 				}
 				else if(timer1.delay(1600L)) {
 					timer1.reset();
@@ -212,11 +204,6 @@ public class Disabler extends Module {
 						pos.x = RandomUtils.nextFloat(0.8412349224090576F, 0.9530588388442993F);
 						pos.z = -0.43534232F;
 						pos.field_149480_h = true;
-//						System.out.println("Sended C04 Pos (C03PacketPlayer.C04PlayerPosition):");
-//						System.out.println("Y = " + pos.y);
-//						System.out.println("X = " + pos.x);
-//						System.out.println("Z = " + pos.z);
-//						System.out.println("onGround = " + pos.field_149480_h);
 					}
 					if (doHittingProcess()) {
 						mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput(1.0F, 1.0F, true, true));	
@@ -259,7 +246,7 @@ public class Disabler extends Module {
 
 	public boolean doHittingProcess() {
 		return mc.thePlayer.isBlocking() || mc.thePlayer.isSwingInProgress || mc.thePlayer.isUsingItem()
-				|| mc.thePlayer.isEating();
+				|| mc.thePlayer.isEating() || (mc.currentScreen instanceof GuiInventory) || (mc.currentScreen instanceof GuiChest);
 	}
 
 	private enum Mode {

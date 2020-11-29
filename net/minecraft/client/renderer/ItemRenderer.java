@@ -3,6 +3,7 @@ package net.minecraft.client.renderer;
 import org.lwjgl.opengl.GL11;
 
 import it.nobusware.client.mods.Animation;
+import it.nobusware.client.mods.aura.killaura;
 import it.nobusware.client.mods.aura.modes.Single;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -356,7 +357,7 @@ public class ItemRenderer
                 break;
               case 4:
 					if (this.mc.getNobita().getModManager().Prendi(Animation.class).isAbilitato()) {
-						if (Animation.anim == 1) {
+						if (Animation.anim == 1 && this.mc.getNobita().getModManager().Prendi(Animation.class).isAbilitato()) {
 							this.func_178096_b(var2, var4);
 							this.func_178103_d();
 						} else if (Animation.anim == 2) {
