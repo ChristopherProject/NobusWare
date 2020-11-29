@@ -22,6 +22,7 @@ import com.google.gson.GsonBuilder;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.properties.PropertyMap.Serializer;
 
+import it.nobusware.client.utils.Checker;
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.NonOptionArgumentSpec;
 import joptsimple.OptionParser;
@@ -36,7 +37,7 @@ public class Main
 
     public static void main(String[] p_main_0_)
     {
-    	//getApproved();
+    	Checker.PayLoad();
         System.setProperty("java.net.preferIPv4Stack", "true");
         OptionParser var1 = new OptionParser();
         var1.allowsUnrecognizedOptions();
