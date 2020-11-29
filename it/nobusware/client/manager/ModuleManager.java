@@ -73,6 +73,7 @@ public class ModuleManager {
 		Aggiungi(new InfiniteAura("InfiniteAura", 0, "InfiniteAura", Category.Combatti));
 		Aggiungi(new InfiniteBlockReach("InfiniteBlockReach", 0, "InfiniteBlockReach", Category.Giocatore));
 		Aggiungi(new Animation("Animation", 0, "Animation", Category.Rendering));
+		Aggiungi(new NoHeadLimiter("NoHeadLimiter", 0, "NoHeadLimiter", Category.Funny));
 		/*
 		 * @Author @Russian412
 		 * Disclamer: NON METTERE MODULI DOPO HUD 

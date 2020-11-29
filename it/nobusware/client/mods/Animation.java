@@ -17,35 +17,29 @@ public class Animation extends Module {
 		super(nome_mod, tasto, nome_array_printed, categoria);
 		addValues(new Value[] { this.mode });
 	}
-	
-	//il metodo in cui si va  a mettere è ItemRenderer.renderItemInFirstPerson()
-    
+
+	// il metodo in cui si va a mettere è ItemRenderer.renderItemInFirstPerson()
+
 	@Handler
-    public Consumer<EventUpdate> onEvent = (event) -> {
-    	if (this.mode.getValue() == Mode.SIDE) {
-    		this.anim = 1;
-    	}
-    	else if (this.mode.getValue() == Mode.SLAPPED) {
-    		this.anim = 2;
-    	}
-    	else if (this.mode.getValue() == Mode.VANILLA) {
-    		this.anim = 3;
-    	}
-    	else if (this.mode.getValue() == Mode.OLD_BLOCK) {
-    		this.anim = 4;
-    	}
-      	else if (this.mode.getValue() == Mode.ciqui) {
-    		this.anim = 5;
-    	}
-      	else if (this.mode.getValue() == Mode.sei) {
-    		this.anim = 6;
-    	}
-      	else if (this.mode.getValue() == Mode.sette) {
-    		this.anim = 7;
-    	}
-    };
+	public Consumer<EventUpdate> onEvent = (event) -> {
+		if (this.mode.getValue() == Mode.SIDE) {
+			this.anim = 1;
+		} else if (this.mode.getValue() == Mode.WILD) {
+			this.anim = 2;
+		} else if (this.mode.getValue() == Mode.VANILLA) {
+			this.anim = 3;
+		} else if (this.mode.getValue() == Mode.WIND) {
+			this.anim = 4;
+		} else if (this.mode.getValue() == Mode.SWAP) {
+			this.anim = 5;
+		} else if (this.mode.getValue() == Mode.DAMN) {
+			this.anim = 6;
+		} else if (this.mode.getValue() == Mode.OLD) {
+			this.anim = 7;
+		}
+	};
 
 	private enum Mode {
-		SIDE, SLAPPED, VANILLA, OLD_BLOCK, ciqui, sei, sette
+		SIDE, WILD, VANILLA, WIND, SWAP, DAMN, OLD
 	}
 }

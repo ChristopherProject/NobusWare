@@ -357,7 +357,7 @@ public class ItemRenderer
                 break;
               case 4:
 					if (this.mc.getNobita().getModManager().Prendi(Animation.class).isAbilitato()) {
-						if (Animation.anim == 1 && this.mc.getNobita().getModManager().Prendi(Animation.class).isAbilitato()) {
+						if (Animation.anim == 1) {
 							this.func_178096_b(var2, var4);
 							this.func_178103_d();
 						} else if (Animation.anim == 2) {

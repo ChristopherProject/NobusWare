@@ -5,6 +5,9 @@ import it.nobusware.client.events.KeyPressedEvent;
 import it.nobusware.client.manager.Module;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 
 public class ClickGUI extends Module {
 
