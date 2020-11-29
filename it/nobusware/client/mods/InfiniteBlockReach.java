@@ -70,7 +70,7 @@ public class InfiniteBlockReach extends Module {
         }
 
         else if (event.getPacket() instanceof C07PacketPlayerDigging) {
-
+        	ChatUtils.print("Banana");
             C07PacketPlayerDigging packet = (C07PacketPlayerDigging) event.getPacket();
             C07PacketPlayerDigging.Action act = packet.func_180762_c();
             BlockPos pos = packet.func_179715_a();
@@ -81,7 +81,7 @@ public class InfiniteBlockReach extends Module {
                 Vec3 to = new Vec3(pos.getX(), pos.getY(), pos.getZ());
                 path = computePath(topFrom, to);
                 for (Vec3 pathElm : path) {
-
+                	ChatUtils.print("tp");
                     mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(pathElm.getX(), pathElm.getY(), pathElm.getZ(), true));
                 }
                 timer.reset();
