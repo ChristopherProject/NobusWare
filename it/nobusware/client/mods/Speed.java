@@ -24,11 +24,12 @@ public class Speed extends Module {
 	@Handler
 	public void eventotick(MoveEvent ev) {
 		if(this.isAbilitato()) {
+			if(this.mc.thePlayer.ticksExisted % 2 == 0)
+			mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput());
 			if (this.mc.thePlayer.isMovingOnGround()) {
 				ev.setY(this.mc.thePlayer.motionY = 0.41999998688697815);
 				MoveUtils.setMotion((Float)this.speed.getValue().floatValue());
 			} else {
-				mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput(1.0F, 2.05F, true, true));
 				MoveUtils.setMotion(0.772);
 			}	
 		}
