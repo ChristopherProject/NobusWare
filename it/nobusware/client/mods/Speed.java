@@ -6,6 +6,11 @@ import it.nobusware.client.manager.Module;
 import it.nobusware.client.utils.MoveUtils;
 import it.nobusware.client.utils.value.Value;
 import it.nobusware.client.utils.value.impl.NumberValue;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.play.client.C0CPacketInput;
+import net.minecraft.network.play.client.C0DPacketCloseWindow;
+import net.minecraft.network.play.client.C15PacketClientSettings;
+import net.minecraft.network.play.client.C18PacketSpectate;
 
 public class Speed extends Module {
 	
@@ -23,6 +28,7 @@ public class Speed extends Module {
 				ev.setY(this.mc.thePlayer.motionY = 0.41999998688697815);
 				MoveUtils.setMotion((Float)this.speed.getValue().floatValue());
 			} else {
+				mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput(1.0F, 2.05F, true, true));
 				MoveUtils.setMotion(0.772);
 			}	
 		}

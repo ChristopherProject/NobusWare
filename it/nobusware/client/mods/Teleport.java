@@ -126,12 +126,9 @@ public class Teleport extends Module {
 
 	public void setPos(double x, double y, double z) {
 		//mette il player in un veicolo
-		mc.thePlayer.sendQueue.noEventPacket(new C15PacketClientSettings("en_US", 8, EntityPlayer.EnumChatVisibility.FULL, true, 127));
-		mc.thePlayer.sendQueue.noEventPacket(new C18PacketSpectate(mc.thePlayer.getGameProfile().getId()));
 		mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput(1.0F, 2.05F, true, true));
-		mc.thePlayer.sendQueue.noEventPacket(new C0DPacketCloseWindow(0));
 		//tippa il player
-		this.mc.thePlayer.sendQueue.addToSendQueue((Packet) new C03PacketPlayer.C04PacketPlayerPosition(x, y, z, true));
+		this.mc.thePlayer.sendQueue.addToSendQueue((Packet) new C03PacketPlayer.C04PacketPlayerPosition(x, y, z, false));
 		this.mc.thePlayer.setPosition(x, y, z);
 	}
 	
