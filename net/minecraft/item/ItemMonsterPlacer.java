@@ -141,7 +141,7 @@ public class ItemMonsterPlacer extends Item
             {
                 if (var4.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
                 {
-                    BlockPos var5 = var4.func_178782_a();
+                    BlockPos var5 = var4.getBlockPos();
 
                     if (!worldIn.isBlockModifiable(playerIn, var5))
                     {

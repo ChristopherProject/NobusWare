@@ -85,7 +85,6 @@ import net.minecraft.client.gui.achievement.GuiAchievement;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.gui.stream.GuiStreamUnavailable;
 import net.minecraft.client.main.GameConfiguration;
-import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -103,7 +102,6 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.chunk.RenderChunk;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.DefaultResourcePack;
@@ -1496,7 +1494,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         {
             if (leftClick && this.objectMouseOver != null && this.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
             {
-                BlockPos var2 = this.objectMouseOver.func_178782_a();
+                BlockPos var2 = this.objectMouseOver.getBlockPos();
 
                 if (this.theWorld.getBlockState(var2).getBlock().getMaterial() != Material.air && this.playerController.func_180512_c(var2, this.objectMouseOver.field_178784_b))
                 {
@@ -1535,7 +1533,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                         break;
 
                     case 2:
-                        BlockPos var1 = this.objectMouseOver.func_178782_a();
+                        BlockPos var1 = this.objectMouseOver.getBlockPos();
 
                         if (this.theWorld.getBlockState(var1).getBlock().getMaterial() != Material.air)
                         {
@@ -1584,7 +1582,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                     break;
 
                 case 2:
-                    BlockPos var3 = this.objectMouseOver.func_178782_a();
+                    BlockPos var3 = this.objectMouseOver.getBlockPos();
 
                     if (this.theWorld.getBlockState(var3).getBlock().getMaterial() != Material.air)
                     {
@@ -2518,7 +2516,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
             if (this.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
             {
-                BlockPos var6 = this.objectMouseOver.func_178782_a();
+                BlockPos var6 = this.objectMouseOver.getBlockPos();
                 Block var7 = this.theWorld.getBlockState(var6).getBlock();
 
                 if (var7.getMaterial() == Material.air)

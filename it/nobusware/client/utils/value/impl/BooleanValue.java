@@ -1,9 +1,9 @@
 package it.nobusware.client.utils.value.impl;
 
-import java.util.Optional;
-
 import it.nobusware.client.utils.value.Value;
 import it.nobusware.client.utils.value.parse.BooleanParser;
+
+import java.util.Optional;
 
 public class BooleanValue extends Value<Boolean> {
 	
@@ -18,14 +18,14 @@ public class BooleanValue extends Value<Boolean> {
 
 	public void toggle() {
 		BooleanValue booleanValue = this;
-		booleanValue.value = Boolean.valueOf(((Boolean) booleanValue.value).booleanValue() ^ true);
+		booleanValue.value = !booleanValue.value;
 	}
 
 	public boolean isEnabled() {
-		return ((Boolean) this.value).booleanValue();
+		return this.value;
 	}
 
 	public void setEnabled(boolean enabled) {
-		this.value = Boolean.valueOf(enabled);
+		this.value = enabled;
 	}
 }

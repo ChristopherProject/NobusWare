@@ -1,51 +1,37 @@
 package it.nobusware.client.mods;
 
-import java.util.ArrayList;
-import java.util.Queue;
-import java.util.Random;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.function.Consumer;
-
-import org.apache.commons.lang3.RandomUtils;
-
 import QuarantineAPI.config.annotation.Handler;
 import it.nobusware.client.events.EventNettyPackets;
 import it.nobusware.client.events.EventPackets;
 import it.nobusware.client.events.EventUpdate;
 import it.nobusware.client.manager.Module;
 import it.nobusware.client.mods.aura.killaura;
-import it.nobusware.client.utils.ChatUtils;
 import it.nobusware.client.utils.Timer;
-import it.nobusware.client.utils.value.Value;
 import it.nobusware.client.utils.value.impl.EnumValue;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.C00PacketKeepAlive;
-import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.network.play.client.C03PacketPlayer.C04PacketPlayerPosition;
+import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.client.C03PacketPlayer.C05PacketPlayerLook;
-import net.minecraft.network.play.client.C03PacketPlayer.C06PacketPlayerPosLook;
-import net.minecraft.network.play.client.C0CPacketInput;
-import net.minecraft.network.play.client.C0DPacketCloseWindow;
-import net.minecraft.network.play.client.C0EPacketClickWindow;
-import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
-import net.minecraft.network.play.client.C13PacketPlayerAbilities;
-import net.minecraft.network.play.client.C15PacketClientSettings;
-import net.minecraft.network.play.client.C18PacketSpectate;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.network.play.server.S2APacketParticles;
+import org.apache.commons.lang3.RandomUtils;
+
+import java.util.Queue;
+import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.Consumer;
 
 public class Disabler extends Module {
 
-	private EnumValue<Mode> mode = new EnumValue("Mode", Mode.VERUS);
+	private final EnumValue<Mode> mode = new EnumValue<>("Mode", Mode.VERUS);
 
 	public Disabler(String nome_mod, int tasto, String nome_array_printed, Category categoria) {
 		super(nome_mod, tasto, nome_array_printed, categoria);
-		addValues(new Value[] { (EnumValue)this.mode });
+		addValues(this.mode);
 	}
 
-	private final Queue<Packet> packetQueue = new ConcurrentLinkedQueue();
+	private final Queue<Packet> packetQueue = new ConcurrentLinkedQueue<>();
 	private final Timer timer = new Timer();
 	private final Timer timer1 = new Timer();
 
@@ -272,16 +258,12 @@ public class Disabler extends Module {
 	  }
 
 	public boolean doHittingProcess() {
-		if (mc.thePlayer.isBlocking() || mc.thePlayer.isSwingInProgress || mc.thePlayer.isUsingItem()
-				|| mc.thePlayer.isEating()) {
-			return true;
-		} else {
-			return false;
-		}
+		return mc.thePlayer.isBlocking() || mc.thePlayer.isSwingInProgress || mc.thePlayer.isUsingItem()
+				|| mc.thePlayer.isEating();
 	}
 
 	private enum Mode {
-		VERUS, GHOSTLY, HYPIXEL, VERUS_INFINITE;
+		VERUS, GHOSTLY, HYPIXEL, VERUS_INFINITE
 	}
 
 	@Override

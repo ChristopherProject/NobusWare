@@ -1445,7 +1445,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
                 if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
                 {
-                    BlockPos var4 = this.mc.objectMouseOver.func_178782_a();
+                    BlockPos var4 = this.mc.objectMouseOver.getBlockPos();
                     IBlockState state = this.mc.theWorld.getBlockState(var4);
                     Block var5 = state.getBlock();
 

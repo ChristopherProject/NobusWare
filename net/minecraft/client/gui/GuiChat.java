@@ -162,7 +162,7 @@ public class GuiChat extends GuiScreen {
 	    if (p_146405_1_.length() >= 1) {
 	      BlockPos var3 = null;
 	      if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
-	        var3 = this.mc.objectMouseOver.func_178782_a(); 
+	        var3 = this.mc.objectMouseOver.getBlockPos();
 	      this.mc.thePlayer.sendQueue.addToSendQueue(new C14PacketTabComplete(p_146405_1_, var3));
 	      this.waitingOnAutocomplete = true;
 	    } 

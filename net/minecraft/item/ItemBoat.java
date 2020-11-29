@@ -81,7 +81,7 @@ public class ItemBoat extends Item
             {
                 if (var24.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
                 {
-                    BlockPos var33 = var24.func_178782_a();
+                    BlockPos var33 = var24.getBlockPos();
 
                     if (worldIn.getBlockState(var33).getBlock() == Blocks.snow_layer)
                     {

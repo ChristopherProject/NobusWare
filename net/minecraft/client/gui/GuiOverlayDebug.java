@@ -155,9 +155,9 @@ public class GuiOverlayDebug extends Gui
                 var5.add("Shader: " + this.mc.entityRenderer.getShaderGroup().getShaderGroupName());
             }
 
-            if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && this.mc.objectMouseOver.func_178782_a() != null)
+            if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && this.mc.objectMouseOver.getBlockPos() != null)
             {
-                BlockPos var91 = this.mc.objectMouseOver.func_178782_a();
+                BlockPos var91 = this.mc.objectMouseOver.getBlockPos();
                 var5.add(String.format("Looking at: %d %d %d", new Object[] {Integer.valueOf(var91.getX()), Integer.valueOf(var91.getY()), Integer.valueOf(var91.getZ())}));
             }
 
@@ -186,9 +186,9 @@ public class GuiOverlayDebug extends Gui
         }
         else
         {
-            if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && this.mc.objectMouseOver.func_178782_a() != null)
+            if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && this.mc.objectMouseOver.getBlockPos() != null)
             {
-                BlockPos var101 = this.mc.objectMouseOver.func_178782_a();
+                BlockPos var101 = this.mc.objectMouseOver.getBlockPos();
                 IBlockState var11 = this.mc.theWorld.getBlockState(var101);
 
                 if (this.mc.theWorld.getWorldType() != WorldType.DEBUG_WORLD)

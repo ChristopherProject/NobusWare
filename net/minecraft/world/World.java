@@ -1596,6 +1596,10 @@ public abstract class World implements IBlockAccess
         return var3;
     }
 
+    public Block getBlock(final int x, final int y, final int z) {
+        return getBlockState(new BlockPos(x, y, z)).getBlock();
+    }
+
     /**
      * How bright are stars in the sky
      */

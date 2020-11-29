@@ -2503,7 +2503,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
 
             GlStateManager.depthMask(false);
             float var5 = 0.002F;
-            BlockPos var6 = p_72731_2_.func_178782_a();
+            BlockPos var6 = p_72731_2_.getBlockPos();
             Block var7 = this.theWorld.getBlockState(var6).getBlock();
 
             if (var7.getMaterial() != Material.air && this.theWorld.getWorldBorder().contains(var6))

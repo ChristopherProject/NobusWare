@@ -1,18 +1,11 @@
 package it.nobusware.client.manager;
 
-import java.util.ArrayList;
-
-import it.nobusware.client.commands.BKick;
-import it.nobusware.client.commands.Bind;
-import it.nobusware.client.commands.Vclip;
-import it.nobusware.client.commands.byemom;
-import it.nobusware.client.commands.help;
-import it.nobusware.client.commands.settings;
-import it.nobusware.client.commands.verusfucker;
-import it.nobusware.client.commands.youtube;
+import it.nobusware.client.commands.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
+
+import java.util.ArrayList;
 
 public class CManager {
   private static CManager theCommandManager = new CManager();
