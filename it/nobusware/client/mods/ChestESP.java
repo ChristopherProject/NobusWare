@@ -1,9 +1,5 @@
 package it.nobusware.client.mods;
 
-import java.util.Iterator;
-
-import org.lwjgl.opengl.GL11;
-
 import QuarantineAPI.config.annotation.Handler;
 import it.nobusware.client.events.EventRenderer3D;
 import it.nobusware.client.manager.Module;
@@ -20,6 +16,9 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityEnderChest;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import org.lwjgl.opengl.GL11;
+
+import java.util.Iterator;
 
 public class ChestESP extends Module {
 
@@ -30,7 +29,7 @@ public class ChestESP extends Module {
 	private Framebuffer blockFBO;
 
 	@Handler
-	private void onRender(EventRenderer3D event) {
+	public void onRender(EventRenderer3D event) {
 			Iterator var3 = this.mc.theWorld.loadedTileEntityList.iterator();
 			while (var3.hasNext()) {
 				Object o = var3.next();
@@ -96,11 +95,11 @@ public class ChestESP extends Module {
 			}
 	}
 
-	public void drawChestOutlines(TileEntity ent, float partialTicks) {
+	private static void drawChestOutlines(TileEntity ent, float partialTicks) {
 		int entityDispList = GL11.glGenLists(1);
 		BetterRenderUI.Stencil.getInstance().startLayer();
 		GL11.glPushMatrix();
-		this.mc.entityRenderer.setupCameraTransform(partialTicks, 0);
+		mc.entityRenderer.setupCameraTransform(partialTicks, 0);
 		GL11.glMatrixMode(5888);
 		RenderHelper.enableStandardItemLighting();
 		GL11.glEnable(2884);
@@ -110,7 +109,7 @@ public class ChestESP extends Module {
 		BetterRenderUI.Stencil.getInstance().setBuffer(true);
 		GL11.glNewList(entityDispList, 4864);
 		Minecraft.getMinecraft();
-		Iterator var7 = this.mc.theWorld.loadedTileEntityList.iterator();
+		Iterator var7 = mc.theWorld.loadedTileEntityList.iterator();
 		while (var7.hasNext()) {
 			Object obj = var7.next();
 			TileEntity entity = (TileEntity) obj;
@@ -155,7 +154,7 @@ public class ChestESP extends Module {
 		GL11.glDeleteLists(entityDispList, 1);
 	}
 
-	public void draw(Block block, double x, double y, double z, double xo, double yo, double zo) {
+	private static void draw(Block block, double x, double y, double z, double xo, double yo, double zo) {
 		GL11.glDisable(2896);
 		GL11.glDisable(3553);
 		GL11.glEnable(3042);

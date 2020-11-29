@@ -47,7 +47,7 @@ public class MovingObjectPosition
         this.hitVec = p_i45482_2_;
     }
 
-    public BlockPos func_178782_a()
+    public BlockPos getBlockPos()
     {
         return this.field_178783_e;
     }

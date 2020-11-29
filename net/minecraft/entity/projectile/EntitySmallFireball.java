@@ -64,7 +64,7 @@ public class EntitySmallFireball extends EntityFireball
 
                 if (var2)
                 {
-                    BlockPos var3 = p_70227_1_.func_178782_a().offset(p_70227_1_.field_178784_b);
+                    BlockPos var3 = p_70227_1_.getBlockPos().offset(p_70227_1_.field_178784_b);
 
                     if (this.worldObj.isAirBlock(var3))
                     {

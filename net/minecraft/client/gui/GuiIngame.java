@@ -1,32 +1,13 @@
 package net.minecraft.client.gui;
 
-import java.awt.Color;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Random;
-
-import org.lwjgl.opengl.GL11;
-
+import QuarantineAPI.EventAPI;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.mojang.realmsclient.gui.ChatFormatting;
-
-import QuarantineAPI.EventAPI;
 import it.nobusware.client.events.EventRendererGUI2D;
-import it.nobusware.client.manager.Module;
-import it.nobusware.client.mods.aura.killaura;
 import it.nobusware.client.utils.ArrayListUtil;
-import it.nobusware.client.utils.ChatUtils;
-import it.nobusware.client.utils.ColorUtilsArray;
-import it.nobusware.client.utils.RenderUtils;
-import it.nobusware.client.utils.fontmanager.UnicodeFontRenderer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -50,18 +31,16 @@ import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.FoodStats;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StringUtils;
+import net.minecraft.util.*;
 import net.minecraft.world.border.WorldBorder;
 import optifine.Config;
 import optifine.CustomColors;
-import optifine.MathUtils;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Random;
 
 public class GuiIngame extends Gui
 {
@@ -574,7 +553,7 @@ public class GuiIngame extends Gui
             {
                 if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
                 {
-                    BlockPos var1 = this.mc.objectMouseOver.func_178782_a();
+                    BlockPos var1 = this.mc.objectMouseOver.getBlockPos();
 
                     if (this.mc.theWorld.getTileEntity(var1) instanceof IInventory)
                     {

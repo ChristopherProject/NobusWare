@@ -43,7 +43,7 @@ public class ItemBucket extends Item
         {
             if (var5.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
             {
-                BlockPos var6 = var5.func_178782_a();
+                BlockPos var6 = var5.getBlockPos();
 
                 if (!worldIn.isBlockModifiable(playerIn, var6))
                 {

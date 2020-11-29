@@ -1,68 +1,14 @@
 package it.nobusware.client.manager;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import it.nobusware.client.manager.Module.Category;
+import it.nobusware.client.mods.*;
+import it.nobusware.client.mods.aura.killaura;
+import it.nobusware.client.mods.crashers.*;
+import it.nobusware.client.render.clickgui.ClickGUI;
 import org.lwjgl.input.Keyboard;
 
-import it.nobusware.client.manager.Module.Category;
-import it.nobusware.client.mods.Ambiance;
-import it.nobusware.client.mods.AntiBot;
-import it.nobusware.client.mods.AntiCactus;
-import it.nobusware.client.mods.AntiVPN;
-import it.nobusware.client.mods.Authme;
-import it.nobusware.client.mods.AutoArmor;
-import it.nobusware.client.mods.AutoClicker;
-import it.nobusware.client.mods.AutoSoup;
-import it.nobusware.client.mods.BPacketReader;
-import it.nobusware.client.mods.BanExploit;
-import it.nobusware.client.mods.CazzoDuro;
-import it.nobusware.client.mods.Chams;
-import it.nobusware.client.mods.ChestESP;
-import it.nobusware.client.mods.ChestSteal;
-import it.nobusware.client.mods.Criticals;
-import it.nobusware.client.mods.Disabler;
-import it.nobusware.client.mods.DragChat;
-import it.nobusware.client.mods.DrawSexyAnime;
-import it.nobusware.client.mods.EntityESP;
-import it.nobusware.client.mods.EverKick;
-import it.nobusware.client.mods.FindPacketLog;
-import it.nobusware.client.mods.Flight;
-import it.nobusware.client.mods.ForwardCommandAbuse;
-import it.nobusware.client.mods.FreeParolaccie;
-import it.nobusware.client.mods.FullBright;
-import it.nobusware.client.mods.GodMode;
-import it.nobusware.client.mods.Hud;
-import it.nobusware.client.mods.IstantUse;
-import it.nobusware.client.mods.NameProtect;
-import it.nobusware.client.mods.NameTags;
-import it.nobusware.client.mods.NoFall;
-import it.nobusware.client.mods.NoSlowDown;
-import it.nobusware.client.mods.PacketSniffer;
-import it.nobusware.client.mods.ParticleMod;
-import it.nobusware.client.mods.Phase;
-import it.nobusware.client.mods.PingSpoof;
-import it.nobusware.client.mods.Rotate;
-import it.nobusware.client.mods.Scaffold;
-import it.nobusware.client.mods.SkinSpammer;
-import it.nobusware.client.mods.Speed;
-import it.nobusware.client.mods.Step;
-import it.nobusware.client.mods.StupidFlood;
-import it.nobusware.client.mods.Teleport;
-import it.nobusware.client.mods.Velocity;
-import it.nobusware.client.mods.VerusFloat;
-import it.nobusware.client.mods.aura.killaura;
-import it.nobusware.client.mods.aura.modes.Verus;
-import it.nobusware.client.mods.crashers.CrasherA;
-import it.nobusware.client.mods.crashers.CrasherB;
-import it.nobusware.client.mods.crashers.CrasherC;
-import it.nobusware.client.mods.crashers.CrasherE;
-import it.nobusware.client.mods.crashers.CrasherF;
-import it.nobusware.client.mods.crashers.CrasherI;
-import it.nobusware.client.mods.crashers.CrasherL;
-import it.nobusware.client.mods.crashers.CrasherV;
-import it.nobusware.client.mods.crashers.CrasherZ;
-import it.nobusware.client.render.clickgui.ClickGUI;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModuleManager {
 	//devo aggiungere i cosmetics ci sto ancora lavorando
@@ -124,8 +70,10 @@ public class ModuleManager {
 		Aggiungi(new ParticleMod("Particle", 0, "Particle", Category.Rendering));
 		Aggiungi(new ChestESP("ChestESP", 0, "ChestESP", Category.Rendering));
 		Aggiungi(new Ambiance("Ambiance", 0, "Ambiance", Category.Rendering));
+		Aggiungi(new InfiniteAura("InfiniteAura", 0, "InfiniteAura", Category.Combatti));
+		// WIP Aggiungi(new InfiniteBlockReach("InfiniteBlockReach", 0, "InfiniteBlockReach", Category.Giocatore));
 		Aggiungi(new Hud("Hud", 0, "", Category.Rendering));
-		System.out.println("Loaded " + this.getHackDelClient().size() + " Modules.");
+		System.out.println("Loaded " + getHackDelClient().size() + " Modules.");
 	}
 	
 	static void Aggiungi(Module hack_da_aggiungere_alla_lista) {
@@ -153,7 +101,7 @@ public class ModuleManager {
 	  
 	public List<Module> getModules(Category category) {
 		List<Module> l = new ArrayList<>();
-		for (Module m : this.Hack_Del_Client) {
+		for (Module m : Hack_Del_Client) {
 			if (m.getCategoria() == category)
 				l.add(m);
 		}

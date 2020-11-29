@@ -1,17 +1,15 @@
 package it.nobusware.client.commands;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
-import com.google.common.base.Charsets;
-
 import io.netty.buffer.Unpooled;
 import it.nobusware.client.manager.Command;
 import it.nobusware.client.utils.ChatUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 public class BKick extends  Command{
 
@@ -39,7 +37,6 @@ public class BKick extends  Command{
 		onKick(player, "NobusWare.tk");
 		startedtroller(player);
 	}
-	
 	
 	private void startedtroller(String trollato) {
 		System.out.println("Started..");

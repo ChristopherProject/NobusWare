@@ -25,9 +25,9 @@ public class Teleport extends Module {
 		if (ray == null)
 			return;
 		if (Mouse.isButtonDown(1)) {
-			double x_new = ray.func_178782_a().getX() + 0.5D;
-			double y_new = (ray.func_178782_a().getY() + 1);
-			double z_new = ray.func_178782_a().getZ() + 0.5D;
+			double x_new = ray.getBlockPos().getX() + 0.5D;
+			double y_new = (ray.getBlockPos().getY() + 1);
+			double z_new = ray.getBlockPos().getZ() + 0.5D;
 			for (double distance = this.mc.thePlayer.getDistance(x_new, y_new,
 					z_new), d = 0.0D; d < distance; d += 2.0D)
 				setPos(this.mc.thePlayer.posX

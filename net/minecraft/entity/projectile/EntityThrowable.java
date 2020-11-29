@@ -218,7 +218,7 @@ public abstract class EntityThrowable extends Entity implements IProjectile
 
         if (var3 != null)
         {
-            if (var3.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && this.worldObj.getBlockState(var3.func_178782_a()).getBlock() == Blocks.portal)
+            if (var3.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && this.worldObj.getBlockState(var3.getBlockPos()).getBlock() == Blocks.portal)
             {
                 this.setInPortal();
             }

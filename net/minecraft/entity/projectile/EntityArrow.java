@@ -372,7 +372,7 @@ public class EntityArrow extends Entity implements IProjectile
                 }
                 else
                 {
-                    BlockPos var23 = var6.func_178782_a();
+                    BlockPos var23 = var6.getBlockPos();
                     this.field_145791_d = var23.getX();
                     this.field_145792_e = var23.getY();
                     this.field_145789_f = var23.getZ();

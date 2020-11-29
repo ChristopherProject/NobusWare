@@ -1,9 +1,5 @@
 package it.nobusware.client.mods;
 
-import java.util.Random;
-import java.util.function.Consumer;
-
-import QuarantineAPI.EventAPI;
 import QuarantineAPI.config.annotation.Handler;
 import it.nobusware.client.events.CollisionEvent;
 import it.nobusware.client.events.EventNettyPackets;
@@ -24,6 +20,9 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovementInput;
+
+import java.util.Random;
+import java.util.function.Consumer;
 
 public class Flight extends Module {
 

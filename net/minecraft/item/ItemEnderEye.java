@@ -153,7 +153,7 @@ public class ItemEnderEye extends Item
     {
         MovingObjectPosition var4 = this.getMovingObjectPositionFromPlayer(worldIn, playerIn, false);
 
-        if (var4 != null && var4.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && worldIn.getBlockState(var4.func_178782_a()).getBlock() == Blocks.end_portal_frame)
+        if (var4 != null && var4.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && worldIn.getBlockState(var4.getBlockPos()).getBlock() == Blocks.end_portal_frame)
         {
             return itemStackIn;
         }
