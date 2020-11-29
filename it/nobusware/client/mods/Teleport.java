@@ -14,10 +14,14 @@ import it.nobusware.client.utils.ColorUtilsArray;
 import it.nobusware.client.utils.RenderUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.client.C00PacketKeepAlive;
 import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C0DPacketCloseWindow;
 import net.minecraft.network.play.client.C13PacketPlayerAbilities;
+import net.minecraft.network.play.client.C15PacketClientSettings;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -38,15 +42,6 @@ public class Teleport extends Module {
 			return;
 		if (Mouse.isButtonDown(1)) {
 			
-			PlayerCapabilities pc = new PlayerCapabilities();
-			pc.disableDamage = false;
-			pc.isFlying = false;
-			pc.allowFlying = false;
-			pc.isCreativeMode = false;
-			pc.setFlySpeed(0.0F);
-			pc.setPlayerWalkSpeed(0.0F);
-			
-			
 			double x_new = ray.getBlockPos().getX() + 0.5D;
 			double y_new = (ray.getBlockPos().getY() + 1);
 			double z_new = ray.getBlockPos().getZ() + 0.5D;
@@ -59,7 +54,6 @@ public class Teleport extends Module {
 						this.mc.thePlayer.posZ + (z_new - this.mc.thePlayer.func_174811_aO().getFrontOffsetZ()
 								- this.mc.thePlayer.posZ) * d / distance);
 			setPos(x_new, y_new, z_new);
-			mc.thePlayer.sendQueue.noEventPacket(new C13PacketPlayerAbilities(pc));
 			this.mc.renderGlobal.loadRenderers();
 		}
 	}
@@ -125,6 +119,8 @@ public class Teleport extends Module {
 	}
 
 	public void setPos(double x, double y, double z) {
+		mc.thePlayer.sendQueue.addToSendQueue(new C15PacketClientSettings("en_US", 8, EntityPlayer.EnumChatVisibility.FULL, true, 127));
+		mc.thePlayer.sendQueue.noEventPacket(new C0DPacketCloseWindow(0));
 		this.mc.thePlayer.sendQueue.addToSendQueue((Packet) new C03PacketPlayer.C04PacketPlayerPosition(x, y, z, true));
 		this.mc.thePlayer.setPosition(x, y, z);
 	}
