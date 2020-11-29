@@ -9,19 +9,27 @@ import it.nobusware.client.render.clickgui.frame.frames.CategoryFrame;
 import it.nobusware.client.render.clickgui.utils.RenderUtilCL;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 
 public class ClickScreen extends GuiScreen {
   private ArrayList<Frame> frames = new ArrayList<>();
   
-  public void init() {
-    float x = 2.0F;
-    for (Module.Category category : Module.Category.values()) {
-      this.frames.add(new CategoryFrame(category, x, 2.0F, 110.0F, 20.0F));
-      x += 112.0F;
-    } 
-    this.frames.forEach(frame -> frame.init());
-  }
-  
+	public void init() {
+		float x = 2.0F;
+		if (OpenGlHelper.shadersSupported && mc.func_175606_aa() instanceof EntityPlayer) {
+			if (mc.entityRenderer.theShaderGroup != null)
+			mc.entityRenderer.theShaderGroup.deleteShaderGroup();
+			mc.entityRenderer.func_175069_a(new ResourceLocation("shaders/post/blur.json"));
+		}
+		for (Module.Category category : Module.Category.values()) {
+			this.frames.add(new CategoryFrame(category, x, 2.0F, 110.0F, 20.0F));
+			x += 112.0F;
+		}
+		this.frames.forEach(frame -> frame.init());
+	}
+
   public void drawScreen(int mouseX, int mouseY, float partialTicks) {
     super.drawScreen(mouseX, mouseY, partialTicks);
     ScaledResolution scaledResolution = RenderUtilCL.getResolution();
@@ -43,7 +51,12 @@ public class ClickScreen extends GuiScreen {
     this.frames.forEach(frame -> frame.mouseReleased(mouseX, mouseY, state));
   }
   
+  
   public void onGuiClosed() {
+	  if (mc.entityRenderer.theShaderGroup != null) {
+	      mc.entityRenderer.theShaderGroup.deleteShaderGroup();
+	      mc.entityRenderer.theShaderGroup = null;
+	    } 
     super.onGuiClosed();
     this.frames.forEach(frame -> frame.setDragging(false));
   }
