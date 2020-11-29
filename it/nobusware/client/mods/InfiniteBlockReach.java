@@ -2,8 +2,10 @@ package it.nobusware.client.mods;
 
 import QuarantineAPI.config.annotation.Handler;
 import it.nobusware.client.events.EventNettyPackets;
+import it.nobusware.client.events.EventPackets;
 import it.nobusware.client.events.EventRenderer3D;
 import it.nobusware.client.manager.Module;
+import it.nobusware.client.utils.ChatUtils;
 import it.nobusware.client.utils.ColorUtilsArray;
 import it.nobusware.client.utils.PathFinder;
 import it.nobusware.client.utils.RenderUtils;
@@ -43,8 +45,9 @@ public class InfiniteBlockReach extends Module {
     }
 
     @Handler
-    public void onPacket(EventNettyPackets event) {
+    public void onPacket(EventPackets event) {
         if (event.getPacket() instanceof C08PacketPlayerBlockPlacement) {
+        	ChatUtils.print("ciao");
             C08PacketPlayerBlockPlacement packet = (C08PacketPlayerBlockPlacement) event.getPacket();
             BlockPos pos = packet.func_179724_a();
             ItemStack stack = packet.getStack();
@@ -66,7 +69,7 @@ public class InfiniteBlockReach extends Module {
             }
         }
 
-        if (event.getPacket() instanceof C07PacketPlayerDigging) {
+        else if (event.getPacket() instanceof C07PacketPlayerDigging) {
 
             C07PacketPlayerDigging packet = (C07PacketPlayerDigging) event.getPacket();
             C07PacketPlayerDigging.Action act = packet.func_180762_c();

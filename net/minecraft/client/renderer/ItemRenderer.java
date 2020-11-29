@@ -1,5 +1,9 @@
 package net.minecraft.client.renderer;
 
+import org.lwjgl.opengl.GL11;
+
+import it.nobusware.client.mods.Animation;
+import it.nobusware.client.mods.aura.modes.Single;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -17,7 +21,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumWorldBlockLayer;
@@ -27,10 +30,6 @@ import net.minecraft.world.storage.MapData;
 import optifine.Config;
 import optifine.DynamicLights;
 import optifine.Reflector;
-
-import org.lwjgl.opengl.GL11;
-
-import it.nobusware.client.mods.aura.modes.Single;
 import shadersmod.client.Shaders;
 
 public class ItemRenderer
@@ -311,6 +310,21 @@ public class ItemRenderer
         GlStateManager.rotate(60.0F, 0.0F, 1.0F, 0.0F);
     }
 
+	private void oldAnim(final float equipProgress, final float swingProgress) {
+		final float smooth = swingProgress * 0.78f - swingProgress * swingProgress * 0.78f;
+		GlStateManager.scale(1.7f, 1.7f, 1.7f);
+		GlStateManager.rotate(48.0f, 0.0f, -0.6f, 0.0f);
+		GlStateManager.translate(-0.3f, 0.4f, 0.0f);
+		GlStateManager.translate(0.0f, 0.08f, 0.0f);
+		GlStateManager.translate(0.56f, -0.489f, -0.71999997f);
+		GlStateManager.translate(0.0f, 0.0f, 0.0f);
+		GlStateManager.rotate(52.0f, 0.0f, 180.0f + smooth * 0.5f, smooth * 20.0f);
+		final float f = MathHelper.sin(swingProgress * swingProgress * 3.1415927f);
+		final float f2 = MathHelper.sin(MathHelper.sqrt_float(swingProgress) * 3.1415927f);
+		GlStateManager.rotate(f2 * -51.3f, 2.0f, 0.0f, 0.0f);
+		GlStateManager.translate(0.0f, -0.2f, 0.0f);
+	}
+    
     /**
      * Renders the active item in the player's hand when in first person mode. Args: partialTickTime
      */
@@ -341,11 +355,49 @@ public class ItemRenderer
                 func_178096_b(var2, 0.0F);
                 break;
               case 4:
-                func_178096_b(-0.25F, var2);
-            	//this.func_178096_b(var2, 0.0F);
-                h = Math.sin(var4 * Math.PI);
-                GL11.glRotated(-h * 39.0D, 1.0D, 0.0D, 1.0D);
-                func_178103_d();
+					if (this.mc.getNobita().getModManager().Prendi(Animation.class).isAbilitato()) {
+						if (Animation.anim == 1) {
+							this.func_178096_b(var2, var4);
+							this.func_178103_d();
+						} else if (Animation.anim == 2) {
+							this.func_178096_b(var2 - 0.2f, 0.0f);
+							this.func_178103_d();
+							final float var15 = MathHelper.sin(MathHelper.sqrt_float(var4) * 3.1415927F);
+							GlStateManager.rotate(-var15 * 17.0F, 1.0F, 0.0F, 1.0F);
+							GlStateManager.rotate(-var15 * 17.0F, 1.0F, 0.0F, 1.0F);
+							GL11.glTranslated(-0.1, -0.4, 0);
+							GlStateManager.rotate(-var15 * -48.0F, 32.0F, 128.0F, 54.0F);
+							GlStateManager.translate(var4 * 0.3, var4 * 0.3, var4 * 0.3);
+						} else if (Animation.anim == 3) {
+							double h1 = Math.sin(Math.sqrt(var4) * Math.PI);
+							this.func_178096_b(var2, var4);
+							this.func_178103_d();
+							GL11.glRotated(-h1 * 33, 0, 0, 1);
+							GL11.glTranslated(-0.5D, 0, 0);
+						} else if (Animation.anim == 4) {
+							this.func_178096_b(var2 / 2.0F, 0.0F);
+							GlStateManager.rotate((-var4 * 750.0F) / 2.0F, var4, -0.0F, 10.0F);
+							this.func_178103_d();
+						} else if (Animation.anim == 5) { // i actually dont know where i got this blockanim from LOL
+							this.func_178096_b(-0.25F, 0.0F);
+							this.oldAnim(var2, var4);
+							this.func_178103_d();
+						} else if (Animation.anim == 6) {
+							func_178096_b(var2, 1F);
+							func_178103_d();
+							float var15 = MathHelper.sin(MathHelper.sqrt_float(var4) * 3.1415927F);
+							GlStateManager.rotate(-var15 * 0.0F, -2.0F, 0.0F, 10.0F);
+							GlStateManager.rotate(-var15 * 25.0F, 0.5F, 0F, 1F);
+						}else if(Animation.anim == 7) {
+			                func_178096_b(-0.25F, var2);
+			                h = Math.sin(var4 * Math.PI);
+			                GL11.glRotated(-h * 39.0D, 1.0D, 0.0D, 1.0D);
+			                func_178103_d();
+						}
+					} else {
+						this.func_178096_b(var2, 0.0F);
+						this.func_178103_d();
+					}
                 break;
               case 5:
                 func_178096_b(var2, 0.0F);

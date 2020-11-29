@@ -71,7 +71,14 @@ public class ModuleManager {
 		Aggiungi(new ChestESP("ChestESP", 0, "ChestESP", Category.Rendering));
 		Aggiungi(new Ambiance("Ambiance", 0, "Ambiance", Category.Rendering));
 		Aggiungi(new InfiniteAura("InfiniteAura", 0, "InfiniteAura", Category.Combatti));
-		// WIP Aggiungi(new InfiniteBlockReach("InfiniteBlockReach", 0, "InfiniteBlockReach", Category.Giocatore));
+		Aggiungi(new InfiniteBlockReach("InfiniteBlockReach", 0, "InfiniteBlockReach", Category.Giocatore));
+		Aggiungi(new Animation("Animation", 0, "Animation", Category.Rendering));
+		/*
+		 * @Author @Russian412
+		 * Disclamer: NON METTERE MODULI DOPO HUD 
+		 * NELL ARRAYLIST HUD DEVE ESSERE L'ULTIMO DELLA LISTA
+		 * OPPURE LA CLIENT SI BUGGA.
+		 */
 		Aggiungi(new Hud("Hud", 0, "", Category.Rendering));
 		System.out.println("Loaded " + getHackDelClient().size() + " Modules.");
 	}
