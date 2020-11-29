@@ -72,6 +72,9 @@ public class Verus {
 				mc.thePlayer.rotationPitchHead = rots[1];
 				mc.thePlayer.renderYawOffset = rots[0];
 			}
+			if(e.isPre() && mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemSword && (mc.thePlayer != null || mc.theWorld != null)) {
+				mc.thePlayer.inventory.getCurrentItem().useItemRightClick(Minecraft.getMinecraft().theWorld, Minecraft.getMinecraft().thePlayer);
+			}
 			if (timer.delay((float) (1000L / (clickSpeed + randomCPS)))) {
 				randomCPS = RandomUtils.nextInt(1, 2);
 				mc.thePlayer.swingItem();

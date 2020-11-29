@@ -3,7 +3,6 @@ package it.nobusware.client.mods.aura.modes;
 import org.apache.commons.lang3.RandomUtils;
 
 import it.nobusware.client.events.EventUpdate;
-import it.nobusware.client.manager.Module;
 import it.nobusware.client.mods.aura.killaura;
 import it.nobusware.client.utils.CombatUtil;
 import it.nobusware.client.utils.RotationUtils;
@@ -11,9 +10,7 @@ import it.nobusware.client.utils.Timer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.Packet;
-import net.minecraft.world.World;
+import net.minecraft.item.ItemSword;
 
 public class Single {
 

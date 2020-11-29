@@ -15,6 +15,7 @@ import it.nobusware.client.utils.value.impl.EnumValue;
 import it.nobusware.client.utils.value.impl.NumberValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C0CPacketInput;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.AxisAlignedBB;
@@ -78,6 +79,10 @@ public class Flight extends Module {
 	@Handler
 	public void eventobellobello(EventUpdate ev) {
 		if (this.isAbilitato() && (this.mode.getValue() == Mode.VANILLA)) {
+			if(this.mc.thePlayer.ticksExisted % 2 == 0 && !mc.getNobita().getModManager().Prendi(Disabler.class).isAbilitato()) {
+				mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput());
+				//damagePlayer(1);
+			}
 			check = true;
 			mc.timer.timerSpeed = 1f;
 			if (ev.isPre()) {

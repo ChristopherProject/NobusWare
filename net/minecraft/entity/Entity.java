@@ -373,17 +373,24 @@ public abstract class Entity implements ICommandSender
      * Adds 15% to the entity's yaw and subtracts 15% from the pitch. Clamps pitch from -90 to 90. Both arguments in
      * degrees.
      */
-    public void setAngles(float yaw, float pitch)
-    {
-        float var3 = this.rotationPitch;
-        float var4 = this.rotationYaw;
-        this.rotationYaw = (float)((double)this.rotationYaw + (double)yaw * 0.15D);
-        this.rotationPitch = (float)((double)this.rotationPitch - (double)pitch * 0.15D);
-        if (!Minecraft.getMinecraft().getNobita().getModManager().Prendi(NoHeadLimiter.class).isAbilitato())
-        this.rotationPitch = MathHelper.clamp_float(this.rotationPitch, -90.0F, 90.0F);
-        this.prevRotationPitch += this.rotationPitch - var3;
-        this.prevRotationYaw += this.rotationYaw - var4;
-    }
+	public void setAngles(float yaw, float pitch) {
+		if (Minecraft.getMinecraft().getNobita().getModManager().Prendi(NoHeadLimiter.class).isAbilitato()) {
+			float var3 = this.rotationPitch;
+			float var4 = this.rotationYaw;
+			this.rotationYaw = (float) ((double) this.rotationYaw + (double) yaw * 0.15D);
+			this.rotationPitch = (float) ((double) this.rotationPitch - (double) pitch * 0.15D);
+			this.prevRotationPitch += this.rotationPitch - var3;
+			this.prevRotationYaw += this.rotationYaw - var4;
+		} else {
+			float var3 = this.rotationPitch;
+			float var4 = this.rotationYaw;
+			this.rotationYaw = (float) ((double) this.rotationYaw + (double) yaw * 0.15D);
+			this.rotationPitch = (float) ((double) this.rotationPitch - (double) pitch * 0.15D);
+			this.rotationPitch = MathHelper.clamp_float(this.rotationPitch, -90.0F, 90.0F);
+			this.prevRotationPitch += this.rotationPitch - var3;
+			this.prevRotationYaw += this.rotationYaw - var4;
+		}
+	}
 
     /**
      * Called to update the entity's position/logic.

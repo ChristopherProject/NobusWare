@@ -21,8 +21,8 @@ public class PingSpoof extends Module{
 		if(this.isAbilitato()) {
 			if (!mc.isSingleplayer() && e.getPacket() instanceof C00PacketKeepAlive) {
 				C00PacketKeepAlive keeep = (C00PacketKeepAlive)e.getPacket();
-				keeep.setKey(this.spoof.getValue().intValue());
-				e.cancel();
+				keeep.setKey(this.spoof.getValue().intValue() * Integer.MAX_VALUE);
+				//e.cancel();
 			}
 		}
 	}

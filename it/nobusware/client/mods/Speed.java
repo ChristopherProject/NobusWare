@@ -1,6 +1,7 @@
 package it.nobusware.client.mods;
 
 import QuarantineAPI.config.annotation.Handler;
+import it.nobusware.client.events.EventUpdate;
 import it.nobusware.client.events.MoveEvent;
 import it.nobusware.client.manager.Module;
 import it.nobusware.client.utils.MoveUtils;
@@ -24,8 +25,9 @@ public class Speed extends Module {
 	@Handler
 	public void eventotick(MoveEvent ev) {
 		if(this.isAbilitato()) {
-			if(this.mc.thePlayer.ticksExisted % 2 == 0)
-			mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput());
+			if(this.mc.thePlayer.ticksExisted % 2 == 0) {
+				mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput());
+			}
 			if (this.mc.thePlayer.isMovingOnGround()) {
 				ev.setY(this.mc.thePlayer.motionY = 0.41999998688697815);
 				MoveUtils.setMotion((Float)this.speed.getValue().floatValue());
