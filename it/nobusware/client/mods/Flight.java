@@ -142,6 +142,13 @@ public class Flight extends Module {
 
 	@Handler
 	public void onMove(MoveEvent e) {
+		if (this.isAbilitato() && (this.mode.getValue() == Mode.COLLISION)) {
+			if(mc.thePlayer.ticksExisted % 6 == 0 && mc.thePlayer.isMoving())
+			mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput());
+			MoveUtils.setMotion(this.speed.getValue().floatValue());
+		}
+
+		
 		if (this.isAbilitato() && (this.mode.getValue() == Mode.HYPIXEL)) {
 			float yaw = mc.thePlayer.rotationYaw;
 			double strafe = mc.thePlayer.movementInput.moveStrafe;
@@ -211,12 +218,9 @@ public class Flight extends Module {
 
 	@Handler
 	public Consumer<CollisionEvent> eventConsumer = (event) -> {
-		if (this.isAbilitato() && (this.mode.getValue() == Mode.COLLISION) && this.mc.theWorld != null
-				&& !mc.thePlayer.isSneaking()) {
+		if (mc.thePlayer != null && mc.theWorld != null && this.isAbilitato() && (this.mode.getValue() == Mode.COLLISION) && this.mc.theWorld != null && !mc.thePlayer.isSneaking() ) {
 			check = false;
-			event.setBoundingBox(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(event.getX(), event.getY(), event.getZ() + 0.2 * moveSpeed));
-			
-	
+			event.setBoundingBox(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(event.getX(), event.getY(), event.getZ()));
 			if (this.timer.delay(1700F) && check == true) {
 				MoveUtils.fallPacket();
 				this.timer.reset();

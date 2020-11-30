@@ -22,6 +22,7 @@ import com.google.gson.JsonSyntaxException;
 
 import QuarantineAPI.EventAPI;
 import it.nobusware.client.events.EventRenderer3D;
+import it.nobusware.client.mods.NoWeather;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
@@ -1962,82 +1963,87 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
     private void addRainParticles()
     {
-        float var1 = this.mc.theWorld.getRainStrength(1.0F);
+    	if(this.mc.getNobita().getModManager().Prendi(NoWeather.class).isAbilitato()) {
+    		return;
+    	}else {
 
-        if (!Config.isRainFancy())
-        {
-            var1 /= 2.0F;
-        }
+            float var1 = this.mc.theWorld.getRainStrength(1.0F);
 
-        if (var1 != 0.0F && Config.isRainSplash())
-        {
-            this.random.setSeed((long)this.rendererUpdateCount * 312987231L);
-            Entity var2 = this.mc.func_175606_aa();
-            WorldClient var3 = this.mc.theWorld;
-            BlockPos var4 = new BlockPos(var2);
-            byte var5 = 10;
-            double var6 = 0.0D;
-            double var8 = 0.0D;
-            double var10 = 0.0D;
-            int var12 = 0;
-            int var13 = (int)(100.0F * var1 * var1);
-
-            if (this.mc.gameSettings.particleSetting == 1)
+            if (!Config.isRainFancy())
             {
-                var13 >>= 1;
-            }
-            else if (this.mc.gameSettings.particleSetting == 2)
-            {
-                var13 = 0;
+                var1 /= 2.0F;
             }
 
-            for (int var14 = 0; var14 < var13; ++var14)
+            if (var1 != 0.0F && Config.isRainSplash())
             {
-                BlockPos var15 = var3.func_175725_q(var4.add(this.random.nextInt(var5) - this.random.nextInt(var5), 0, this.random.nextInt(var5) - this.random.nextInt(var5)));
-                BiomeGenBase var16 = var3.getBiomeGenForCoords(var15);
-                BlockPos var17 = var15.offsetDown();
-                Block var18 = var3.getBlockState(var17).getBlock();
+                this.random.setSeed((long)this.rendererUpdateCount * 312987231L);
+                Entity var2 = this.mc.func_175606_aa();
+                WorldClient var3 = this.mc.theWorld;
+                BlockPos var4 = new BlockPos(var2);
+                byte var5 = 10;
+                double var6 = 0.0D;
+                double var8 = 0.0D;
+                double var10 = 0.0D;
+                int var12 = 0;
+                int var13 = (int)(100.0F * var1 * var1);
 
-                if (var15.getY() <= var4.getY() + var5 && var15.getY() >= var4.getY() - var5 && var16.canSpawnLightningBolt() && var16.func_180626_a(var15) >= 0.15F)
+                if (this.mc.gameSettings.particleSetting == 1)
                 {
-                    float var19 = this.random.nextFloat();
-                    float var20 = this.random.nextFloat();
+                    var13 >>= 1;
+                }
+                else if (this.mc.gameSettings.particleSetting == 2)
+                {
+                    var13 = 0;
+                }
 
-                    if (var18.getMaterial() == Material.lava)
-                    {
-                        this.mc.theWorld.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double)((float)var15.getX() + var19), (double)((float)var15.getY() + 0.1F) - var18.getBlockBoundsMinY(), (double)((float)var15.getZ() + var20), 0.0D, 0.0D, 0.0D, new int[0]);
-                    }
-                    else if (var18.getMaterial() != Material.air)
-                    {
-                        var18.setBlockBoundsBasedOnState(var3, var17);
-                        ++var12;
+                for (int var14 = 0; var14 < var13; ++var14)
+                {
+                    BlockPos var15 = var3.func_175725_q(var4.add(this.random.nextInt(var5) - this.random.nextInt(var5), 0, this.random.nextInt(var5) - this.random.nextInt(var5)));
+                    BiomeGenBase var16 = var3.getBiomeGenForCoords(var15);
+                    BlockPos var17 = var15.offsetDown();
+                    Block var18 = var3.getBlockState(var17).getBlock();
 
-                        if (this.random.nextInt(var12) == 0)
+                    if (var15.getY() <= var4.getY() + var5 && var15.getY() >= var4.getY() - var5 && var16.canSpawnLightningBolt() && var16.func_180626_a(var15) >= 0.15F)
+                    {
+                        float var19 = this.random.nextFloat();
+                        float var20 = this.random.nextFloat();
+
+                        if (var18.getMaterial() == Material.lava)
                         {
-                            var6 = (double)((float)var17.getX() + var19);
-                            var8 = (double)((float)var17.getY() + 0.1F) + var18.getBlockBoundsMaxY() - 1.0D;
-                            var10 = (double)((float)var17.getZ() + var20);
+                            this.mc.theWorld.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double)((float)var15.getX() + var19), (double)((float)var15.getY() + 0.1F) - var18.getBlockBoundsMinY(), (double)((float)var15.getZ() + var20), 0.0D, 0.0D, 0.0D, new int[0]);
                         }
+                        else if (var18.getMaterial() != Material.air)
+                        {
+                            var18.setBlockBoundsBasedOnState(var3, var17);
+                            ++var12;
 
-                        this.mc.theWorld.spawnParticle(EnumParticleTypes.WATER_DROP, (double)((float)var17.getX() + var19), (double)((float)var17.getY() + 0.1F) + var18.getBlockBoundsMaxY(), (double)((float)var17.getZ() + var20), 0.0D, 0.0D, 0.0D, new int[0]);
+                            if (this.random.nextInt(var12) == 0)
+                            {
+                                var6 = (double)((float)var17.getX() + var19);
+                                var8 = (double)((float)var17.getY() + 0.1F) + var18.getBlockBoundsMaxY() - 1.0D;
+                                var10 = (double)((float)var17.getZ() + var20);
+                            }
+
+                            this.mc.theWorld.spawnParticle(EnumParticleTypes.WATER_DROP, (double)((float)var17.getX() + var19), (double)((float)var17.getY() + 0.1F) + var18.getBlockBoundsMaxY(), (double)((float)var17.getZ() + var20), 0.0D, 0.0D, 0.0D, new int[0]);
+                        }
+                    }
+                }
+
+                if (var12 > 0 && this.random.nextInt(3) < this.rainSoundCounter++)
+                {
+                    this.rainSoundCounter = 0;
+
+                    if (var8 > (double)(var4.getY() + 1) && var3.func_175725_q(var4).getY() > MathHelper.floor_float((float)var4.getY()))
+                    {
+                        this.mc.theWorld.playSound(var6, var8, var10, "ambient.weather.rain", 0.1F, 0.5F, false);
+                    }
+                    else
+                    {
+                        this.mc.theWorld.playSound(var6, var8, var10, "ambient.weather.rain", 0.2F, 1.0F, false);
                     }
                 }
             }
-
-            if (var12 > 0 && this.random.nextInt(3) < this.rainSoundCounter++)
-            {
-                this.rainSoundCounter = 0;
-
-                if (var8 > (double)(var4.getY() + 1) && var3.func_175725_q(var4).getY() > MathHelper.floor_float((float)var4.getY()))
-                {
-                    this.mc.theWorld.playSound(var6, var8, var10, "ambient.weather.rain", 0.1F, 0.5F, false);
-                }
-                else
-                {
-                    this.mc.theWorld.playSound(var6, var8, var10, "ambient.weather.rain", 0.2F, 1.0F, false);
-                }
-            }
-        }
+    	}
     }
 
     /**

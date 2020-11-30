@@ -196,7 +196,7 @@ public class Disabler extends Module {
 				C03PacketPlayer pos = (C03PacketPlayer) event.getPacket();
 				if(mc.thePlayer.ticksExisted % 3 != 0 && (mc.thePlayer.isMoving() || lock())) {
 					//jump posistion flag
-					if(!mc.thePlayer.isMovingOnGround() && !mc.thePlayer.isJumping && !mc.getNobita().getModManager().Prendi(NoFall.class).isAbilitato() && timer.delay(1400L)) {
+					if(!mc.thePlayer.isMovingOnGround() && !mc.thePlayer.isOnLadder() && !mc.thePlayer.isJumping && !mc.getNobita().getModManager().Prendi(NoFall.class).isAbilitato() && timer.delay(1400L)) {
 						mc.thePlayer.sendQueue.noEventPacket(new C18PacketSpectate(mc.thePlayer.getGameProfile().getId()));
 						//Start value must be smaller or equal to end value
 						double max =(mc.thePlayer.posY - 0.992D);
@@ -245,7 +245,7 @@ public class Disabler extends Module {
 	  }
 
 	public boolean doHittingProcess() {
-		return mc.thePlayer.isBlocking() || mc.thePlayer.isSwingInProgress || mc.thePlayer.isUsingItem()
+		return mc.thePlayer.isBlocking() || mc.thePlayer.isSwingInProgress || mc.thePlayer.isUsingItem() || mc.thePlayer.isOnLadder()
 				|| mc.thePlayer.isEating() || (mc.currentScreen instanceof GuiInventory) || (mc.currentScreen instanceof GuiChest);
 	}
 

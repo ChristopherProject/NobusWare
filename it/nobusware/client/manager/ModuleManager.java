@@ -66,7 +66,6 @@ public class ModuleManager {
 		Aggiungi(new NoSlowDown("NoSlowDown", 0, "NoSlowDown", Category.Giocatore));
 		Aggiungi(new PingSpoof("PingSpoof", 0, "PingSpoof", Category.Exploits));
 		Aggiungi(new Teleport("Teleport", 0, "Teleport", Category.Giocatore));
-		Aggiungi(new ChestSteal("Stealer", 0, "Stealer", Category.Giocatore));
 		Aggiungi(new ParticleMod("Particle", 0, "Particle", Category.Rendering));
 		Aggiungi(new ChestESP("ChestESP", 0, "ChestESP", Category.Rendering));
 		Aggiungi(new Ambiance("Ambiance", 0, "Ambiance", Category.Rendering));
@@ -74,6 +73,8 @@ public class ModuleManager {
 		Aggiungi(new InfiniteBlockReach("InfiniteBlockReach", 0, "InfiniteBlockReach", Category.Giocatore));
 		Aggiungi(new Animation("Animation", 0, "Animation", Category.Rendering));
 		Aggiungi(new NoHeadLimiter("NoHeadLimiter", 0, "NoHeadLimiter", Category.Funny));
+		Aggiungi(new NoWeather("NoWeather", 0, "NoWeather", Category.Rendering));
+		Aggiungi(new ChestSteal("Stealer", 0, "Stealer", Category.Giocatore));
 		/*
 		 * @Author @Russian412
 		 * Disclamer: NON METTERE MODULI DOPO HUD 

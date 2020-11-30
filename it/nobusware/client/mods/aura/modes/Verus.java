@@ -1,5 +1,6 @@
 package it.nobusware.client.mods.aura.modes;
 
+import java.awt.Robot;
 import java.util.Random;
 
 import org.apache.commons.lang3.RandomUtils;
@@ -17,14 +18,15 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemSword;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C02PacketUseEntity;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
-import net.minecraft.network.play.client.C0EPacketClickWindow;
 import net.minecraft.network.play.client.C03PacketPlayer.C05PacketPlayerLook;
+import net.minecraft.network.play.client.C07PacketPlayerDigging;
+import net.minecraft.network.play.client.C0CPacketInput;
+import net.minecraft.network.play.client.C0EPacketClickWindow;
+import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
+import net.minecraft.network.play.client.C13PacketPlayerAbilities;
 import net.minecraft.network.play.server.S00PacketKeepAlive;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.network.play.server.S2DPacketOpenWindow;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 
 public class Verus {
 
@@ -57,31 +59,27 @@ public class Verus {
 	public static void doUpdate(final killaura killaura, final EventUpdate e, final Minecraft mc) {
 		long clickSpeed = (long) killaura.getCps().getValue().doubleValue();
 		if (killaura.isAbilitato() && mc.theWorld != null && getEntity() != null) {
-			if (e.isPre() && autoBlock
-					&& CombatUtil.canBlock(false, true, killaura.getRange().getValue().doubleValue() + 0.2D, false)) {
-				if (e.isPost() && !mc.getNobita().getModManager().Prendi(Disabler.class).isAbilitato()) {
-					mc.thePlayer.setItemInUse(mc.thePlayer.getHeldItem(), 140);
-					autoBlock = true;
+			if(e.isPre() && mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemSword) {
+				mc.thePlayer.inventory.getCurrentItem().useItemRightClick(Minecraft.getMinecraft().theWorld, Minecraft.getMinecraft().thePlayer);
+				if(mc.thePlayer.ticksExisted % 45 == 0 && !mc.thePlayer.isBlocking()) {
+					mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput());
+					mc.thePlayer.sendQueue.noEventPacket(new C13PacketPlayerAbilities(true, true, true, true,1.0F, 1.0F));
 				}
-			}else {
-				autoBlock = false;
 			}
 			float[] rots = RotationUtils.getRotations((EntityLivingBase) getEntity());
 			if (e.isPre()) {
-				mc.thePlayer.rotationYawHead = rots[0];
+				mc.thePlayer.rotationYawHead = rots[0] -180;
 				mc.thePlayer.rotationPitchHead = rots[1];
 				mc.thePlayer.renderYawOffset = rots[0];
 			}
-			if(e.isPre() && mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemSword && (mc.thePlayer != null || mc.theWorld != null)) {
-				mc.thePlayer.inventory.getCurrentItem().useItemRightClick(Minecraft.getMinecraft().theWorld, Minecraft.getMinecraft().thePlayer);
-			}
+		
 			if (timer.delay((float) (1000L / (clickSpeed + randomCPS)))) {
 				randomCPS = RandomUtils.nextInt(1, 2);
 				mc.thePlayer.swingItem();
-				mc.thePlayer.sendQueue.addToSendQueue((Packet) new C02PacketUseEntity(entity, C02PacketUseEntity.Action.ATTACK));
+				mc.playerController.attackEntity(mc.thePlayer, entity);
+				//mc.thePlayer.sendQueue.addToSendQueue((Packet) new C02PacketUseEntity(entity, C02PacketUseEntity.Action.ATTACK));
 				timer.reset();
 			}
-
 		}
 	};
 
@@ -95,6 +93,10 @@ public class Verus {
 				e.cancel();
 			}
 			if (e.getPacket() instanceof C05PacketPlayerLook || e.getPacket() instanceof S08PacketPlayerPosLook) {
+				e.cancel();
+			}
+			if(e.getPacket() instanceof C02PacketUseEntity) {
+				if(mc.thePlayer.isBlocking())
 				e.cancel();
 			}
 			if (e.getPacket() instanceof C07PacketPlayerDigging) {

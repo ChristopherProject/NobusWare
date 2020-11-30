@@ -25,7 +25,7 @@ public class Speed extends Module {
 	@Handler
 	public void eventotick(MoveEvent ev) {
 		if(this.isAbilitato()) {
-			if(this.mc.thePlayer.ticksExisted % 2 == 0) {
+			if(mc.thePlayer.isMoving() &&  this.mc.thePlayer.ticksExisted % 4 == 0 &&  !mc.thePlayer.isBlocking()) {
 				mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput());
 			}
 			if (this.mc.thePlayer.isMovingOnGround()) {
