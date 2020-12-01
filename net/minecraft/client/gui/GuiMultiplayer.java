@@ -11,7 +11,9 @@ import org.lwjgl.opengl.GL11;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 
+import it.nobusware.client.render.loup.GuiPlus;
 import it.nobusware.client.shader.DrawShader;
+import it.nobusware.client.utils.ExpandButton;
 import it.nobusware.client.utils.ImageButton;
 import it.nobusware.client.utils.VerSwitcherButton;
 import net.minecraft.client.multiplayer.GuiConnecting;
@@ -26,8 +28,8 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
     private static final Logger logger = LogManager.getLogger();
     private final OldServerPinger oldServerPinger = new OldServerPinger();
     private GuiScreen parentScreen;
-    private ServerSelectionList serverListSelector;
-    private ServerList savedServerList;
+    public ServerSelectionList serverListSelector;
+    public ServerList savedServerList;
     private GuiButton btnEditServer;
     private GuiButton btnSelectServer;
     private GuiButton btnDeleteServer;
@@ -101,7 +103,8 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
         this.buttonList.add(new ImageButton(0, width / 2 + 80 + 20 + 20 + 20 - 34, height - 62, 40, 40, I18n.format("gui.cancel", new Object[0]), "nobita/button/multiplayer/exit.png"));
         selectServer(this.serverListSelector.func_148193_k());
         this.buttonList.add(new VerSwitcherButton(1337, -35, 5));
-      }
+        this.buttonList.add(new ExpandButton(666, this.width / 2 + 4 + 50 + 96, this.height - 52 + 22, 20, 20, "§a+"));
+    }
 
     /**
      * Called from the main game loop to update the screen.
@@ -189,6 +192,10 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
             else if (button.id == 777)
             {
                 this.refreshServerList();
+            }
+            else if (button.id == 666)
+            {
+                this.mc.displayGuiScreen(new GuiPlus(this));
             }
         }
     }

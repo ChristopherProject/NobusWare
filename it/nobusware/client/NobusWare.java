@@ -9,6 +9,7 @@ import com.github.creeper123123321.viafabric.ViaFabric;
 
 import it.nobusware.client.config.ConfigManager;
 import it.nobusware.client.discord.DiscordAgent;
+import it.nobusware.client.irc.IrcManager;
 import it.nobusware.client.manager.CManager;
 import it.nobusware.client.manager.ModuleManager;
 import it.nobusware.client.render.GuiNobita;
@@ -40,6 +41,8 @@ public class NobusWare {
 
 	public static String primColor = "§a";
 	public static String secColor = "§f";
+	
+	public static IrcManager irc;
 
 	public void pre() {
 		System.out.println("Avvio NobusWare Client");
@@ -50,6 +53,7 @@ public class NobusWare {
 	}
 	
 	public void Avvio() {
+		connectToIRC();
 		Display.setTitle("NobusWare Client 1.8.x");
 		this.nobiGui = new GuiNobita(Minecraft.getMinecraft());
 		this.modManager = new ModuleManager();
@@ -89,6 +93,16 @@ public class NobusWare {
 	    Keybinds.setupBinds();
 	    Keybinds.bindKeys();
 	    ToggledMods.setupBinds();
+	}
+	
+	public static void connectToIRC() {
+		irc = new IrcManager(Minecraft.getMinecraft().session.getUsername());
+		irc.connect();
+		if (irc.isConnected()) {
+			System.out.println("Connected To IRC.");
+		} else {
+			System.out.println("Error 404 Not Found.");
+		}
 	}
 	
 	public void StopClient() {

@@ -89,6 +89,4 @@ public class C00Handshake implements Packet
 	public void setProtocolVersion(int protocolVersion) {
 		this.protocolVersion = protocolVersion;
 	}
-    
-    
 }

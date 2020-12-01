@@ -1,12 +1,14 @@
 package net.minecraft.client.entity;
 
-import QuarantineAPI.Event;
 import QuarantineAPI.EventAPI;
-import it.nobusware.client.events.EventChatReceive;
 import it.nobusware.client.events.EventChatSend;
 import it.nobusware.client.events.EventPushOutOfBlocks;
 import it.nobusware.client.events.EventUpdate;
 import it.nobusware.client.events.MoveEvent;
+import it.nobusware.client.irc.IrcLine;
+import it.nobusware.client.irc.IrcManager;
+import it.nobusware.client.utils.ChatUtils;
+import it.nobusware.client.utils.Timer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -75,6 +77,10 @@ public class EntityPlayerSP extends AbstractClientPlayer
     private String clientBrand;
     public MovementInput movementInput;
     protected Minecraft mc;
+    
+	//irc
+    private Timer timer = new Timer();
+    static IrcManager irc = Minecraft.getMinecraft().getNobita().irc;
 
     /**
      * Used to tell if the player pressed forward twice. If this is at 0 and it's pressed (And they are allowed to
@@ -99,7 +105,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
     public float prevTimeInPortal;
 	public double rotationYawTs;
     private static final String __OBFID = "CL_00000938";
-
+    
     public EntityPlayerSP(Minecraft mcIn, World worldIn, NetHandlerPlayClient p_i46278_3_, StatFileWriter p_i46278_4_)
     {
         super(worldIn, p_i46278_3_.func_175105_e());
@@ -107,6 +113,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
         this.field_146108_bO = p_i46278_4_;
         this.mc = mcIn;
         this.dimension = 0;
+        this.timer = new Timer();
     }
 
     /**
@@ -257,7 +264,17 @@ public class EntityPlayerSP extends AbstractClientPlayer
     	if(event.isCancelled()) {
     		return;
     	}else {
-    		if (p_71165_1_.startsWith(".")) {
+    		  if (p_71165_1_.startsWith("@")) {
+    	            if (this.irc.isConnected()) {
+    	                this.irc.sendMessage("#LaMiaPrimaTipaSiChiamavaLaura", "" + p_71165_1_.replace("@", ""));
+    	                this.irc.getLines().add(new IrcLine(this.irc.getChatLine(true), p_71165_1_.replace("@", ""), this.irc.getName(), false));
+    	                this.irc.setUnreadMessages(true);
+    	            }
+    	            else {
+    	                ChatUtils.print("§cImpossibile Contattare Il Server");
+    	            }
+    	            return;
+    	        }else if (p_71165_1_.startsWith(".")) {
     			this.mc.getNobita().getCommandManager().callCommand(p_71165_1_.substring(1));
     			return;
     		}else {

@@ -401,94 +401,23 @@ public class FontRenderer implements IResourceManagerReloadListener
           while (itr.hasNext()) {
             NetworkPlayerInfo info = itr.next();
             String name = info.func_178851_f();
-            String pos = "POS";
             i++;
             
-            
-			
-	 if(Minecraft.getMinecraft().getNobita().getModManager().Prendi(NameProtect.class).isAbilitato()) {
-            	if (p_175065_1_.contains(Minecraft.getMinecraft().session.getUsername())) {
-                	p_175065_1_ = p_175065_1_.replace(Minecraft.getMinecraft().session.getUsername(), "AdrianCode");
-                  continue;
-                } 
-            	for(int i2 =0; i2 < ServerOnline.getAllPlayers().size(); i2++) {
-            		if (p_175065_1_.contains(ServerOnline.getAllPlayers().get(i2))) {
-                    	p_175065_1_ = p_175065_1_.replace(ServerOnline.getAllPlayers().get(i2), "NiggaBoi");
-                    	continue;
-                    } 
-            	}
-            }
-	 else if(Minecraft.getMinecraft().isSingleplayer()  && Minecraft.getMinecraft().getCurrentServerData() != null && Minecraft.getMinecraft().getCurrentServerData().serverIP.equalsIgnoreCase("mc.trollandia.it")) {
-			if (p_175065_1_.contains("Trollandia")) {
-				p_175065_1_ = p_175065_1_.replace("Trollandia", "NobusWare");
-				continue;
-			}
-			
-			if (p_175065_1_.contains("trollandia")) {
-				p_175065_1_ = p_175065_1_.replace("trollandia", "NobusWare");
-				continue;
-			}
-
-			if (p_175065_1_.contains("mc.trollandia.it")) {
-				p_175065_1_ = p_175065_1_.replace("mc.trollandia.it", "NobusWare.rip");
-				continue;
-			}
-
-			if (p_175065_1_.contains("trollandia.it")) {
-				p_175065_1_ = p_175065_1_.replace("trollandia.it", "NobusWare.rip");
-				continue;
-			}
-			
-			if (p_175065_1_.contains("TROLLANDIA.IT")) {
-				p_175065_1_ = p_175065_1_.replace("TROLLANDIA.IT", "NobusWare.rip");
-				continue;
-			}
-			
-			if (p_175065_1_.contains("Troll§candia")) {
-				p_175065_1_ = p_175065_1_.replace("Troll§candia", "Nobus§cWare");
-				continue;
-			}
-			if (p_175065_1_.contains("ts.trollandia.it")) {
-				p_175065_1_ = p_175065_1_.replace("ts.trollandia.it", "NobusWare.rip");
-				continue;
-			}
-
-			if (p_175065_1_.contains("Trollandia.it")) {
-				p_175065_1_ = p_175065_1_.replace("Trollandia.it", "NobusWare.rip");
-				continue;
-			}
-		} else {
-            	if (p_175065_1_.contains(Minecraft.getMinecraft().session.getUsername())) {
-                	p_175065_1_ = p_175065_1_.replace(Minecraft.getMinecraft().session.getUsername(),Minecraft.getMinecraft().session.getUsername());
-                  continue;
-                } 
-            }
-            
-            
-            if (p_175065_1_.contains(pos)) {
-              isPos = true;
-              continue;
-            }
-            if (p_175065_1_.contains("parkercraft.it")) {
-               	p_175065_1_ = p_175065_1_.replace("parkercraft.it", "nobusware.rip"); 
-                continue;
-            }
-            if (p_175065_1_.contains("parkercraft")) {
-               	p_175065_1_ = p_175065_1_.replace("parkercraft", "nobusware"); 
-                continue;
-            }
-            if (p_175065_1_.contains("ParkerCraft")) {
-               	p_175065_1_ = p_175065_1_.replace("ParkerCraft", "NobusWare"); 
-                continue;
-            }
-            if (p_175065_1_.contains("PARKERCRAFT")) {
-               	p_175065_1_ = p_175065_1_.replace("PARKERCRAFT", "NobusWare.rip"); 
-                continue;
-            }
-            if (p_175065_1_.contains("§6§nmc.parkercraft.it")) {
-               	p_175065_1_ = p_175065_1_.replace("§6§nmc.parkercraft.it", "nobusware.rip"); 
-                continue;
-            }
+       	 if(Minecraft.getMinecraft().getNobita().getModManager().Prendi(NameProtect.class).isAbilitato()) {
+         	if (p_175065_1_.contains(Minecraft.getMinecraft().session.getUsername())) {
+             	p_175065_1_ = p_175065_1_.replace(Minecraft.getMinecraft().session.getUsername(), "AdrianCode");
+               continue;
+             } 
+         	for(int i2 =0; i2 < ServerOnline.getAllPlayers().size(); i2++) {
+         		if (p_175065_1_.contains(ServerOnline.getAllPlayers().get(i2))) {
+                 	p_175065_1_ = p_175065_1_.replace(ServerOnline.getAllPlayers().get(i2), ServerOnline.getAllPlayers().get(i2));
+                 	continue;
+                 } 
+         	}
+         }else {
+         if (p_175065_1_.contains(name))
+         	p_175065_1_ = p_175065_1_.replace(name, name); 
+       }
             if (p_175065_1_.contains(name))
             	p_175065_1_ = p_175065_1_.replace(name, name); 
           } 

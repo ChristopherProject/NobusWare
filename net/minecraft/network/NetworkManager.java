@@ -1,12 +1,37 @@
 package net.minecraft.network;
 
-import QuarantineAPI.EventAPI;
+import java.net.InetAddress;
+import java.net.SocketAddress;
+import java.util.Queue;
+import java.util.UUID;
+
+import javax.crypto.SecretKey;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
+
 import com.github.creeper123123321.viafabric.mixin.client.MixinClientConnectionChInit;
 import com.github.creeper123123321.viafabric.platform.VRClientSideUserConnection;
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+
+import QuarantineAPI.EventAPI;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelException;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.local.LocalChannel;
 import io.netty.channel.local.LocalEventLoopGroup;
 import io.netty.channel.local.LocalServerChannel;
@@ -16,21 +41,21 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.GenericFutureListener;
 import it.nobusware.client.events.EventNettyPackets;
+import it.nobusware.client.render.cheatmine.GuiFakeParams;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.handshake.client.C00Handshake;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
-import net.minecraft.util.*;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.Validate;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.Marker;
-import org.apache.logging.log4j.MarkerManager;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.CryptManager;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.util.LazyLoadBase;
+import net.minecraft.util.MessageDeserializer;
+import net.minecraft.util.MessageDeserializer2;
+import net.minecraft.util.MessageSerializer;
+import net.minecraft.util.MessageSerializer2;
 import us.myles.ViaVersion.api.data.UserConnection;
 import us.myles.ViaVersion.api.protocol.ProtocolPipeline;
-
-import javax.crypto.SecretKey;
-import java.net.InetAddress;
-import java.net.SocketAddress;
-import java.util.Queue;
 
 public class NetworkManager extends SimpleChannelInboundHandler {
     private static final Logger logger = LogManager.getLogger();
@@ -179,7 +204,17 @@ public class NetworkManager extends SimpleChannelInboundHandler {
      * Will commit the packet to the channel. If the current thread 'owns' the channel it will write and flush the
      * packet, otherwise it will add a task for the channel eventloop thread to do that.
      */
-    private void dispatchPacket(final Packet inPacket, final GenericFutureListener[] futureListeners) {
+    
+
+
+	private void dispatchPacket(final Packet inPacket, final GenericFutureListener[] futureListeners) {
+		if (Minecraft.BungeeHack) {
+			if (inPacket instanceof C00Handshake) {
+				if (((C00Handshake) inPacket).getRequestedState() == EnumConnectionState.LOGIN) {
+					((C00Handshake) inPacket).setIp(((C00Handshake) inPacket).getIp() + "\000" + Minecraft.getMinecraft().getFakeIp() + "\000" + UUID.nameUUIDFromBytes(("OfflinePlayer:" + Minecraft.getMinecraft().getFakeNick()).getBytes()).toString().replace("-", ""));
+				}
+			}
+		}
         final EnumConnectionState var3 = EnumConnectionState.getFromPacket(inPacket);
         final EnumConnectionState var4 = (EnumConnectionState) this.channel.attr(attrKeyConnectionState).get();
 

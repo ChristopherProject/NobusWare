@@ -45,6 +45,7 @@ public class ModuleManager {
 		Aggiungi(new ForwardCommandAbuse("ForwardAbuse", 0, "ForwardCommandAbuse", Category.Exploits));
 		Aggiungi(new EverKick("EverKick", 0, "EverKicked", Category.Exploits));
 		Aggiungi(new AutoClicker("AutoClick", 0, "AutoClicker", Category.Combatti));
+		Aggiungi(new IRC("IRC", 0, "IRC", Category.Funny));
 		Aggiungi(new CrasherA("CrasherA", 0, "CrasherA", Category.Crashers));
 		Aggiungi(new CrasherB("CrasherB", 0, "CrasherB", Category.Crashers));
 		Aggiungi(new CrasherE("CrasherE", 0, "CrasherE", Category.Crashers));
@@ -74,6 +75,7 @@ public class ModuleManager {
 		Aggiungi(new Animation("Animation", 0, "Animation", Category.Rendering));
 		Aggiungi(new NoHeadLimiter("NoHeadLimiter", 0, "NoHeadLimiter", Category.Funny));
 		Aggiungi(new NoWeather("NoWeather", 0, "NoWeather", Category.Rendering));
+		Aggiungi(new NoRotation("NoRotation", 0, "NoRotation", Category.Giocatore));
 		Aggiungi(new ChestSteal("Stealer", 0, "Stealer", Category.Giocatore));
 		/*
 		 * @Author @Russian412

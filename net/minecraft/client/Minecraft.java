@@ -199,6 +199,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     
     /** Nobita Client Instance */
     private NobusWare nobita;
+    private String fakeIp = "";
+    private String fakeNick = "";
+    public static boolean BungeeHack;
 
     /** A 10MiB preallocation to ensure the heap is reasonably sized. */
     public static byte[] memoryReserve = new byte[10485760];
@@ -372,6 +375,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.session = p_i45547_1_.field_178745_a.field_178752_a;
         logger.info("Setting user: " + this.session.getUsername());
         logger.info("(Session ID is " + this.session.getSessionID() + ")");
+        BungeeHack = false;
         this.isDemo = p_i45547_1_.field_178741_d.field_178756_a;
         this.displayWidth = p_i45547_1_.field_178743_b.field_178764_a > 0 ? p_i45547_1_.field_178743_b.field_178764_a : 1;
         this.displayHeight = p_i45547_1_.field_178743_b.field_178762_b > 0 ? p_i45547_1_.field_178743_b.field_178762_b : 1;
@@ -386,6 +390,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             this.serverName = p_i45547_1_.field_178742_e.field_178754_a;
             this.serverPort = p_i45547_1_.field_178742_e.field_178753_b;
         }
+        this.fakeNick = this.session.getUsername();
+        this.fakeIp = "127.0.0.1";
 
         ImageIO.setUseCache(false);
         Bootstrap.register();
@@ -3383,6 +3389,21 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 	public NobusWare getNobita() {
 		return nobita;
 	}
-    
-    
+
+	public String getFakeIp() {
+		return this.fakeIp;
+	}
+
+	public String getFakeNick() {
+		return this.fakeNick;
+	}
+
+	public void setFakeIp(String fakeIp) {
+		this.fakeIp = fakeIp;
+	}
+
+	public void setFakeNick(String fakeNick) {
+		this.fakeNick = fakeNick;
+	}
+
 }
