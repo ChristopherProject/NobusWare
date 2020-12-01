@@ -1,12 +1,13 @@
 package net.minecraft.network.play.client;
 
-import java.io.IOException;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayServer;
 import net.minecraft.util.BlockPos;
+
+import java.io.IOException;
 
 public class C08PacketPlayerBlockPlacement implements Packet
 {
@@ -21,19 +22,24 @@ public class C08PacketPlayerBlockPlacement implements Packet
 
     public C08PacketPlayerBlockPlacement() {}
 
-    public C08PacketPlayerBlockPlacement(ItemStack p_i45930_1_)
+    public C08PacketPlayerBlockPlacement(ItemStack itemStack)
     {
-        this(field_179726_a, 255, p_i45930_1_, 0.0F, 0.0F, 0.0F);
+        this(field_179726_a, 255, itemStack, 0.0F, 0.0F, 0.0F);
     }
 
-    public C08PacketPlayerBlockPlacement(BlockPos p_i45931_1_, int p_i45931_2_, ItemStack p_i45931_3_, float p_i45931_4_, float p_i45931_5_, float p_i45931_6_)
+    public C08PacketPlayerBlockPlacement(BlockPos blockPos, ItemStack itemStack)
     {
-        this.field_179725_b = p_i45931_1_;
-        this.placedBlockDirection = p_i45931_2_;
-        this.stack = p_i45931_3_ != null ? p_i45931_3_.copy() : null;
-        this.facingX = p_i45931_4_;
-        this.facingY = p_i45931_5_;
-        this.facingZ = p_i45931_6_;
+        this(blockPos, 255, itemStack, 0.0F, 0.0F, 0.0F);
+    }
+
+    public C08PacketPlayerBlockPlacement(BlockPos blockPos, int blockDirection, ItemStack itemStack, float facingX, float facingY, float facingZ)
+    {
+        this.field_179725_b = blockPos;
+        this.placedBlockDirection = blockDirection;
+        this.stack = itemStack != null ? itemStack.copy() : null;
+        this.facingX = facingX;
+        this.facingY = facingY;
+        this.facingZ = facingZ;
     }
 
     /**
@@ -67,7 +73,7 @@ public class C08PacketPlayerBlockPlacement implements Packet
         p_180769_1_.processPlayerBlockPlacement(this);
     }
 
-    public BlockPos func_179724_a()
+    public BlockPos getBlockPos()
     {
         return this.field_179725_b;
     }

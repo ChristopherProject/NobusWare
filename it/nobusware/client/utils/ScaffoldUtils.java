@@ -13,14 +13,15 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
 public class ScaffoldUtils {
-  private static Minecraft mc = Minecraft.getMinecraft();
+  private static final Minecraft mc = Minecraft.getMinecraft();
   
-  private static List<Block> blockBlacklist = Arrays.asList(new Block[] { 
-        Blocks.air, (Block)Blocks.water, Blocks.tnt, (Block)Blocks.chest, (Block)Blocks.flowing_water, (Block)Blocks.lava, (Block)Blocks.flowing_lava, Blocks.tnt, Blocks.enchanting_table, Blocks.carpet, 
-        Blocks.glass_pane, (Block)Blocks.stained_glass_pane, Blocks.iron_bars, Blocks.snow_layer, Blocks.ice, Blocks.packed_ice, Blocks.coal_ore, Blocks.diamond_ore, Blocks.emerald_ore, (Block)Blocks.chest, 
-        Blocks.torch, Blocks.anvil, Blocks.trapped_chest, Blocks.noteblock, Blocks.jukebox, Blocks.tnt, Blocks.gold_ore, Blocks.iron_ore, Blocks.lapis_ore, (Block)Blocks.sand, 
-        Blocks.lit_redstone_ore, Blocks.quartz_ore, Blocks.redstone_ore, Blocks.wooden_pressure_plate, Blocks.stone_pressure_plate, Blocks.light_weighted_pressure_plate, Blocks.heavy_weighted_pressure_plate, Blocks.stone_button, Blocks.wooden_button, Blocks.lever, 
-        Blocks.enchanting_table });
+  private static final List<Block> blockBlacklist = Arrays.asList(Blocks.air, Blocks.water, Blocks.tnt, Blocks.chest, Blocks.flowing_water, Blocks.lava, Blocks.flowing_lava, Blocks.tnt, Blocks.enchanting_table, Blocks.carpet,
+          Blocks.glass_pane, Blocks.stained_glass_pane, Blocks.iron_bars, Blocks.snow_layer, Blocks.ice, Blocks.packed_ice, Blocks.coal_ore, Blocks.diamond_ore, Blocks.emerald_ore, Blocks.chest,
+          Blocks.torch, Blocks.anvil, Blocks.trapped_chest, Blocks.noteblock, Blocks.jukebox, Blocks.tnt, Blocks.gold_ore, Blocks.iron_ore, Blocks.lapis_ore, Blocks.sand,
+          Blocks.lit_redstone_ore, Blocks.quartz_ore, Blocks.redstone_ore, Blocks.wooden_pressure_plate, Blocks.stone_pressure_plate, Blocks.light_weighted_pressure_plate, Blocks.heavy_weighted_pressure_plate, Blocks.stone_button, Blocks.wooden_button, Blocks.lever,
+          Blocks.enchanting_table);
+
+  private static final List<Block> blockBlacklist2 = Arrays.asList(Blocks.air);
   
   public static double getExpandBlockSlotX(double expandValue) {
     double x2 = Math.cos(Math.toRadians((mc.thePlayer.rotationYaw + 90.0F)));
@@ -36,6 +37,56 @@ public class ScaffoldUtils {
     double xOffset = mc.thePlayer.movementInput.moveForward * 0.1D * x2 + mc.thePlayer.movementInput.moveStrafe * 0.1D * z2;
     double x = mc.thePlayer.posX + xOffset;
     return x;
+  }
+
+  public static BlockData getBlockData2(BlockPos var1) {
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(var1.add(0, -1, 0)).getBlock()))
+      return new BlockData(var1.add(0, -1, 0), EnumFacing.UP);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(var1.add(-1, 0, 0)).getBlock()))
+      return new BlockData(var1.add(-1, 0, 0), EnumFacing.EAST);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(var1.add(1, 0, 0)).getBlock()))
+      return new BlockData(var1.add(1, 0, 0), EnumFacing.WEST);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(var1.add(0, 0, -1)).getBlock()))
+      return new BlockData(var1.add(0, 0, -1), EnumFacing.SOUTH);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(var1.add(0, 0, 1)).getBlock()))
+      return new BlockData(var1.add(0, 0, 1), EnumFacing.NORTH);
+    BlockPos add = var1.add(-1, 0, 0);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(add.add(-1, 0, 0)).getBlock()))
+      return new BlockData(add.add(-1, 0, 0), EnumFacing.EAST);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(add.add(1, 0, 0)).getBlock()))
+      return new BlockData(add.add(1, 0, 0), EnumFacing.WEST);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(add.add(0, 0, -1)).getBlock()))
+      return new BlockData(add.add(0, 0, -1), EnumFacing.SOUTH);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(add.add(0, 0, 1)).getBlock()))
+      return new BlockData(add.add(0, 0, 1), EnumFacing.NORTH);
+    BlockPos add2 = var1.add(1, 0, 0);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(add2.add(-1, 0, 0)).getBlock()))
+      return new BlockData(add2.add(-1, 0, 0), EnumFacing.EAST);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(add2.add(1, 0, 0)).getBlock()))
+      return new BlockData(add2.add(1, 0, 0), EnumFacing.WEST);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(add2.add(0, 0, -1)).getBlock()))
+      return new BlockData(add2.add(0, 0, -1), EnumFacing.SOUTH);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(add2.add(0, 0, 1)).getBlock()))
+      return new BlockData(add2.add(0, 0, 1), EnumFacing.NORTH);
+    BlockPos add3 = var1.add(0, 0, -1);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(add3.add(-1, 0, 0)).getBlock()))
+      return new BlockData(add3.add(-1, 0, 0), EnumFacing.EAST);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(add3.add(1, 0, 0)).getBlock()))
+      return new BlockData(add3.add(1, 0, 0), EnumFacing.WEST);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(add3.add(0, 0, -1)).getBlock()))
+      return new BlockData(add3.add(0, 0, -1), EnumFacing.SOUTH);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(add3.add(0, 0, 1)).getBlock()))
+      return new BlockData(add3.add(0, 0, 1), EnumFacing.NORTH);
+    BlockPos add4 = var1.add(0, 0, 1);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(add4.add(-1, 0, 0)).getBlock()))
+      return new BlockData(add4.add(-1, 0, 0), EnumFacing.EAST);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(add4.add(1, 0, 0)).getBlock()))
+      return new BlockData(add4.add(1, 0, 0), EnumFacing.WEST);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(add4.add(0, 0, -1)).getBlock()))
+      return new BlockData(add4.add(0, 0, -1), EnumFacing.SOUTH);
+    if (!blockBlacklist2.contains(mc.theWorld.getBlockState(add4.add(0, 0, 1)).getBlock()))
+      return new BlockData(add4.add(0, 0, 1), EnumFacing.NORTH);
+    return null;
   }
   
   public static BlockData getBlockData(BlockPos var1) {
@@ -153,6 +204,6 @@ public class ScaffoldUtils {
   }
   
   public static void swap(int slot, int hotBarNumber) {
-    mc.playerController.windowClick(mc.thePlayer.inventoryContainer.windowId, slot, hotBarNumber, 2, (EntityPlayer)mc.thePlayer);
+    mc.playerController.windowClick(mc.thePlayer.inventoryContainer.windowId, slot, hotBarNumber, 2, mc.thePlayer);
   }
 }

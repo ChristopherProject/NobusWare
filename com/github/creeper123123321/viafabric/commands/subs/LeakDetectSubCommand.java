@@ -4,12 +4,14 @@
 
 package com.github.creeper123123321.viafabric.commands.subs;
 
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.function.Function;
+import java.util.List;
+import java.util.Arrays;
 import io.netty.util.ResourceLeakDetector;
 import us.myles.ViaVersion.api.command.ViaCommandSender;
 import us.myles.ViaVersion.api.command.ViaSubCommand;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class LeakDetectSubCommand extends ViaSubCommand
 {

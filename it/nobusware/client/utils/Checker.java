@@ -1,10 +1,10 @@
 package it.nobusware.client.utils;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import net.minecraft.client.Minecraft;
+import org.json.JSONObject;
+
+import javax.swing.*;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -12,20 +12,12 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
-
-import org.json.JSONObject;
-
-import lombok.experimental.Helper;
-import net.minecraft.client.Minecraft;
-
 public class Checker {
 	
 	public static void PayLoad() {
-		getUpdates();
+/*		getUpdates();
 		getManitence();
-		SystemHWID();
+		SystemHWID();*/
 	}
 
 	private static void SystemHWID() {

@@ -24,7 +24,7 @@ import net.minecraft.client.Minecraft;
 
 public class NobusWare {
 
-	private final String Autore = "AdrianCode";
+	private final String Autore = "AdrianCode, FakeException";
 
 	private static final it.nobusware.client.render.clickgui.ClickScreen guiClick = new it.nobusware.client.render.clickgui.ClickScreen();
 

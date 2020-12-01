@@ -573,7 +573,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
     {
         DrawShader.Reich();
         this.drawString(this.fontRendererObj, "§bNobusWare 1.8", 2, this.height - 10, -1);
-        this.drawString(this.fontRendererObj, "§eCopyright By §bAdrianCode§e. Do not distribute!", this.width - this.fontRendererObj.getStringWidth("§eCopyright By §bAdrianCode§e. Do not distribute!") - 2, this.height - 10, -1);
+        this.drawString(this.fontRendererObj, "§eCopyright By §bAdrianCode §e& §bFakeException§e. Do not distribute!", this.width - this.fontRendererObj.getStringWidth("§eCopyright By §bAdrianCode §e& §bFakeException§e. Do not distribute!") - 2, this.height - 10, -1);
         this.drawSession(mouseX, mouseY);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
