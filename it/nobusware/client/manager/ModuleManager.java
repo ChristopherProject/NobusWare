@@ -79,6 +79,7 @@ public class ModuleManager {
 		Aggiungi(new ChestSteal("Stealer", 0, "Stealer", Category.Giocatore));
 		Aggiungi(new ItemPhisyc("ItemPhisyc", 0, "ItemPhisyc", Category.Rendering));
 		Aggiungi(new AntiHurtCam("AntiHurtCam", 0, "AntiHurtCam", Category.Rendering));
+		Aggiungi(new Fucker("Fucker", 0, "Fucker", Category.Giocatore));
 		/*
 		 * @Author @Russian412
 		 * Disclamer: NON METTERE MODULI DOPO HUD 

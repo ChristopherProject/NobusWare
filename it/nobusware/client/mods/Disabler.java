@@ -181,8 +181,8 @@ public class Disabler extends Module {
 		}else if (this.mode.getValue() == Mode.VERUS) {
 			if (event.getPacket() instanceof C00PacketKeepAlive) {
 				if (timer1.delay(1235L)) {
-	                C00PacketKeepAlive packetKeepAlive = (C00PacketKeepAlive) event.getPacket();
-	                packetKeepAlive.key -= RandomUtils.nextInt(1308718, 1310768);
+	               // C00PacketKeepAlive packetKeepAlive = (C00PacketKeepAlive) event.getPacket();
+	              //  packetKeepAlive.key -= RandomUtils.nextInt(1308718, 1310768);
 				}
 				if (timer1.delay(1455L)) {
 					mc.thePlayer.sendQueue.addToSendQueue(new C15PacketClientSettings("en_US", 8, EntityPlayer.EnumChatVisibility.FULL, true, 127));

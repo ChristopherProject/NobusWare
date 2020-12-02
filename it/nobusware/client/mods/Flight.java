@@ -88,7 +88,7 @@ public class Flight extends Module {
 			if(mc.thePlayer.ticksExisted % 2 == 0 && !mc.getNobita().getModManager().Prendi(Disabler.class).isAbilitato()) {
 				mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput());
 				//damagePlayer(1);
-			}
+			
 			check = true;
 			net.minecraft.util.Timer.timerSpeed = 1f;
 			if (ev.isPre()) {
@@ -101,6 +101,7 @@ public class Flight extends Module {
 					MoveUtils.fallPacket();
 					MoveUtils.ascendPacket();
 					timer.reset();
+				}
 				}
 			}
 		}
@@ -183,7 +184,7 @@ public class Flight extends Module {
 		if (this.isAbilitato() && (this.mode.getValue() == Mode.COLLISION)) {
 			if(mc.thePlayer.ticksExisted % 6 == 0 && mc.thePlayer.isMoving())
 			mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput());
-			MoveUtils.setMotion(this.speed.getValue().floatValue());
+			//MoveUtils.setMotion(this.speed.getValue().floatValue());
 		}
 
 		
