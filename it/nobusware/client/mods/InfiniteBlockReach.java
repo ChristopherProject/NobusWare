@@ -68,10 +68,9 @@ public class InfiniteBlockReach extends Module {
     @Handler
     public void onUpdate(EventUpdate e) {
         if (mc.thePlayer != null && this.isAbilitato()) {
-<<<<<<< HEAD
+
         	//io uso l'altro tasto per piazare su mc ho i tasti invertiti
-=======
->>>>>>> 619510c84a1d198bd41572bc6d3a63f07d3b122e
+
             if (Mouse.isButtonDown(1)) {
 
                 BlockPos pos = getBlinkBlock().getBlockPos();
