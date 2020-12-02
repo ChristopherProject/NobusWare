@@ -16,23 +16,11 @@ public class NoRotation extends Module{
 	}
 	
 	@Handler
-	public void PacketsIn(EventPackets e) {
-		if(this.isAbilitato()) {
-			if (e.getPacket() instanceof C05PacketPlayerLook
-					|| e.getPacket() instanceof S08PacketPlayerPosLook) {
-				e.cancel();
-			}
-		}
-	}
-	
-	@Handler
 	public void PacketsOut(EventNettyPackets e) {
 		if(this.isAbilitato()) {
-			if (e.getPacket() instanceof C05PacketPlayerLook
-					|| e.getPacket() instanceof S08PacketPlayerPosLook) {
-				e.cancel();
+			if (e.getPacket() instanceof S08PacketPlayerPosLook && mc.theWorld != null) {
+				//e.cancel();
 			}
 		}
 	}
-
 }

@@ -3,6 +3,7 @@ package it.nobusware.client.mods.aura.modes;
 import java.awt.Robot;
 import java.util.Random;
 
+import net.minecraft.network.play.client.*;
 import org.apache.commons.lang3.RandomUtils;
 
 import it.nobusware.client.events.EventPackets;
@@ -17,13 +18,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemSword;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.network.play.client.C03PacketPlayer.C05PacketPlayerLook;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
-import net.minecraft.network.play.client.C0CPacketInput;
-import net.minecraft.network.play.client.C0EPacketClickWindow;
-import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
-import net.minecraft.network.play.client.C13PacketPlayerAbilities;
 import net.minecraft.network.play.server.S00PacketKeepAlive;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.network.play.server.S2DPacketOpenWindow;
@@ -55,7 +50,7 @@ public class Verus {
 	public static void setEntity(EntityLivingBase entity) {
 		Verus.entity = entity;
 	}
-	
+
 	public static void doUpdate(final killaura killaura, final EventUpdate e, final Minecraft mc) {
 		long clickSpeed = (long) killaura.getCps().getValue().doubleValue();
 		if (killaura.isAbilitato() && mc.theWorld != null && getEntity() != null) {
@@ -63,6 +58,7 @@ public class Verus {
 				mc.thePlayer.inventory.getCurrentItem().useItemRightClick(Minecraft.getMinecraft().theWorld, Minecraft.getMinecraft().thePlayer);
 				if(mc.thePlayer.ticksExisted % 45 == 0 && !mc.thePlayer.isBlocking()) {
 					mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput());
+					mc.thePlayer.sendQueue.addToSendQueue((Packet) new C02PacketUseEntity(entity, C02PacketUseEntity.Action.ATTACK));
 					mc.thePlayer.sendQueue.noEventPacket(new C13PacketPlayerAbilities(true, true, true, true,1.0F, 1.0F));
 				}
 			}
@@ -72,12 +68,11 @@ public class Verus {
 				mc.thePlayer.rotationPitchHead = rots[1];
 				mc.thePlayer.renderYawOffset = rots[0];
 			}
-		
+
 			if (timer.delay((float) (1000L / (clickSpeed + randomCPS)))) {
 				randomCPS = RandomUtils.nextInt(1, 2);
 				mc.thePlayer.swingItem();
 				mc.playerController.attackEntity(mc.thePlayer, entity);
-				//mc.thePlayer.sendQueue.addToSendQueue((Packet) new C02PacketUseEntity(entity, C02PacketUseEntity.Action.ATTACK));
 				timer.reset();
 			}
 		}
@@ -95,9 +90,9 @@ public class Verus {
 			if (e.getPacket() instanceof C05PacketPlayerLook || e.getPacket() instanceof S08PacketPlayerPosLook) {
 				e.cancel();
 			}
-			if(e.getPacket() instanceof C02PacketUseEntity) {
-				if(mc.thePlayer.isBlocking())
-				e.cancel();
+			if (e.getPacket() instanceof C08PacketPlayerBlockPlacement) {
+				if (mc.thePlayer.isBlocking())
+					e.cancel();
 			}
 			if (e.getPacket() instanceof C07PacketPlayerDigging) {
 				e.cancel();
@@ -109,8 +104,7 @@ public class Verus {
 			}
 			if (e.getPacket() instanceof C0EPacketClickWindow) {
 				e.cancel();
-			}	
+			}
 		}
-		
 	}
 }

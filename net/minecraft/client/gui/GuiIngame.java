@@ -5,6 +5,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import it.nobusware.client.events.EventRendererGUI2D;
+import it.nobusware.client.mods.AntiHurtCam;
 import it.nobusware.client.utils.ArrayListUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -133,15 +134,11 @@ public class GuiIngame extends Gui
         this.mc.entityRenderer.setupOverlayRendering();
         GlStateManager.enableBlend();
 
-        if (Config.isVignetteEnabled())
-        {
-            this.func_180480_a(this.mc.thePlayer.getBrightness(p_175180_1_), var2);
-        }
-        else
-        {
-            GlStateManager.enableDepth();
-            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        }
+        if (Minecraft.isFancyGraphicsEnabled() || mc.thePlayer.hurtTime > 0) {
+			this.func_180480_a(this.mc.thePlayer.getBrightness(p_175180_1_), var2);
+		} else {
+			GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+		}
 
         ItemStack var5 = this.mc.thePlayer.inventory.armorItemInSlot(3);
         

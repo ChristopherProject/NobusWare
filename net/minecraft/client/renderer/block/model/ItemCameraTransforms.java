@@ -63,7 +63,19 @@ public class ItemCameraTransforms
             return this.func_178352_a(p_deserialize_1_, p_deserialize_2_, p_deserialize_3_);
         }
     }
-
+    public ItemTransformVec3f getTransform(TransformType p_181688_1_) {
+        switch (p_181688_1_) {
+          case THIRD_PERSON:
+            return this.field_178353_d;
+          case FIRST_PERSON:
+            return this.field_178354_e;
+          case HEAD:
+            return this.field_178355_b;
+          case GUI:
+            return this.field_178356_c;
+        } 
+        return ItemTransformVec3f.field_178366_a;
+      }
     public static enum TransformType
     {
         NONE("NONE", 0),

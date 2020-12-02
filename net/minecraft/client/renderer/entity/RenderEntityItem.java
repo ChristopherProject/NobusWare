@@ -1,7 +1,13 @@
 package net.minecraft.client.renderer.entity;
 
 import java.util.Random;
+
+import org.lwjgl.opengl.GL11;
+
+import it.nobusware.client.mods.ItemPhisyc;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.entity.Entity;
@@ -24,44 +30,42 @@ public class RenderEntityItem extends Render
         this.shadowSize = 0.15F;
         this.shadowOpaque = 0.75F;
     }
-
-    private int func_177077_a(EntityItem p_177077_1_, double p_177077_2_, double p_177077_4_, double p_177077_6_, float p_177077_8_, IBakedModel p_177077_9_)
-    {
-        ItemStack var10 = p_177077_1_.getEntityItem();
-        Item var11 = var10.getItem();
-
-        if (var11 == null)
-        {
-            return 0;
-        }
-        else
-        {
-            boolean var12 = p_177077_9_.isAmbientOcclusionEnabled();
-            int var13 = this.func_177078_a(var10);
-            float var14 = 0.25F;
-            float var15 = MathHelper.sin(((float)p_177077_1_.func_174872_o() + p_177077_8_) / 10.0F + p_177077_1_.hoverStart) * 0.1F + 0.1F;
-            GlStateManager.translate((float)p_177077_2_, (float)p_177077_4_ + var15 + 0.25F, (float)p_177077_6_);
-            float var16;
-
-            if (var12 || this.renderManager.options != null && this.renderManager.options.fancyGraphics)
-            {
-                var16 = (((float)p_177077_1_.func_174872_o() + p_177077_8_) / 20.0F + p_177077_1_.hoverStart) * (180F / (float)Math.PI);
-                GlStateManager.rotate(var16, 0.0F, 1.0F, 0.0F);
-            }
-
-            if (!var12)
-            {
-                var16 = -0.0F * (float)(var13 - 1) * 0.5F;
-                float var17 = -0.0F * (float)(var13 - 1) * 0.5F;
-                float var18 = -0.046875F * (float)(var13 - 1) * 0.5F;
-                GlStateManager.translate(var16, var17, var18);
-            }
-
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            return var13;
-        }
-    }
-
+    
+    private int func_177077_a(EntityItem itemIn, double p_177077_2_, double p_177077_4_, double p_177077_6_, float p_177077_8_, IBakedModel p_177077_9_) {
+		ItemStack itemstack = itemIn.getEntityItem();
+		Item item = itemstack.getItem();
+		if (item == null)
+			return 0;
+		boolean flag = p_177077_9_.isGui3d();
+		int i = func_177078_a(itemstack);
+		float f = 0.25F;
+		float f1 = MathHelper.sin((itemIn.func_174872_o() + p_177077_8_) / 10.0F + itemIn.hoverStart) * 0.1F + 0.1F;
+		if (Minecraft.getMinecraft().getNobita().getModManager().Prendi(ItemPhisyc.class).isAbilitato())
+			f1 = 0.0F;
+		float f2 = (p_177077_9_.getItemCameraTransforms().getTransform(ItemCameraTransforms.TransformType.HEAD)).field_178363_d.y;
+		GlStateManager.translate((float) p_177077_2_, (float) p_177077_4_ + f1 + 0.25F * f2, (float) p_177077_6_);
+		if (flag || this.renderManager.options != null) {
+			float f3 = ((itemIn.func_174872_o() + p_177077_8_) / 20.0F + itemIn.hoverStart) * 57.295776F;
+			if (Minecraft.getMinecraft().getNobita().getModManager().Prendi(ItemPhisyc.class).isAbilitato()) {
+				if (itemIn.onGround) {
+					GL11.glRotatef(itemIn.rotationYaw, 0.0F, 1.0F, 0.0F);
+					GL11.glRotatef(itemIn.rotationPitch + 90.0F, 1.0F, 0.0F, 0.0F);
+				} else {
+					GlStateManager.rotate(f3, 0.5F, 0.0F, 0.0F);
+				}
+			} else {
+				GlStateManager.rotate(f3, 0.0F, 1.0F, 0.0F);
+			}
+		}
+		if (!flag) {
+			float f6 = -0.0F * (i - 1) * 0.5F;
+			float f4 = -0.0F * (i - 1) * 0.5F;
+			float f5 = -0.046875F * (i - 1) * 0.5F;
+			GlStateManager.translate(f6, f4, f5);
+		}
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		return i;
+	}
     private int func_177078_a(ItemStack p_177078_1_)
     {
         byte var2 = 1;

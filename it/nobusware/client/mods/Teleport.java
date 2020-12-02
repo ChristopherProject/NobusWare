@@ -4,15 +4,14 @@ import java.awt.Color;
 import java.util.Random;
 import java.util.function.Consumer;
 
+import it.nobusware.client.events.*;
+import it.nobusware.client.utils.MoveUtils;
+import net.minecraft.util.AxisAlignedBB;
 import org.apache.commons.lang3.RandomUtils;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import QuarantineAPI.config.annotation.Handler;
-import it.nobusware.client.events.EventPackets;
-import it.nobusware.client.events.EventRenderer3D;
-import it.nobusware.client.events.EventRendererGUI2D;
-import it.nobusware.client.events.EventUpdate;
 import it.nobusware.client.manager.Module;
 import it.nobusware.client.utils.ColorUtilsArray;
 import it.nobusware.client.utils.RenderUtils;
@@ -140,6 +139,14 @@ public class Teleport extends Module {
 				vec4.zCoord * blockReachDistance);
 		return this.mc.theWorld.rayTraceBlocks(vec3, vec5, !this.mc.thePlayer.isInWater(), false, false);
 	}
+
+	@Handler
+	public Consumer<CollisionEvent> eventConsumer = (event) -> {
+		if (this.isAbilitato() && this.mc.theWorld != null
+				&& !mc.thePlayer.isSneaking()) {
+			//event.setBoundingBox(new AxisAlignedBB(-2, -1, -2, 2, 0, 2).offset(event.getX(), event.getY(), event.getZ()));
+		}
+	};
 
 	public void setPos(double x, double y, double z) {
 		// mette il player in un veicolo

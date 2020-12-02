@@ -77,6 +77,8 @@ public class ModuleManager {
 		Aggiungi(new NoWeather("NoWeather", 0, "NoWeather", Category.Rendering));
 		Aggiungi(new NoRotation("NoRotation", 0, "NoRotation", Category.Giocatore));
 		Aggiungi(new ChestSteal("Stealer", 0, "Stealer", Category.Giocatore));
+		Aggiungi(new ItemPhisyc("ItemPhisyc", 0, "ItemPhisyc", Category.Rendering));
+		Aggiungi(new AntiHurtCam("AntiHurtCam", 0, "AntiHurtCam", Category.Rendering));
 		/*
 		 * @Author @Russian412
 		 * Disclamer: NON METTERE MODULI DOPO HUD 

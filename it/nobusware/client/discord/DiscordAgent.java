@@ -21,7 +21,7 @@ public class DiscordAgent {
 				System.out.println("NobusWare - Verificato Per " + usr.username + "#" + usr.discriminator);
 			}
 		}).build();
-		DiscordRPC.discordInitialize("764564981848080384", handlers, true);
+		DiscordRPC.discordInitialize("783738589275488287", handlers, true);
 
 		new Thread("Discord RPC") {
 

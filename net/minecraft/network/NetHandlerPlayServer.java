@@ -575,7 +575,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
         WorldServer var2 = this.serverController.worldServerForDimension(this.playerEntity.dimension);
         ItemStack var3 = this.playerEntity.inventory.getCurrentItem();
         boolean var4 = false;
-        BlockPos var5 = packetIn.func_179724_a();
+        BlockPos var5 = packetIn.getBlockPos();
         EnumFacing var6 = EnumFacing.getFront(packetIn.getPlacedBlockDirection());
         this.playerEntity.markPlayerActive();
 

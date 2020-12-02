@@ -22,6 +22,7 @@ import com.google.gson.JsonSyntaxException;
 
 import QuarantineAPI.EventAPI;
 import it.nobusware.client.events.EventRenderer3D;
+import it.nobusware.client.mods.AntiHurtCam;
 import it.nobusware.client.mods.NoWeather;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
@@ -656,6 +657,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
     private void hurtCameraEffect(float p_78482_1_)
     {
+    	if(mc.getNobita().getModManager().Prendi(AntiHurtCam.class).isAbilitato()) {
+    		return;
+    	}
         if (this.mc.func_175606_aa() instanceof EntityLivingBase)
         {
             EntityLivingBase var2 = (EntityLivingBase)this.mc.func_175606_aa();
@@ -2051,6 +2055,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
      */
     protected void renderRainSnow(float partialTicks)
     {
+     	if(this.mc.getNobita().getModManager().Prendi(NoWeather.class).isAbilitato()) {
+    		return;
+     	}
         if (Reflector.ForgeWorldProvider_getWeatherRenderer.exists())
         {
             WorldProvider var2 = this.mc.theWorld.provider;

@@ -403,25 +403,21 @@ public class FontRenderer implements IResourceManagerReloadListener
             String name = info.func_178851_f();
             i++;
             
-       	 if(Minecraft.getMinecraft().getNobita().getModManager().Prendi(NameProtect.class).isAbilitato()) {
-         	if (p_175065_1_.contains(Minecraft.getMinecraft().session.getUsername())) {
-             	p_175065_1_ = p_175065_1_.replace(Minecraft.getMinecraft().session.getUsername(), "AdrianCode");
-               continue;
-             } 
-         	for(int i2 =0; i2 < ServerOnline.getAllPlayers().size(); i2++) {
-         		if (p_175065_1_.contains(ServerOnline.getAllPlayers().get(i2))) {
-                 	p_175065_1_ = p_175065_1_.replace(ServerOnline.getAllPlayers().get(i2), ServerOnline.getAllPlayers().get(i2));
-                 	continue;
-                 } 
-         	}
-         }else {
-         if (p_175065_1_.contains(name))
-         	p_175065_1_ = p_175065_1_.replace(name, name); 
-       }
-            if (p_175065_1_.contains(name))
-            	p_175065_1_ = p_175065_1_.replace(name, name); 
-          } 
-        } 
+			if (Minecraft.getMinecraft().getNobita().getModManager().Prendi(NameProtect.class).isAbilitato()) {
+				if (p_175065_1_.contains(Minecraft.getMinecraft().session.getUsername())) {
+					p_175065_1_ = p_175065_1_.replace(Minecraft.getMinecraft().session.getUsername(), "AdrianCode");
+					continue;
+				}
+				if (p_175065_1_.contains(name))
+					p_175065_1_ = p_175065_1_.replace(name, name);
+			} else {
+				if (p_175065_1_.contains(name))
+					p_175065_1_ = p_175065_1_.replace(name, name);
+			}
+			if (p_175065_1_.contains(name))
+				p_175065_1_ = p_175065_1_.replace(name, name);
+          	}
+        }
         GlStateManager.enableAlpha();
         resetStyles();
         this.resetStyles();
