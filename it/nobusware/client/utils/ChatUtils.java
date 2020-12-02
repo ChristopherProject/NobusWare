@@ -14,10 +14,10 @@ public class ChatUtils {
 	}
 
 	public static String sendBypassedString(String text){
-		String finalText = "";
-		for(int i = 0; i < text.length(); i++){
-			finalText += ":snowman:" + text.charAt(i) + ":snowman:";
+		String finalText = ""; 
+        for(int i = 0; i < text.length(); i++){
+			finalText += "⛄" + text.charAt(i) + "⛄";
 		}
-		return finalText;
+        return finalText;
 	}
 }

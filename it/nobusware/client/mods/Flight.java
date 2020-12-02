@@ -84,25 +84,19 @@ public class Flight extends Module {
 
 	@Handler
 	public void eventobellobello(EventUpdate ev) {
+		float speed = this.speed.getValue().floatValue();
 		if (this.isAbilitato() && (this.mode.getValue() == Mode.VANILLA)) {
-			if(mc.thePlayer.ticksExisted % 2 == 0 && !mc.getNobita().getModManager().Prendi(Disabler.class).isAbilitato()) {
+			if (mc.thePlayer.ticksExisted % 2 == 0
+					&& !mc.getNobita().getModManager().Prendi(Disabler.class).isAbilitato()) {
 				mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput());
-				//damagePlayer(1);
-			
-			check = true;
-			net.minecraft.util.Timer.timerSpeed = 1f;
-			if (ev.isPre()) {
-				float speed = this.speed.getValue().floatValue();
-				MovementInput movementInput = mc.thePlayer.movementInput;
-				mc.thePlayer.motionY = movementInput.jump ? speed * 0.5F : movementInput.sneak ? -speed * 0.5F : 0.0F;
-				MoveUtils.setMotion(speed);
-
-				if (timer.delay(this.ascend.getValue().floatValue())) {
-					MoveUtils.fallPacket();
-					MoveUtils.ascendPacket();
-					timer.reset();
-				}
-				}
+			}
+			mc.thePlayer.capabilities.allowFlying = true;
+			mc.thePlayer.capabilities.isFlying = true;
+			MoveUtils.setMotion(speed);
+			if (timer.delay(this.ascend.getValue().floatValue())) {
+				MoveUtils.fallPacket();
+				MoveUtils.ascendPacket();
+				timer.reset();
 			}
 		}
 		if (this.isAbilitato() && (this.mode.getValue() == Mode.HYPIXEL)) {
