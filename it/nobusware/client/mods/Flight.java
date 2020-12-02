@@ -43,12 +43,20 @@ public class Flight extends Module {
 	private final EnumValue<Mode> mode = new EnumValue<>("Mode", Mode.VANILLA);
 	private final BooleanValue flag = new BooleanValue("FlagCheck", false);
 	private final NumberValue<Float> speed = new NumberValue<>("Speed", 1.4F, 1.0F, 7.0F, 0.1F);
+<<<<<<< HEAD
 	private final NumberValue<Float> ascend = new NumberValue<>("Ascend", 450.0F, 1.0F, 700.0F, 0.1F);
 	private final NumberValue<Integer> packetTimes = new NumberValue<>("Packets", 10, 1, 10, 1);
 
 	public Flight(String nome_mod, int tasto, String nome_array_printed, Category categoria) {
 		super(nome_mod, tasto, nome_array_printed, categoria);
 		addValues(this.mode, this.speed, this.ascend , this.packetTimes, this.flag);
+=======
+	private final NumberValue<Integer> packetTimes = new NumberValue<>("Packet Timings", 10, 1, 10, 1);
+
+	public Flight(String nome_mod, int tasto, String nome_array_printed, Category categoria) {
+		super(nome_mod, tasto, nome_array_printed, categoria);
+		addValues(this.mode, this.speed, this.flag, this.packetTimes);
+>>>>>>> 619510c84a1d198bd41572bc6d3a63f07d3b122e
 	}
 
 	public void Abilitato() {
@@ -95,7 +103,11 @@ public class Flight extends Module {
 				MovementInput movementInput = mc.thePlayer.movementInput;
 				mc.thePlayer.motionY = movementInput.jump ? speed * 0.5F : movementInput.sneak ? -speed * 0.5F : 0.0F;
 				MoveUtils.setMotion(speed);
+<<<<<<< HEAD
 				if (timer.delay(this.ascend.getValue().floatValue())) {
+=======
+				if (timer.delay(700F)) {
+>>>>>>> 619510c84a1d198bd41572bc6d3a63f07d3b122e
 					MoveUtils.fallPacket();
 					MoveUtils.ascendPacket();
 					timer.reset();
