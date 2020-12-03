@@ -1,9 +1,6 @@
 package net.minecraft.client.multiplayer;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.concurrent.atomic.AtomicInteger;
+import it.nobusware.client.utils.ExpandButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiDisconnected;
@@ -19,13 +16,16 @@ import net.minecraft.util.ChatComponentTranslation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import it.nobusware.client.utils.ExpandButton;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GuiConnecting extends GuiScreen
 {
     private static final AtomicInteger CONNECTION_ID = new AtomicInteger(0);
     private static final Logger logger = LogManager.getLogger();
-    private NetworkManager networkManager;
+    public static NetworkManager networkManager;
     private boolean cancel;
     private final GuiScreen previousGuiScreen;
     private static final String __OBFID = "CL_00000685";
@@ -66,7 +66,7 @@ public class GuiConnecting extends GuiScreen
                     }
 
                     var1 = InetAddress.getByName(ip);
-                    GuiConnecting.this.networkManager = NetworkManager.provideLanClient(var1, port, false);
+                    GuiConnecting.this.networkManager = NetworkManager.provideLanClient(var1, port);
                     GuiConnecting.this.networkManager.setNetHandler(new NetHandlerLoginClient(GuiConnecting.this.networkManager, GuiConnecting.this.mc, GuiConnecting.this.previousGuiScreen));
                     GuiConnecting.this.networkManager.sendPacket(new C00Handshake(47, ip, port, EnumConnectionState.LOGIN));
                     GuiConnecting.this.networkManager.sendPacket(new C00PacketLoginStart(GuiConnecting.this.mc.getSession().getProfile()));

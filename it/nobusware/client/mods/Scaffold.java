@@ -1,18 +1,9 @@
 package it.nobusware.client.mods;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.apache.commons.lang3.RandomUtils;
-
 import QuarantineAPI.config.annotation.Handler;
 import it.nobusware.client.events.EventUpdate;
 import it.nobusware.client.manager.Module;
-import it.nobusware.client.utils.BlockData;
-import it.nobusware.client.utils.RotationUtils;
-import it.nobusware.client.utils.ScaffoldUtils;
-import it.nobusware.client.utils.Timer;
-import it.nobusware.client.utils.Vec3d;
+import it.nobusware.client.utils.*;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -22,6 +13,10 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Vec3;
+import org.apache.commons.lang3.RandomUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class Scaffold extends Module {
 	
@@ -102,7 +97,7 @@ public class Scaffold extends Module {
             final int length = (arrayOfEnumFacing = EnumFacing.values()).length;
             final Vec3d hitVec = new Vec3d(this.data.position).addVector(randomValue, randomValue, randomValue).add(new Vec3d(this.data.face.getDirectionVec()).scale(randomValue));
             final Vec3d poop = ScaffoldUtils.getVec3d(this.data.position, this.data.face);
-            if (this.mc.playerController.func_178890_a(this.mc.thePlayer, this.mc.theWorld, this.mc.thePlayer.inventoryContainer.getSlot(36 + this.slot).getStack(), this.data.position, this.data.face, new Vec3(poop.xCoord, poop.yCoord, poop.zCoord)) && this.mc.thePlayer.movementInput.jump && !this.mc.thePlayer.isMoving() && !this.mc.thePlayer.isPotionActive(Potion.jump)) {
+            if (this.mc.playerController.placeBlock(this.mc.thePlayer, this.mc.theWorld, this.mc.thePlayer.inventoryContainer.getSlot(36 + this.slot).getStack(), this.data.position, this.data.face, new Vec3(poop.xCoord, poop.yCoord, poop.zCoord)) && this.mc.thePlayer.movementInput.jump && !this.mc.thePlayer.isMoving() && !this.mc.thePlayer.isPotionActive(Potion.jump)) {
                 this.mc.thePlayer.motionY = 0.42;
             }
             this.mc.thePlayer.sendQueue.addToSendQueue(new C0APacketAnimation());

@@ -1,26 +1,26 @@
 package it.nobusware.client.mods;
 
 import QuarantineAPI.config.annotation.Handler;
+import it.nobusware.client.events.EventPackets;
 import it.nobusware.client.events.EventRenderer3D;
 import it.nobusware.client.events.EventUpdate;
 import it.nobusware.client.manager.Module;
-import it.nobusware.client.utils.BlockData;
 import it.nobusware.client.utils.PathFinder;
 import it.nobusware.client.utils.RenderUtils;
-import it.nobusware.client.utils.ScaffoldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockSign;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import org.lwjgl.input.Mouse;
+import net.minecraft.network.play.client.C07PacketPlayerDigging;
+import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
+import net.minecraft.network.play.client.C0CPacketInput;
+import net.minecraft.util.*;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -67,31 +67,82 @@ public class InfiniteBlockReach extends Module {
 
     @Handler
     public void onUpdate(EventUpdate e) {
+        if (mc.thePlayer != null && isAbilitato()) {
+            if (mc.thePlayer.isMoving() && mc.thePlayer.ticksExisted % 4 == 0 && !mc.thePlayer.isBlocking()) {
+                mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput());
+            }
+        }
+    }
+
+    @Handler
+    public void onPacket(EventPackets e) {
+
         if (mc.thePlayer != null && this.isAbilitato()) {
 
-        	//io uso l'altro tasto per piazare su mc ho i tasti invertiti
+            if (e.getPacket() instanceof C08PacketPlayerBlockPlacement) {
 
-            if (Mouse.isButtonDown(1)) {
+                C08PacketPlayerBlockPlacement place = (C08PacketPlayerBlockPlacement) e.getPacket();
 
-                BlockPos pos = getBlinkBlock().getBlockPos();
+                BlockPos pos = place.getBlockPos();
+                ItemStack stack = place.getStack();
 
-                Vec3 topFrom = new Vec3(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);
-                Vec3 to = new Vec3(pos.getX(), pos.getY(), pos.getZ());
-                path = computePath(topFrom, to);
+                double dist = Math.sqrt(mc.thePlayer.getDistanceSq(pos));
 
-                for (Vec3 pathElm : path) {
-                    mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(pathElm.getX(), pathElm.getY(), pathElm.getZ(), true));
+                if (dist > 6 && pos.getY() != -1 && (stack != null || mc.theWorld.getBlockState(pos).getBlock() instanceof BlockContainer)) {
+
+                    Vec3 topFrom = new Vec3(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);
+                    Vec3 to = new Vec3(pos.getX(), pos.getY(), pos.getZ());
+                    path = computePath(topFrom, to);
+
+                    for (Vec3 pathElm : path) {
+                        mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(pathElm.getX(), pathElm.getY(), pathElm.getZ(), true));
+                    }
+
+                    mc.thePlayer.sendQueue.noEventPacket(place);
+
+                    Collections.reverse(path);
+
+                    for (Vec3 pathElm : path) {
+                        mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(pathElm.getX(), pathElm.getY(), pathElm.getZ(), true));
+                    }
+
+                    e.cancel();
                 }
+            }
 
-                BlockData data = ScaffoldUtils.getBlockData2(pos);
-                if (data != null) {
-                    mc.playerController.func_178890_a(mc.thePlayer, mc.theWorld, mc.thePlayer.getCurrentEquippedItem(), data.position, data.face, new Vec3(pos.getX(), pos.getY(), pos.getZ()));
-                }
+            if (e.getPacket() instanceof C07PacketPlayerDigging) {
 
-                Collections.reverse(path);
+                C07PacketPlayerDigging packet = (C07PacketPlayerDigging) e.getPacket();
+                C07PacketPlayerDigging.Action act = packet.func_180762_c();
+                BlockPos pos = packet.func_179715_a();
+                EnumFacing face = packet.func_179714_b();
+                double dist = Math.sqrt(mc.thePlayer.getDistanceSq(pos));
 
-                for (Vec3 pathElm : path) {
-                    mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(pathElm.getX(), pathElm.getY(), pathElm.getZ(), true));
+                if (dist > 6 && act == C07PacketPlayerDigging.Action.START_DESTROY_BLOCK) {
+
+                    Vec3 topFrom = new Vec3(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);
+                    Vec3 to = new Vec3(pos.getX(), pos.getY(), pos.getZ());
+
+                    path = computePath(topFrom, to);
+
+                    for (Vec3 pathElm : path) {
+                        mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(pathElm.getX(), pathElm.getY(), pathElm.getZ(), true));
+                    }
+
+                    C07PacketPlayerDigging end = new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.STOP_DESTROY_BLOCK, pos, face);
+
+                    mc.thePlayer.sendQueue.noEventPacket(packet);
+                    mc.thePlayer.sendQueue.noEventPacket(end);
+
+                    Collections.reverse(path);
+
+                    for (Vec3 pathElm : path) {
+                        mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(pathElm.getX(), pathElm.getY(), pathElm.getZ(), true));
+                    }
+
+                    e.cancel();
+                } else if (act == C07PacketPlayerDigging.Action.ABORT_DESTROY_BLOCK) {
+                    e.cancel();
                 }
             }
         }

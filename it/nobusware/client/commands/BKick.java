@@ -67,7 +67,7 @@ public class BKick extends  Command{
 			Minecraft.getMinecraft().thePlayer.sendQueue.noEventPacket(new C17PacketCustomPayload("BungeeCord", buf));
 			ChatUtils.print("§cKicked §a" + p +  " §cFor §a" + reason);
 		} catch (IOException e) {
-			System.out.println("Errore Nel Kick");
+			System.out.println("Errore Nel KickAll");
 		}
 	}
 }

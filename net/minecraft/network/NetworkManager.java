@@ -1,37 +1,12 @@
 package net.minecraft.network;
 
-import java.net.InetAddress;
-import java.net.SocketAddress;
-import java.util.Queue;
-import java.util.UUID;
-
-import javax.crypto.SecretKey;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.Validate;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.Marker;
-import org.apache.logging.log4j.MarkerManager;
-
+import QuarantineAPI.EventAPI;
 import com.github.creeper123123321.viafabric.mixin.client.MixinClientConnectionChInit;
 import com.github.creeper123123321.viafabric.platform.VRClientSideUserConnection;
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-
-import QuarantineAPI.EventAPI;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelException;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.*;
 import io.netty.channel.local.LocalChannel;
 import io.netty.channel.local.LocalEventLoopGroup;
 import io.netty.channel.local.LocalServerChannel;
@@ -41,21 +16,24 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.GenericFutureListener;
 import it.nobusware.client.events.EventNettyPackets;
-import it.nobusware.client.render.cheatmine.GuiFakeParams;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.handshake.client.C00Handshake;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.CryptManager;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.LazyLoadBase;
-import net.minecraft.util.MessageDeserializer;
-import net.minecraft.util.MessageDeserializer2;
-import net.minecraft.util.MessageSerializer;
-import net.minecraft.util.MessageSerializer2;
+import net.minecraft.util.*;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import us.myles.ViaVersion.api.data.UserConnection;
 import us.myles.ViaVersion.api.protocol.ProtocolPipeline;
+
+import javax.crypto.SecretKey;
+import java.net.InetAddress;
+import java.net.SocketAddress;
+import java.util.Queue;
+import java.util.UUID;
 
 public class NetworkManager extends SimpleChannelInboundHandler {
     private static final Logger logger = LogManager.getLogger();
@@ -349,7 +327,7 @@ public class NetworkManager extends SimpleChannelInboundHandler {
 //		return networkmanager1;
 //    	}
 //    	
-    public static NetworkManager provideLanClient(InetAddress p_150726_0_, int p_150726_1_, boolean nosense) {
+    public static NetworkManager provideLanClient(InetAddress p_150726_0_, int p_150726_1_) {
         final NetworkManager var2 = new NetworkManager(EnumPacketDirection.CLIENTBOUND);
         ((Bootstrap) ((Bootstrap) ((Bootstrap) (new Bootstrap()).group((EventLoopGroup) CLIENT_NIO_EVENTLOOP.getValue())).handler(new ChannelInitializer() {
             private static final String __OBFID = "CL_00002312";

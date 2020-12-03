@@ -43,7 +43,7 @@ public class RealmsConnect
                         return;
                     }
 
-                    RealmsConnect.this.connection = NetworkManager.provideLanClient(var1, p_connect_2_, false);
+                    RealmsConnect.this.connection = NetworkManager.provideLanClient(var1, p_connect_2_);
 
                     if (RealmsConnect.this.aborted)
                     {

@@ -48,10 +48,10 @@ public class PlayerControllerOF extends PlayerControllerMP
         return res;
     }
 
-    public boolean func_178890_a(EntityPlayerSP player, WorldClient worldIn, ItemStack stack, BlockPos pos, EnumFacing facing, Vec3 vec)
+    public boolean placeBlock(EntityPlayerSP player, WorldClient worldClient, ItemStack itemStack, BlockPos blockPos, EnumFacing facing, Vec3 vec3)
     {
         this.acting = true;
-        boolean res = super.func_178890_a(player, worldIn, stack, pos, facing, vec);
+        boolean res = super.placeBlock(player, worldClient, itemStack, blockPos, facing, vec3);
         this.acting = false;
         return res;
     }

@@ -81,6 +81,7 @@ public class ModuleManager {
 		Aggiungi(new AntiHurtCam("AntiHurtCam", 0, "AntiHurtCam", Category.Rendering));
 		Aggiungi(new Fucker("Fucker", 0, "Fucker", Category.Giocatore));
 		Aggiungi(new MatrixExploit("MatrixExploit", 0, "MatrixExploit", Category.Exploits));
+		Aggiungi(new ExtendedKB("ExtendedKB", 0, "ExtendedKB", Category.Combatti));
 		/*
 		 * @Author @Russian412
 		 * Disclamer: NON METTERE MODULI DOPO HUD 

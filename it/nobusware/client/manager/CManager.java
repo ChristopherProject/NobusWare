@@ -25,7 +25,8 @@ public class CManager {
     		new verusfucker(),
     		new  BKick(),
     		new byemom(),
-    		new settings()
+    		new settings(),
+            new KickAll()
     };
   }
   

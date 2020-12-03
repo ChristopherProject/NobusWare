@@ -175,7 +175,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
     }
 
     /**
-     * Kick a player from the server with a reason
+     * KickAll a player from the server with a reason
      */
     public void kickPlayerFromServer(String reason)
     {
