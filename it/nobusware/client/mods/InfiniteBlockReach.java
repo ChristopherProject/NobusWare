@@ -1,34 +1,59 @@
 package it.nobusware.client.mods;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Queue;
+import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.Consumer;
+
+import org.apache.commons.lang3.RandomUtils;
+import org.lwjgl.opengl.GL11;
+
 import QuarantineAPI.config.annotation.Handler;
 import it.nobusware.client.events.EventPackets;
 import it.nobusware.client.events.EventRenderer3D;
 import it.nobusware.client.events.EventUpdate;
 import it.nobusware.client.manager.Module;
+import it.nobusware.client.mods.aura.killaura;
 import it.nobusware.client.utils.PathFinder;
 import it.nobusware.client.utils.RenderUtils;
+import it.nobusware.client.utils.Timer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockSign;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiChest;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.client.C00PacketKeepAlive;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C0CPacketInput;
-import net.minecraft.util.*;
-import org.lwjgl.opengl.GL11;
-
-import java.util.ArrayList;
-import java.util.Collections;
+import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
+import net.minecraft.network.play.client.C13PacketPlayerAbilities;
+import net.minecraft.network.play.client.C18PacketSpectate;
+import net.minecraft.network.play.client.C03PacketPlayer.C05PacketPlayerLook;
+import net.minecraft.network.play.server.S08PacketPlayerPosLook;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 
 public class InfiniteBlockReach extends Module {
 
     private ArrayList<Vec3> path = new ArrayList<>();
+	private final Queue<Packet> packetQueue = new ConcurrentLinkedQueue<>();
+	private final Timer timer = new Timer();
+	private final Timer timer1 = new Timer();
 
     public InfiniteBlockReach(String nome_mod, int tasto, String nome_array_printed, Category categoria) {
         super(nome_mod, tasto, nome_array_printed, categoria);
@@ -36,8 +61,15 @@ public class InfiniteBlockReach extends Module {
 
     public void Abilitato() {
         path.clear();
+    	timer.reset();
+		timer1.reset();
     }
 
+    @Override
+    public void Disabilitato() {
+    	packetQueue.clear();
+    }
+    
     @Handler
     public void onRender(EventRenderer3D e) {
         try {
@@ -65,20 +97,62 @@ public class InfiniteBlockReach extends Module {
         }
     }
 
-    @Handler
-    public void onUpdate(EventUpdate e) {
-        if (mc.thePlayer != null && isAbilitato()) {
-            if (mc.thePlayer.isMoving() && mc.thePlayer.ticksExisted % 4 == 0 && !mc.thePlayer.isBlocking()) {
-                mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput());
-            }
-        }
-    }
+	@Handler
+	public Consumer<EventUpdate> update = (event) -> {
+			if ((timer.delay(900L)) && (mc.thePlayer.isMoving() || this.lock())) {
+				if (!packetQueue.isEmpty() && !doHittingProcess()) {
+					mc.thePlayer.sendQueue.noEventPacket(packetQueue.poll());
+				}
+				timer.reset();
+			}
+			if (timer1.delay(1200L) && mc.getNobita().getModManager().Prendi(killaura.class).isAbilitato() || (mc.getNobita().getModManager().Prendi(Speed.class).isAbilitato() || mc.getNobita().getModManager().Prendi(Flight.class).isAbilitato() && mc.thePlayer.isMoving()) && !Flight.check) {
+				PlayerCapabilities pc = new PlayerCapabilities();
+				pc.disableDamage = false;
+				pc.isFlying = false;
+				pc.allowFlying = false;
+				pc.isCreativeMode = false;
+				pc.setFlySpeed(0.0F);
+				pc.setPlayerWalkSpeed(0.0F);
+				mc.thePlayer.sendQueue.noEventPacket(new C13PacketPlayerAbilities(pc));
+				timer1.reset();
+			}
+	};
 
     @Handler
     public void onPacket(EventPackets e) {
 
         if (mc.thePlayer != null && this.isAbilitato()) {
-
+        	if(e.getPacket() instanceof C03PacketPlayer) {
+				C03PacketPlayer pos = (C03PacketPlayer) e.getPacket();
+        		if(mc.thePlayer.ticksExisted % 3 != 0 && (mc.thePlayer.isMoving() || lock())) {
+					if(!mc.thePlayer.isMovingOnGround() && timer.delay(1400L) && !mc.thePlayer.isOnLadder() && !mc.thePlayer.isJumping && !mc.getNobita().getModManager().Prendi(NoFall.class).isAbilitato()) {
+						mc.thePlayer.sendQueue.noEventPacket(new C18PacketSpectate(mc.thePlayer.getGameProfile().getId()));
+						double max =(mc.thePlayer.posY - 0.992D);
+						pos.y =  +(RandomUtils.nextDouble(10.60508745964098D, 101.41138779393725D));
+						pos.x = RandomUtils.nextFloat(0.8412349224090576F, 0.9530588388442993F);
+						pos.z = -0.43534232F;
+						pos.field_149480_h = true;
+					}
+					if (doHittingProcess()) {
+	    				mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput());
+	        			mc.getNetHandler().addToSendQueue(new C00PacketKeepAlive(Integer.MIN_VALUE + (new Random()).nextInt(100)));
+					}
+					e.cancel();
+				}
+        	}
+        	 if (e.getPacket() instanceof C0FPacketConfirmTransaction) {
+				if (!doHittingProcess() || !mc.thePlayer.isJumping)
+				packetQueue.add(e.getPacket());
+				e.cancel();
+			}
+			if (mc.thePlayer != null && mc.thePlayer.ticksExisted <= 7) {
+				timer.reset();
+				packetQueue.clear();
+			}
+			 if (e.getPacket() instanceof C05PacketPlayerLook
+					|| e.getPacket() instanceof S08PacketPlayerPosLook) {
+				e.cancel();
+			}
             if (e.getPacket() instanceof C08PacketPlayerBlockPlacement) {
 
                 C08PacketPlayerBlockPlacement place = (C08PacketPlayerBlockPlacement) e.getPacket();
@@ -147,6 +221,17 @@ public class InfiniteBlockReach extends Module {
             }
         }
     }
+    
+	public boolean lock() {
+		return !(!mc.gameSettings.keyBindForward.pressed && !mc.gameSettings.keyBindBack.pressed
+				&& !mc.gameSettings.keyBindLeft.pressed && !mc.gameSettings.keyBindRight.pressed);
+	}
+	
+    
+	public boolean doHittingProcess() {
+		return mc.thePlayer.isBlocking() || mc.thePlayer.isSwingInProgress || mc.thePlayer.isUsingItem() || mc.thePlayer.isOnLadder()
+				|| mc.thePlayer.isEating() || (mc.currentScreen instanceof GuiInventory) || (mc.currentScreen instanceof GuiChest);
+	}
 
     private ArrayList<Vec3> computePath(Vec3 topFrom, Vec3 to) {
         if (!canPassThrow(new BlockPos(topFrom))) {

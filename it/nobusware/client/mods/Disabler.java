@@ -6,6 +6,7 @@ import it.nobusware.client.events.EventPackets;
 import it.nobusware.client.events.EventUpdate;
 import it.nobusware.client.manager.Module;
 import it.nobusware.client.mods.aura.killaura;
+import it.nobusware.client.utils.ChatUtils;
 import it.nobusware.client.utils.Timer;
 import it.nobusware.client.utils.value.impl.EnumValue;
 import net.minecraft.client.gui.GuiChat;
@@ -40,16 +41,16 @@ public class Disabler extends Module {
 
 	@Handler
 	public Consumer<EventUpdate> update = (event) -> {
-		 if (this.mode.getValue() == Mode.VERUS_INFINITE || this.mode.getValue() == Mode.VERUS) {
-			 //he flag when i eating i try to fix it but im not sure to fix (for complete work use disabler(verus with killaura trollandia));
-			 //fixed with new lock method. (fix and we have full disabler)
-			if ((timer.delay(900L)) && (mc.thePlayer.isMoving() || this.lock())) {
-				if (!packetQueue.isEmpty() && !doHittingProcess()) {
+		 if (this.mode.getValue() == Mode.VERUS) {
+			if ((timer.delay(900L))) {
+				 if(packetQueue.size() > 147 && !packetQueue.isEmpty() && !doHittingProcess()) {
+					packetQueue.clear();
+				 }
+				if (!packetQueue.isEmpty() && !doHittingProcess() && (mc.thePlayer.isMoving() || this.lock())) {
 					mc.thePlayer.sendQueue.noEventPacket(packetQueue.poll());
 				}
 				timer.reset();
 			}
-
 			if (timer1.delay(1200L) && mc.getNobita().getModManager().Prendi(killaura.class).isAbilitato() || (mc.getNobita().getModManager().Prendi(Speed.class).isAbilitato() || mc.getNobita().getModManager().Prendi(Flight.class).isAbilitato() && mc.thePlayer.isMoving()) && !Flight.check) {
 				PlayerCapabilities pc = new PlayerCapabilities();
 				pc.disableDamage = false;
@@ -89,65 +90,7 @@ public class Disabler extends Module {
 			if (event.getPacket() instanceof C00PacketKeepAlive) {
 				event.cancel();
 			}
-		} else  if (this.mode.getValue() == Mode.VERUS_INFINITE) {
-			//System.out.println(event.getPacket());
-			if (event.getPacket() instanceof C00PacketKeepAlive) {
-				if (timer1.delay(1400L)) {
-					mc.thePlayer.sendQueue.noEventPacket(new C00PacketKeepAlive(Integer.MAX_VALUE + new Random().nextInt(100)));// RandomUtils.nextInt(15345345,																		// 18345345);
-					timer1.reset();
-				}
-				event.cancel();
-			}
-
-			if (event.getPacket() instanceof C0FPacketConfirmTransaction) {
-				packetQueue.add(event.getPacket());
-				event.cancel();
-			}
-
-			if (event.getPacket() instanceof C03PacketPlayer) {
-				mc.thePlayer.sendQueue.noEventPacket(new C18PacketSpectate(mc.thePlayer.getGameProfile().getId()));
-				C03PacketPlayer pos = (C03PacketPlayer) event.getPacket();
-		
-				if(mc.thePlayer.ticksExisted % 3 != 0 ) {
-					event.cancel();
-				}
-				
-				if (mc.thePlayer.ticksExisted % 3 != 0 && !mc.thePlayer.isMovingOnGround() && !mc.getNobita().getModManager().Prendi(NoFall.class).isAbilitato()) {
-					//Start value must be smaller or equal to end value
-					
-					double max =(mc.thePlayer.posY - 0.992D);
-					pos.y =  +(RandomUtils.nextDouble(10.60508745964098D, 101.41138779393725D));
-					pos.x = RandomUtils.nextFloat(0.8412349224090576F, 0.9530588388442993F);
-					pos.z = -0.43534232F;
-					pos.field_149480_h = true;
-					event.cancel();
-				}
-				if (doHittingProcess())
-					mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput(1.0F, 1.0F, true, true));
-			}
-
-			if (mc.thePlayer != null && mc.thePlayer.ticksExisted <= 7) {
-				timer.reset();
-				packetQueue.clear();
-			}
-
-			if (event.getPacket() instanceof C05PacketPlayerLook
-					|| event.getPacket() instanceof S08PacketPlayerPosLook) {
-				event.cancel();
-			}
-
-			if (event.getPacket() instanceof C0EPacketClickWindow) {
-				C0EPacketClickWindow pc2 = (C0EPacketClickWindow) event.getPacket();
-				if (mc.thePlayer.ticksExisted % 136 == 0) {
-					pc2.windowId = 0;
-					pc2.slotId = -999;
-					pc2.usedButton = 0;
-					pc2.actionNumber = 1;
-					pc2.clickedItem = null;
-					pc2.mode = 4;
-				}
-			}
-		}else if (this.mode.getValue() == Mode.HYPIXEL) {
+		} else if (this.mode.getValue() == Mode.HYPIXEL) {
               if (mc.thePlayer.ticksExisted % 25 == 0) {
                   PlayerCapabilities pc = new PlayerCapabilities();
                   pc.isFlying = true;
@@ -181,8 +124,8 @@ public class Disabler extends Module {
 		}else if (this.mode.getValue() == Mode.VERUS) {
 			if (event.getPacket() instanceof C00PacketKeepAlive) {
 				if (timer1.delay(1235L)) {
-	               // C00PacketKeepAlive packetKeepAlive = (C00PacketKeepAlive) event.getPacket();
-	              //  packetKeepAlive.key -= RandomUtils.nextInt(1308718, 1310768);
+	                C00PacketKeepAlive packetKeepAlive = (C00PacketKeepAlive) event.getPacket();
+	                packetKeepAlive.key -= RandomUtils.nextInt(1308718, 1310768);
 				}
 				if (timer1.delay(1455L)) {
 					mc.thePlayer.sendQueue.addToSendQueue(new C15PacketClientSettings("en_US", 8, EntityPlayer.EnumChatVisibility.FULL, true, 127));
@@ -195,10 +138,8 @@ public class Disabler extends Module {
 			}else if (event.getPacket() instanceof C03PacketPlayer) {
 				C03PacketPlayer pos = (C03PacketPlayer) event.getPacket();
 				if(mc.thePlayer.ticksExisted % 3 != 0 && (mc.thePlayer.isMoving() || lock())) {
-					//jump posistion flag
 					if(!mc.thePlayer.isMovingOnGround() && !mc.thePlayer.isOnLadder() && !mc.thePlayer.isJumping && !mc.getNobita().getModManager().Prendi(NoFall.class).isAbilitato() && timer.delay(1400L)) {
 						mc.thePlayer.sendQueue.noEventPacket(new C18PacketSpectate(mc.thePlayer.getGameProfile().getId()));
-						//Start value must be smaller or equal to end value
 						double max =(mc.thePlayer.posY - 0.992D);
 						pos.y =  +(RandomUtils.nextDouble(10.60508745964098D, 101.41138779393725D));
 						pos.x = RandomUtils.nextFloat(0.8412349224090576F, 0.9530588388442993F);
@@ -206,7 +147,8 @@ public class Disabler extends Module {
 						pos.field_149480_h = true;
 					}
 					if (doHittingProcess()) {
-						mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput(1.0F, 1.0F, true, true));	
+						mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput());	
+						//mc.thePlayer.sendQueue.noEventPacket(new C0CPacketInput(1.0F, 1.0F, true, true));	
 					}
 					event.cancel();
 				}
@@ -250,7 +192,7 @@ public class Disabler extends Module {
 	}
 
 	private enum Mode {
-		VERUS, GHOSTLY, HYPIXEL, VERUS_INFINITE
+		VERUS, GHOSTLY, HYPIXEL
 	}
 
 	@Override
