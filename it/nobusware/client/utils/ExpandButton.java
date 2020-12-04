@@ -12,12 +12,11 @@ public class ExpandButton extends GuiButton {
 	private int y;
 	private int x1;
 	private int y1;
-	private String text;
 	int alphaInc;
 	int alpha;
 	int size;
 
-	public ExpandButton(int par1, int par2, int par3, int par4, int par5, String par6Str) {
+	public ExpandButton(int par1, int par2, int par3, int par4, int par5, String par6Str){
 		super(par1, par2, par3, par4, par5, par6Str);
 		this.alphaInc = 100;
 		this.alpha = 0;
@@ -26,7 +25,6 @@ public class ExpandButton extends GuiButton {
 		this.y = par3;
 		this.x1 = par4;
 		this.y1 = par5;
-		this.text = par6Str;
 	}
 
 	public ExpandButton(int i, int j, int k, String stringParams) {
@@ -52,6 +50,6 @@ public class ExpandButton extends GuiButton {
 		}
 		Gui.drawRect(this.x - this.size, this.y - this.size, this.x + this.x1 + this.size, this.y + this.y1 + this.size,
 				darkBlue);
-		drawCenteredString(mc.fontRendererObj, this.text, this.x + this.x1 / 2, this.y + this.y1 / 2 - 4, -1);
+		drawCenteredString(mc.fontRendererObj, this.displayString, this.x + this.x1 / 2, this.y + this.y1 / 2 - 4, -1);
 	}
 }

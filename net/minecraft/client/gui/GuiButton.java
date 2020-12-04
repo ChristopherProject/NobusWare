@@ -6,7 +6,8 @@ import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiButton extends Gui {
+public class GuiButton extends Gui{
+	
 	  protected static final ResourceLocation buttonTextures = new ResourceLocation("textures/gui/widgets.png");
 	  
 	  protected int width;

@@ -29,7 +29,7 @@ public class GuiFakeParams extends GuiScreen {
 		int fieldWidth = 200;
 		int fieldHeight = 20;
 		this.buttonList.clear();
-		this.buttonList.add(new ExpandButton(1337, 5, 5, 100, 20, BungeeHack()));
+		this.buttonList.add(new ExpandButton(1337, 5, 5, 100, 20, Minecraft.BungeeHack ? "BungeeHack: §aOn" : "BungeeHack: §cOff"));
 		this.buttonList.add(new ExpandButton(1, this.width / 2 - 100, this.height / 4 + 130, fieldWidth, fieldHeight, "Spoof"));
 		this.buttonList.add(new ExpandButton(2, this.width / 2 - 100, this.height / 4 + 130 + fieldHeight + 8, fieldWidth, fieldHeight, "Back"));
 		this.ipField = new GuiTextField(0, this.fontRendererObj, this.width / 2 - 100, this.height / 4 + 100, fieldWidth, fieldHeight);
@@ -42,10 +42,6 @@ public class GuiFakeParams extends GuiScreen {
 
 	public void handleMouseInput() throws IOException {
 		super.handleMouseInput();
-	}
-	
-	private String BungeeHack() {
-		return Minecraft.BungeeHack ? "BungeeHack: §aOn" : "BungeeHack: §cOff";
 	}
 
 	protected void actionPerformed(GuiButton button) throws IOException {
@@ -61,8 +57,7 @@ public class GuiFakeParams extends GuiScreen {
 			this.mc.displayGuiScreen(this.prevScreen);
 		}else if (button.id == 1337) {
 			Minecraft.BungeeHack = !Minecraft.BungeeHack;
-		    button.displayString = BungeeHack();	
-		    updateScreen();
+		    button.displayString = Minecraft.BungeeHack ? "BungeeHack: §aOn" : "BungeeHack: §cOff";
 		}
 	}
 
