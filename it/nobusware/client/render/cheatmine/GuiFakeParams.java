@@ -30,6 +30,7 @@ public class GuiFakeParams extends GuiScreen {
 		int fieldHeight = 20;
 		this.buttonList.clear();
 		this.buttonList.add(new ExpandButton(1337, 5, 5, 100, 20, Minecraft.BungeeHack ? "BungeeHack: §aOn" : "BungeeHack: §cOff"));
+		this.buttonList.add(new ExpandButton(1985, 5, 27, 100, 20, "§ePremium UUID"));
 		this.buttonList.add(new ExpandButton(1, this.width / 2 - 100, this.height / 4 + 130, fieldWidth, fieldHeight, "Spoof"));
 		this.buttonList.add(new ExpandButton(2, this.width / 2 - 100, this.height / 4 + 130 + fieldHeight + 8, fieldWidth, fieldHeight, "Back"));
 		this.ipField = new GuiTextField(0, this.fontRendererObj, this.width / 2 - 100, this.height / 4 + 100, fieldWidth, fieldHeight);
@@ -58,6 +59,8 @@ public class GuiFakeParams extends GuiScreen {
 		}else if (button.id == 1337) {
 			Minecraft.BungeeHack = !Minecraft.BungeeHack;
 		    button.displayString = Minecraft.BungeeHack ? "BungeeHack: §aOn" : "BungeeHack: §cOff";
+		}else if(button.id == 1985) {
+			this.mc.displayGuiScreen(new GuiUUIDPremium(this));
 		}
 	}
 
