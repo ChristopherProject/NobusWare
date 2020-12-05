@@ -82,6 +82,7 @@ public class ModuleManager {
 		Aggiungi(new Fucker("Fucker", 0, "Fucker", Category.Giocatore));
 		Aggiungi(new MatrixExploit("MatrixExploit", 0, "MatrixExploit", Category.Exploits));
 		Aggiungi(new ExtendedKB("ExtendedKB", 0, "ExtendedKB", Category.Combatti));
+		Aggiungi(new MultiServer("MultiServer", 0, "MultiServer", Category.Exploits));
 		/*
 		 * @Author @Russian412
 		 * Disclamer: NON METTERE MODULI DOPO HUD 
